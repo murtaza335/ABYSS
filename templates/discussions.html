@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discussions | ABYSS</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Aptos:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
+    <style>
+        body {
+            font-family: 'Aptos', sans-serif;
+            background-color: #0b0c10;
+            color: #c5c6c7;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+        }
+        .abyss-teal {
+            color: #66fcf1;
+        }
+        .abyss-teal-bg {
+            background-color: #45a29e;
+        }
+        .abyss-teal-border {
+            border-color: #66fcf1;
+        }
+        .top-ribbon {
+            background-color: #1f2833; /* Dark blue-gray */
+        }
+        .content-box {
+            background-color: #1f2833; /* Same as top ribbon */
+        }
+        
+        /* Discussion specific styles */
+        .discussion-item {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .discussion-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+        .vote-btn.active {
+    color: #66fcf1;
+}
+        .vote-btn {
+            transition: color 0.2s ease, transform 0.1s ease;
+        }
+        .vote-btn:hover {
+            transform: scale(1.1);
+        }
+        .filter-btn {
+    transition: all 0.3s ease;
+    background-color: #1f2833;
+    color: #c5c6c7;
+    border: 1px solid #45a29e;
+}
+#categoryFilter {
+    background-color: #1f2833;
+    color: #c5c6c7;
+    border: 1px solid #45a29e;
+}
+        .filter-btn.active {
+    background-color: #45a29e;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+        /* Footer styles */
+        footer {
+    background-color: #1f2833;
+    padding: 40px 0 20px;
+    margin-top: 60px;
+}
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            padding: 0 20px;
+        }
+        .footer-column h3 {
+    color: #66fcf1;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+        .footer-column p {
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+        .footer-column ul li a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-column ul li a:hover {
+    color: #66fcf1;
+}
+        .social-icons {
+            display: flex;
+            gap: 12px;
+        }
+        .social-icon {
+    width: 36px;
+    height: 36px;
+    background-color: #1f2833;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c5c6c7;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+        .social-icon:hover {
+    background-color: #45a29e;
+}
+.copyright {
+    text-align: center;
+    padding-top: 20px;
+    margin-top: 30px;
+    border-top: 1px solid #0b0c10;
+    color: #777;
+    font-size: 0.85rem;
+}
+        .pagination-btn {
+            transition: all 0.3s ease;
+        }
+        .pagination-btn:hover {
+    background-color: #45a29e;
+}
+    </style>
+</head>
+<body>
+    <!-- Top Navigation Bar - Lighter gray -->
+    <nav class="top-ribbon py-5 px-8 flex justify-between items-center shadow-lg">
+        <div class="flex items-center">
+            <button id="backButton" class="mr-5 text-gray-300 hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <a href="/" class="text-3xl font-bold" style="color: #66fcf1;">ABYSS</a>
+        </div>
+        <div class="flex items-center space-x-8">
+            <a href="/leaderboard" class="text-lg text-gray-300 hover:abyss-red transition duration-300">Leaderboard</a>
+            <a href="/discussions" class="text-lg font-medium" style="color: #66fcf1;">Community</a>
+            <a href="/profile" class="text-lg text-gray-300 hover:abyss-red transition duration-300">Profile</a>
+        </div>
+    </nav>
+
+<!-- Main Content -->
+<main class="container mx-auto px-4 py-8">
+    <!-- Page Title and Create Discussion Button -->
+    <div class="relative mb-12">
+        <div class="text-center">
+            <h1 class="text-6xl font-bold">Community Discussions</h1>
+        </div>
+        <div class="absolute right-0 top-8">
+            <button id="createDiscussionBtn" style="background-color: #66fcf1; color: #0b0c10;" class="hover:bg-[#45a29e] font-medium py-1.5 px-4 rounded-md transition duration-300 text-sm">
+                Create Discussion
+            </button>
+        </div>
+    </div>
+    
+
+        <!-- Filter Options -->
+        <div class="content-box rounded-lg p-4 mb-8 shadow-md">
+            <div class="flex flex-wrap items-center justify-center">
+                <div class="flex space-x-3 mb-2 md:mb-0">
+                    <button class="filter-btn active px-4 py-1 rounded-full bg-[#1f2833] text-[#c5c6c7] text-sm font-medium transition duration-300 border border-[#45a29e]" data-filter="popular">Most Popular</button>
+                    <button class="filter-btn px-4 py-1 rounded-full bg-[#1f2833] text-[#c5c6c7] text-sm font-medium transition duration-300 border border-[#45a29e]" data-filter="recent">Most Recent</button>
+                </div>
+                <div class="md:ml-8">
+                    <select class="bg-[#1f2833] text-[#c5c6c7] px-3 py-1 rounded-md text-sm border border-[#45a29e]" id="categoryFilter">
+                        <option value="all">All</option>
+                        <option value="movies">Movies</option>
+                        <option value="series">Series</option>
+                        <option value="cartoons">Cartoons</option>
+                        <option value="anime">Anime</option>
+                        <option value="games">Games</option>
+                        <option value="books">Books</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discussions List -->
+        <div id="discussionsList">
+            <!-- Discussion 1 -->
+            <div class="discussion-item content-box rounded-lg mb-4 shadow-md overflow-hidden">
+                <div class="p-5">
+                    <div class="flex items-start">
+                        <!-- User Info -->
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden">
+                                <img src="/api/placeholder/100/100" alt="User Avatar" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <!-- Discussion Content -->
+                        <div class="flex-grow pr-16 relative">
+                            <div class="flex items-center mb-1">
+                                <span class="font-medium text-white mr-2">FilmEnthusiast42</span>
+                                <span class="text-xs text-gray-400">• 2 hours ago</span>
+                                <span class="ml-2 px-2 py-0.5 bg-gray-700 rounded-full text-xs">Movies</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Nolan's Oppenheimer: A technical masterpiece or overhyped?</h3>
+                            <p class="text-gray-300 mb-3 line-clamp-2">Just watched Oppenheimer last night and I'm conflicted. The cinematography was breathtaking and the acting superb, but did anyone else feel the pacing was off? I found myself checking my watch during the middle section...</p>
+                            <div class="flex items-center text-sm text-gray-400">
+                                <span class="mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                    </svg>
+                                    128 comments
+                                </span>
+                            </div>
+                            <!-- Vote Buttons (Positioned Absolute) -->
+                            <div class="absolute right-0 top-0 flex flex-col items-center">
+                                <button class="vote-btn upvote p-1" data-discussion-id="1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                    </svg>
+                                </button>
+                                <span class="vote-count text-sm font-medium my-1">842</span>
+                                <button class="vote-btn downvote p-1" data-discussion-id="1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discussion 2 -->
+            <div class="discussion-item content-box rounded-lg mb-4 shadow-md overflow-hidden">
+                <div class="p-5">
+                    <div class="flex items-start">
+                        <!-- User Info -->
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden">
+                                <img src="/api/placeholder/100/101" alt="User Avatar" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <!-- Discussion Content -->
+                        <div class="flex-grow pr-16 relative">
+                            <div class="flex items-center mb-1">
+                                <span class="font-medium text-white mr-2">BookwormElite</span>
+                                <span class="text-xs text-gray-400">• 5 hours ago</span>
+                                <span class="ml-2 px-2 py-0.5 bg-gray-700 rounded-full text-xs">Books</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Do contemporary fantasy novels rely too heavily on established tropes?</h3>
+                            <p class="text-gray-300 mb-3 line-clamp-2">I've been reading fantasy for over 20 years now, and I'm finding it increasingly difficult to discover truly original concepts. It seems like every other book features the same chosen one narrative or magic school setting. Are there any authors pushing boundaries with novel worldbuilding and magic systems?</p>
+                            <div class="flex items-center text-sm text-gray-400">
+                                <span class="mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                    </svg>
+                                    95 comments
+                                </span>
+                            </div>
+                            <!-- Vote Buttons (Positioned Absolute) -->
+                            <div class="absolute right-0 top-0 flex flex-col items-center">
+                                <button class="vote-btn upvote p-1" data-discussion-id="2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                    </svg>
+                                </button>
+                                <span class="vote-count text-sm font-medium my-1">516</span>
+                                <button class="vote-btn downvote p-1" data-discussion-id="2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discussion 3 -->
+            <div class="discussion-item content-box rounded-lg mb-4 shadow-md overflow-hidden">
+                <div class="p-5">
+                    <div class="flex items-start">
+                        <!-- User Info -->
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden">
+                                <img src="/api/placeholder/100/102" alt="User Avatar" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <!-- Discussion Content -->
+                        <div class="flex-grow pr-16 relative">
+                            <div class="flex items-center mb-1">
+                                <span class="font-medium text-white mr-2">AnimeGuru99</span>
+                                <span class="text-xs text-gray-400">• 1 day ago</span>
+                                <span class="ml-2 px-2 py-0.5 bg-gray-700 rounded-full text-xs">Anime</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Unpopular opinion: Modern anime is losing its artistic identity</h3>
+                            <p class="text-gray-300 mb-3 line-clamp-2">It feels like newer anime series are becoming increasingly homogenized in terms of art style and storytelling. The unique visual flair that made 90s and early 2000s anime so recognizable seems to be fading in favor of more standardized, 'clean' aesthetics that appeal to wider audiences. Anyone else miss the experimental animation techniques of older shows?</p>
+                            <div class="flex items-center text-sm text-gray-400">
+                                <span class="mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                    </svg>
+                                    244 comments
+                                </span>
+                            </div>
+                            <!-- Vote Buttons (Positioned Absolute) -->
+                            <div class="absolute right-0 top-0 flex flex-col items-center">
+                                <button class="vote-btn upvote p-1" data-discussion-id="3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                    </svg>
+                                </button>
+                                <span class="vote-count text-sm font-medium my-1">735</span>
+                                <button class="vote-btn downvote p-1" data-discussion-id="3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discussion 4 -->
+            <div class="discussion-item content-box rounded-lg mb-4 shadow-md overflow-hidden">
+                <div class="p-5">
+                    <div class="flex items-start">
+                        <!-- User Info -->
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden">
+                                <img src="/api/placeholder/100/103" alt="User Avatar" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <!-- Discussion Content -->
+                        <div class="flex-grow pr-16 relative">
+                            <div class="flex items-center mb-1">
+                                <span class="font-medium text-white mr-2">TVCritic2025</span>
+                                <span class="text-xs text-gray-400">• 2 days ago</span>
+                                <span class="ml-2 px-2 py-0.5 bg-gray-700 rounded-full text-xs">Series</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Has the era of prestige TV ended with the streaming wars?</h3>
+                            <p class="text-gray-300 mb-3 line-clamp-2">With so many streaming services competing for attention, it feels like we're getting quantity over quality lately. The "golden age" TV shows like Breaking Bad, The Wire, and Mad Men set a standard that seems harder to find now. Are the algorithms pushing for more content at the expense of thoughtful storytelling?</p>
+                            <div class="flex items-center text-sm text-gray-400">
+                                <span class="mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                    </svg>
+                                    178 comments
+                                </span>
+                            </div>
+                            <!-- Vote Buttons (Positioned Absolute) -->
+                            <div class="absolute right-0 top-0 flex flex-col items-center">
+                                <button class="vote-btn upvote p-1" data-discussion-id="4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                    </svg>
+                                </button>
+                                <span class="vote-count text-sm font-medium my-1">690</span>
+                                <button class="vote-btn downvote p-1" data-discussion-id="4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discussion 5 -->
+            <div class="discussion-item content-box rounded-lg mb-4 shadow-md overflow-hidden">
+                <div class="p-5">
+                    <div class="flex items-start">
+                        <!-- User Info -->
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden">
+                                <img src="/api/placeholder/100/104" alt="User Avatar" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <!-- Discussion Content -->
+                        <div class="flex-grow pr-16 relative">
+                            <div class="flex items-center mb-1">
+                                <span class="font-medium text-white mr-2">GamerTheory</span>
+                                <span class="text-xs text-gray-400">• 3 days ago</span>
+                                <span class="ml-2 px-2 py-0.5 bg-gray-700 rounded-full text-xs">Games</span>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2">Video game adaptations are finally getting good - what changed?</h3>
+                            <p class="text-gray-300 mb-3 line-clamp-2">With the success of The Last of Us, Arcane, and even the Mario movie, it seems like we're entering a new era where video game adaptations are actually worth watching. After decades of notorious failures, what do you think finally clicked for studios to get these adaptations right?</p>
+                            <div class="flex items-center text-sm text-gray-400">
+                                <span class="mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                    </svg>
+                                    203 comments
+                                </span>
+                            </div>
+                            <!-- Vote Buttons (Positioned Absolute) -->
+                            <div class="absolute right-0 top-0 flex flex-col items-center">
+                                <button class="vote-btn upvote p-1" data-discussion-id="5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                    </svg>
+                                </button>
+                                <span class="vote-count text-sm font-medium my-1">578</span>
+                                <button class="vote-btn downvote p-1" data-discussion-id="5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load More Button -->
+        <div class="flex justify-center mt-8">
+            <button id="loadMoreBtn" class="bg-[#1f2833] hover:bg-[#45a29e] text-[#c5c6c7] font-medium py-2 px-6 rounded-md transition duration-300 pagination-btn border border-[#45a29e]">
+                Load More
+            </button>
+        </div>
+    </main>
+
+ <!-- Footer -->
+<footer class="bg-abyss-dark-secondary py-8">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="footer-column">
+                <h3 class="text-abyss-accent font-semibold mb-4">About ABYSS</h3>
+                <p class="text-abyss-light mb-4">A community platform for discussing and rating movies, TV shows, anime, books, and more.</p>
+                <div class="social-icons flex space-x-4">
+                    <a href="#" class="text-abyss-light hover:text-abyss-accent transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="text-abyss-light hover:text-abyss-accent transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                        </svg>
+                    </a>
+                    <a href="#" class="text-abyss-light hover:text-abyss-accent transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3 class="text-abyss-accent font-semibold mb-4">Navigation</h3>
+                <ul class="space-y-2">
+                    <li><a href="/" class="text-abyss-light hover:text-abyss-accent transition">Home</a></li>
+                    <li><a href="/leaderboard" class="text-abyss-light hover:text-abyss-accent transition">Leaderboard</a></li>
+                    <li><a href="/discussions" class="text-abyss-light hover:text-abyss-accent transition">Community</a></li>
+                    <li><a href="/profile" class="text-abyss-light hover:text-abyss-accent transition">Profile</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3 class="text-abyss-accent font-semibold mb-4">Categories</h3>
+                <ul class="space-y-2">
+                    <li><a href="/category/movies" class="text-abyss-light hover:text-abyss-accent transition">Movies</a></li>
+                    <li><a href="/category/series" class="text-abyss-light hover:text-abyss-accent transition">Series</a></li>
+                    <li><a href="/category/cartoons" class="text-abyss-light hover:text-abyss-accent transition">Cartoons</a></li>
+                    <li><a href="/category/anime" class="text-abyss-light hover:text-abyss-accent transition">Anime</a></li>
+                    <li><a href="/category/games" class="text-abyss-light hover:text-abyss-accent transition">Games</a></li>
+                    <li><a href="/category/books" class="text-abyss-light hover:text-abyss-accent transition">Books</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3 class="text-abyss-accent font-semibold mb-4">Help & Support</h3>
+                <ul class="space-y-2">
+                    <li><a href="/faq" class="text-abyss-light hover:text-abyss-accent transition">FAQ</a></li>
+                    <li><a href="/contact" class="text-abyss-light hover:text-abyss-accent transition">Contact Us</a></li>
+                    <li><a href="/terms" class="text-abyss-light hover:text-abyss-accent transition">Terms of Service</a></li>
+                    <li><a href="/privacy" class="text-abyss-light hover:text-abyss-accent transition">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright border-t border-abyss-dark mt-8 pt-6 text-center text-abyss-light text-sm">
+            &copy; 2025 ABYSS. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript for interactivity -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+// Toggle filter buttons
+const filterButtons = document.querySelectorAll('.filter-btn');
+filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        // Remove active class from all buttons
+        filterButtons.forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        // Here you would typically filter discussions
+        const filterType = this.getAttribute('data-filter');
+        console.log(`Filtering by: ${filterType}`);
+        // Actual filtering logic would go here
+    });
+});
+
+// Vote buttons functionality
+const voteButtons = document.querySelectorAll('.vote-btn');
+voteButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const discussionId = this.getAttribute('data-discussion-id');
+        const isUpvote = this.classList.contains('upvote');
+        const voteCountElement = this.parentElement.querySelector('.vote-count');
+        let currentVotes = parseInt(voteCountElement.textContent);
+        
+        // Toggle active state
+        if (this.classList.contains('active')) {
+            this.classList.remove('active');
+            voteCountElement.textContent = isUpvote ? currentVotes - 1 : currentVotes + 1;
+        } else {
+            // Check if sibling is active
+            const sibling = isUpvote ? 
+                this.parentElement.querySelector('.downvote') : 
+                this.parentElement.querySelector('.upvote');
+                
+            if (sibling.classList.contains('active')) {
+                sibling.classList.remove('active');
+                voteCountElement.textContent = isUpvote ? currentVotes + 2 : currentVotes - 2;
+            } else {
+                voteCountElement.textContent = isUpvote ? currentVotes + 1 : currentVotes - 1;
+            }
+            
+            this.classList.add('active');
+        }
+        
+        console.log(`${isUpvote ? 'Upvoted' : 'Downvoted'} discussion ${discussionId}`);
+        // Here you would send the vote to your backend
+    });
+});
+
+// Back button functionality
+document.getElementById('backButton').addEventListener('click', function() {
+    window.history.back();
+});
+
+// Create discussion button
+document.getElementById('createDiscussionBtn').addEventListener('click', function() {
+    console.log('Create discussion clicked');
+    // Navigate to discussion creation page or open modal
+    // window.location.href = '/create-discussion';
+});
+
+// Category filter
+document.getElementById('categoryFilter').addEventListener('change', function() {
+    const selectedCategory = this.value;
+    console.log(`Filtering by category: ${selectedCategory}`);
+    // Filter discussions by category logic would go here
+});
+
+// Load more button
+document.getElementById('loadMoreBtn').addEventListener('click', function() {
+    console.log('Loading more discussions');
+    // Here you would fetch more discussions from your backend
+    // and append them to the discussionsList element
+    
+    // Example of how you might add a new discussion (in reality this would come from your backend)
+    const discussionsList = document.getElementById('discussionsList');
+    
+    // Just for demonstration, creating empty discussion templates
+    for (let i = 0; i < 5; i++) {
+        const newDiscussion = document.createElement('div');
+        newDiscussion.className = 'discussion-item content-box rounded-lg mb-4 shadow-md overflow-hidden';
+        newDiscussion.innerHTML = `
+            <div class="p-5">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 mr-4">
+                        <div class="w-12 h-12 rounded-full overflow-hidden">
+                            <img src="/api/placeholder/100/${105 + i}" alt="User Avatar" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="flex-grow pr-16 relative">
+                        <div class="flex items-center mb-1">
+                            <span class="font-medium text-white mr-2">User${i}</span>
+                            <span class="text-xs text-gray-400">• Loading...</span>
+                            <span class="ml-2 px-2 py-0.5 bg-gray-700 rounded-full text-xs">Category</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Discussion Title - Loading...</h3>
+                        <p class="text-gray-300 mb-3 line-clamp-2">Discussion content loading...</p>
+                        <div class="flex items-center text-sm text-gray-400">
+                            <span class="mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                </svg>
+                                0 comments
+                            </span>
+                        </div>
+                        <div class="absolute right-0 top-0 flex flex-col items-center">
+                            <button class="vote-btn upvote p-1" data-discussion-id="${6 + i}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                </svg>
+                            </button>
+                            <span class="vote-count text-sm font-medium my-1">0</span>
+                            <button class="vote-btn downvote p-1" data-discussion-id="${6 + i}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        discussionsList.appendChild(newDiscussion);
+    }
+    
+    // Add event listeners to the new vote buttons
+    const newVoteButtons = discussionsList.querySelectorAll('.vote-btn:not([data-initialized])');
+    newVoteButtons.forEach(button => {
+        button.setAttribute('data-initialized', 'true');
+        button.addEventListener('click', function() {
+            const discussionId = this.getAttribute('data-discussion-id');
+            const isUpvote = this.classList.contains('upvote');
+            console.log(`${isUpvote ? 'Upvoted' : 'Downvoted'} discussion ${discussionId}`);
+        });
+    });
+});
+});
+</script>
+</body>
+</html>

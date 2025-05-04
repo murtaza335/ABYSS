@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discussion - Abyss</title>
+    <link rel="icon" type="image/png" href="/static/images/favicon.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "abyss-dark": "#0b0c10",
+              "abyss-dark-secondary": "#1f2833",
+              "abyss-light": "#c5c6c7",
+              "abyss-accent": "#66fcf1",
+              "abyss-accent-dark": "#45a29e",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #0b0c10;
+        color: #c5c6c7;
+      }
+
+      .unliked svg {
+        color: #d1d5db; /* Tailwind gray-300 (abyss-light) */
+        transition: color 0.2s ease;
+      }
+      .liked svg {
+        color: #ef4444;
+        animation: pop 0.3s ease;
+      }
+
+      @keyframes pop {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.3);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .upvote {
+        background-color: #ffcc00; /* Example color */
+      }
+    </style>
+
+
+
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <!-- Top Navigation Bar - Dark theme -->
+    <nav
+      class="top-ribbon py-5 px-8 flex justify-between items-center shadow-lg"
+      style="background-color: #1f2833"
+    >
+      <div class="flex items-center">
+        <button
+          id="backButton"
+          class="mr-5 hover:text-#66fcf1"
+          style="color: #c5c6c7"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-7 w-7"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <a href="/" class="text-3xl font-bold" style="color: #66fcf1">ABYSS</a>
+      </div>
+      <div class="flex items-center space-x-8">
+        <a
+          href="/leaderboard"
+          class="text-lg hover:text-#66fcf1 transition duration-300"
+          style="color: #c5c6c7"
+          >Leaderboard</a
+        >
+        <a
+          href="/discussions"
+          class="text-lg font-medium"
+          style="color: #66fcf1"
+          >Community</a
+        >
+        <a
+          href="/profile"
+          class="text-lg hover:text-#66fcf1 transition duration-300"
+          style="color: #c5c6c7"
+          >Profile</a
+        >
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-1">
+      <!-- Page Title and Create Discussion Button -->
+      <div class="relative mb-12">
+        <div class="text-center">
+          <h1 class="text-6xl font-bold text-abyss-light">
+            Community Discussions
+          </h1>
+        </div>
+        <div class="absolute right-0 top-8">
+          <button
+            id="createDiscussionBtn"
+            class="bg-[#66fcf1] hover:bg-[#45a29e] text-[#0b0c10] font-medium py-1.5 px-4 rounded-full transition duration-300 text-sm border border-[#66fcf1]"
+          >
+            Create Discussion
+          </button>
+        </div>
+      </div>
+
+      <!-- Two-column layout -->
+      <div class="flex flex-col md:flex-row gap-6">
+        <!-- Left column (main discussion) -->
+        <div class="w-full md:w-2/3">
+          <!-- Single Discussion Content (Dynamic) -->
+          <div
+            id="discussion-container"
+            class="bg-abyss-dark-secondary rounded-lg overflow-hidden shadow-lg mb-8"
+          >
+            <!-- Discussion Header -->
+            <div class="p-6 border-b border-abyss-dark">
+              <div class="flex items-start">
+                <!-- User info -->
+                <div class="flex items-center mr-6">
+                  <a id="user-profile-link" href="#">
+                    <img
+                      id="user-avatar"
+                      src="/api/placeholder/60/60"
+                      alt="User Avatar"
+                      class="w-12 h-12 rounded-full border-2 border-abyss-accent"
+                    />
+                  </a>
+                  <div class="ml-3">
+                    <a
+                      id="username"
+                      href="#"
+                      class="text-abyss-accent font-medium hover:underline"
+                    ></a>
+                    <p
+                      id="time-since-post"
+                      class="text-sm text-abyss-light"
+                    ></p>
+                  </div>
+                </div>
+
+                <!-- Discussion title and media tag -->
+                <div class="flex-1">
+                  <h2
+                    id="discussion-title"
+                    class="text-2xl font-bold text-abyss-light mb-2"
+                    discussion_id=""
+                  ></h2>
+                  <span
+                    id="media-tag"
+                    class="inline-block bg-abyss-accent-dark text-abyss-dark text-xs font-semibold px-2.5 py-0.5 rounded"
+                  ></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Discussion content -->
+            <div class="p-6 border-b border-abyss-dark">
+              <div
+                id="discussion-description"
+                class="text-abyss-light space-y-6"
+              >
+                <!-- Discussion paragraphs will be inserted here dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Voting buttons -->
+          <div class="flex justify-end space-x-4">
+            <div class="flex items-center">
+              <button
+                class="upvoteBtn flex items-center justify-center w-8 h-8 rounded-full hover:bg-abyss-dark transition duration-200"
+                id="upvote-button"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-abyss-light"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+              <span class="voteCount text-abyss-light font-medium ml-1"></span>
+            </div>
+          </div>
+
+          <!-- Comments section -->
+          <div class="p-6">
+            <h3 class="text-xl font-semibold text-abyss-light mb-6">
+              Comments (<span id="comments-count">0</span>)
+            </h3>
+
+            <!-- Add comment form -->
+            <div class="mb-8">
+              <textarea
+                class="w-full bg-abyss-dark rounded-lg p-4 text-abyss-light border border-abyss-dark-secondary focus:outline-none focus:border-abyss-accent"
+                rows="3"
+                placeholder="Share your thoughts..."
+              ></textarea>
+              <div class="flex justify-end mt-2">
+                <button
+                  class="bg-abyss-accent-dark hover:bg-abyss-accent text-abyss-dark font-medium py-1.5 px-4 rounded-md transition duration-300 text-sm"
+                  id="postCommentBtn"
+                >
+                  Post Comment
+                </button>
+              </div>
+            </div>
+
+            <!-- Comments Loading everything with JS-->
+            <div id="comments-container" class="space-y-6"></div>
+
+            <!-- Load more comments button -->
+            <div class="text-center pt-4">
+              <button
+                id="loadMoreComments"
+                class="text-abyss-accent hover:text-abyss-accent-dark font-medium transition"
+              >
+                Load more comments
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column (related discussions) -->
+        <div class="w-full md:w-1/3">
+          <div
+            class="bg-abyss-dark-secondary rounded-lg overflow-hidden shadow-lg sticky top-4"
+          >
+            <div class="p-4 border-b border-abyss-dark">
+              <h3 class="text-xl font-semibold text-abyss-accent">
+                Related Discussions
+              </h3>
+            </div>
+
+            <!-- Related Discussions Container (Dynamic) -->
+            <div id="related-discussions-container">
+              <!-- Related discussions will be dynamically inserted here -->
+            </div>
+
+            <!-- Load More Button for Related Discussions -->
+            <div id="load-more-related" class="p-3 text-center bg-abyss-dark">
+              <button
+                id="loadMoreRelatedBtn"
+                class="text-abyss-accent hover:text-abyss-accent-dark text-sm font-medium"
+              >
+                Load More
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-abyss-dark-secondary py-8">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="footer-column">
+            <h3 class="text-abyss-accent font-semibold mb-4">About ABYSS</h3>
+            <p class="text-abyss-light mb-4">
+              A community platform for discussing and rating movies, TV shows,
+              anime, books, and more.
+            </p>
+            <div class="social-icons flex space-x-4">
+              <a
+                href="#"
+                class="text-abyss-light hover:text-abyss-accent transition"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="text-abyss-light hover:text-abyss-accent transition"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="text-abyss-light hover:text-abyss-accent transition"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="footer-column">
+            <h3 class="text-abyss-accent font-semibold mb-4">Navigation</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="/"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/leaderboard"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Leaderboard</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/discussions"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Community</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/profile"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Profile</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3 class="text-abyss-accent font-semibold mb-4">Categories</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="/category/movies"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Movies</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/category/series"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Series</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/category/cartoons"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Cartoons</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/category/anime"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Anime</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/category/games"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Games</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/category/books"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Books</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3 class="text-abyss-accent font-semibold mb-4">Help & Support</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="/faq"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >FAQ</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/contact"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Contact Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/terms"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Terms of Service</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/privacy"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Privacy Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="copyright border-t border-abyss-dark mt-8 pt-6 text-center text-abyss-light text-sm"
+        >
+          &copy; 2025 ABYSS. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/static/js/script.js"></script>
+
+    <script>
+      // this is called on the page load to get the discussion id from the url and then fetch the data for that discussion
+      document.addEventListener("DOMContentLoaded", () => {
+        const discussionId = getDiscussionIdFromUrl();
+
+        if (discussionId) {
+          fetchDiscussionData(discussionId);
+          fetchComments(discussionId);
+        }
+      });
+
+      // Helper to extract discussion ID from URL
+      function getDiscussionIdFromUrl() {
+        const url = window.location.href;
+        const match = url.match(/\/discussion\/(\d+)/); // assuming route like /discussion/123
+        return match ? match[1] : null;
+      }
+
+      // Fetch discussion details
+      // Fetch discussion details
+      async function fetchDiscussionData(discussionId) {
+        try {
+          const res = await fetch(`/api/discussionById/${discussionId}`, {
+            headers: { "X-Requested-With": "XMLHttpRequest" },
+          });
+          const data = await res.json();
+
+          if (data.error) return;
+          const username = await fetchLoggedInUser();
+          if (username) {
+            const response = await checkUserUpvoted(username, discussionId);
+          }
+          document.getElementById("discussion-title").textContent = data.title;
+          document
+            .getElementById("discussion-title")
+            .setAttribute("discussion_id", discussionId);
+          document.getElementById("media-tag").textContent = data.mediatag;
+          document.getElementById("username").textContent = data.username;
+          document.getElementById(
+            "username"
+          ).href = `/profilepage/${data.username}`;
+          document.getElementById(
+            "user-profile-link"
+          ).href = `/profilepage/${data.username}`;
+          document.getElementById("user-avatar").src = "/static/images/pfp.png";
+          document.getElementById(
+            "time-since-post"
+          ).textContent = `${data.created_at}`;
+
+          // Render description as paragraphs
+          const descDiv = document.getElementById("discussion-description");
+          descDiv.innerHTML = "";
+          data.description.split("\n").forEach((paragraph) => {
+            const p = document.createElement("p");
+            p.textContent = paragraph.trim();
+            descDiv.appendChild(p);
+          });
+
+          document.querySelector(".voteCount").textContent = data.upvotes;
+
+          // Load related discussions
+          fetchRelatedDiscussions(discussionId, data.mediatag, data.upvotes);
+        } catch (error) {
+          console.error("Error in fetchDiscussionData:", error);
+        }
+      }
+
+      // Fetch comments for the discussion
+      function fetchComments(discussionId) {
+        fetch(`/api/discussionById/${discussionId}/comments`, {
+          headers: { "X-Requested-With": "XMLHttpRequest" },
+        })
+          .then((res) => res.json())
+          .then((comments) => {
+            const container = document.getElementById("comments-container");
+            const count = document.getElementById("comments-count");
+            container.innerHTML = "";
+            count.textContent = comments.length; // Fetch the logged-in username
+            comments.forEach((comment) => {
+              const div = document.createElement("div");
+              div.className =
+                "bg-abyss-dark p-4 rounded-lg border border-abyss-dark-secondary";
+
+              checkIfLiked(comment.comment_id).then((liked) => {
+                // Update liked/unliked class for the comment container
+                let likedIconClass = liked ? "liked" : "unliked";
+
+                // Button class to reflect the like/unlike state
+                const likeButtonClass = liked ? "liked" : "unliked";
+
+                div.innerHTML = `
+            <div class="flex items-center mb-2">
+              <img src="/static/images/pfp.png" alt="avatar" class="w-8 h-8 rounded-full mr-2" />
+              <span class="text-abyss-accent font-medium">${comment.username}</span>
+
+              <div class="ml-auto flex items-center space-x-1">
+                <button class="like-button ${likeButtonClass}" data-comment-id="${comment.comment_id}">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ${likedIconClass} transition duration-200 ease-in-out" fill="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </button>
+                <span class="text-xs text-abyss-light">${comment.likes}</span>
+              </div>
+            </div>
+            <p class="text-abyss-light">${comment.content}</p>
+          `;
+
+                container.appendChild(div);
+              });
+            });
+          })
+          .catch(console.error);
+      }
+
+      // Fetch related discussions
+      function fetchRelatedDiscussions(discussionId, mediatag, upvotes) {
+        // First fetch the media tag for the discussion
+
+        fetch(`/api/discussionByMediatag/${mediatag}`, {
+          headers: { "X-Requested-With": "XMLHttpRequest" },
+        })
+          .then((res) => res.json())
+          .then((discussions) => {
+            const container = document.getElementById(
+              "related-discussions-container"
+            );
+            container.innerHTML = "";
+
+            discussions.forEach((discussion) => {
+              if (discussion.discussion_id == discussionId) return; // skip current discussion
+
+              const div = document.createElement("div");
+              div.className =
+                "p-4 border-b border-abyss-dark hover:bg-abyss-dark transition";
+              div.innerHTML = `
+                    <a href="/discussion/${discussion.discussion_id}" class="text-abyss-light font-medium hover:underline">
+                      ${discussion.title}
+                    </a>
+                    <p class="text-xs text-abyss-light">${discussion.username} · ${discussion.upvotes} votes</p>
+                  `;
+              container.appendChild(div);
+            });
+          });
+      }
+
+      //   post comment functionality
+      // Constants or dynamic values you should define appropriately
+      const discussionId = getDiscussionIdFromUrl(); // Replace or set dynamically in JS
+
+      // DOM Elements for the post comment functionality
+      const postCommentBtn = document.getElementById("postCommentBtn"); // The button
+      const commentTextarea = document.querySelector("textarea"); // The textarea
+      const commentsContainer = document.getElementById("comments-container");
+      const commentsCount = document.getElementById("comments-count");
+
+      // Event Listener
+      postCommentBtn.addEventListener("click", async () => {
+        const commentText = commentTextarea.value.trim();
+
+        // if the user is not login then we will show the popup of logging in
+        const username = await fetchLoggedInUser(); // Fetch the logged-in username
+        if (!username) {
+          // here we will call the popup for the login
+          showLoginPopup(); // Function to show the login popup
+
+          return;
+        }
+        if (!commentText) {
+          console.warn("comment is empty");
+          return;
+        }
+
+        // Call the fetch function to post the comment
+        fetch("/api/addCommentToDiscussion", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+          body: JSON.stringify({
+            discussion_id: discussionId,
+            comment: commentText,
+            username: username,
+          }),
+        })
+          .then((response) => {
+            if (response.status === 401) {
+              return;
+            }
+            if (!response.ok) {
+              throw new Error("Failed to post comment.");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data === true) {
+              // Dynamically append the comment to the container
+              const commentHTML = `
+                  <div class="bg-abyss-dark p-4 rounded-md border border-abyss-dark-secondary">
+                    <p class="text-abyss-light text-sm mb-2"><strong>${username}</strong></p>
+                    <p class="text-abyss-light">${commentText}</p>
+                  </div>
+                `;
+              commentsContainer.insertAdjacentHTML("afterbegin", commentHTML);
+
+              // Update comment count
+              const currentCount = parseInt(commentsCount.innerText, 10);
+              commentsCount.innerText = currentCount + 1;
+
+              // Clear textarea
+              commentTextarea.value = "";
+            } else {
+              alert("Failed to save comment.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Something went wrong.");
+          });
+      });
+
+      //   like count functionality incrementing or decrementing it by 1
+      document
+        .getElementById("comments-container")
+        .addEventListener("click", async (event) => {
+          const button = event.target.closest(".like-button");
+          if (button) {
+            const commentId = button.getAttribute("data-comment-id");
+
+            const username = await fetchLoggedInUser();
+            // If the user is logged in, proceed with the like/unlike operation
+            if (username) {
+              fetch(`/api/incrementlikecount/${username}/${commentId}`, {
+                method: "GET",
+                headers: {
+                  "X-Requested-With": "XMLHttpRequest",
+                },
+              })
+                .then((response) => {
+                  if (!response.ok) throw new Error("Failed to toggle like");
+                  return response.json();
+                })
+                .then((data) => {
+                  if (data.success) {
+                    const likeCountElement = button.nextElementSibling;
+                    const currentCount = parseInt(likeCountElement.textContent);
+
+                    // Update like count based on server response
+                    likeCountElement.textContent =
+                      currentCount + (data.incremented ? 1 : -1); // Add or subtract based on incremented
+
+                    // Toggle like button color based on whether it's liked or unliked
+                    if (data.incremented) {
+                      button.classList.add("liked"); // Change color for liked state
+                      button.classList.remove("unliked"); // Remove unliked state
+                    } else {
+                      button.classList.remove("liked");
+
+                      button.classList.add("unliked"); // Change color for unliked state
+                      // Remove liked state
+                    }
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error toggling like:", error);
+                });
+            } else {
+              showLoginPopup(); // Show login popup if user is not logged in
+            }
+          }
+        });
+
+      // helper function to check whether the user has liked the comment or not
+      async function checkIfLiked(commentId) {
+        try {
+          username = await fetchLoggedInUser(); // Fetch the logged-in username
+          if (!username) return false; // If not logged in, return false
+          const response = await fetch(
+            `/api/checklike/${username}/${commentId}`,
+            {
+              method: "GET",
+              headers: {
+                "X-Requested-With": "XMLHttpRequest",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const data = await response.json();
+          return data.liked; // boolean
+        } catch (error) {
+          console.error("Error checking like status:", error);
+          return false;
+        }
+      }
+
+      //  upvote functionality
+      document.querySelectorAll(".upvoteBtn").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const container = button.closest("[data-post-id]");
+          const voteCountSpan = document.querySelector(".voteCount");
+          const discussionId = document
+            .getElementById("discussion-title")
+            .getAttribute("discussion_id");
+
+          const username = await fetchLoggedInUser(); // Fetch the logged-in username
+          if (!username) {
+            showLoginPopup(); // Show login popup
+            return;
+          }
+
+          await voteDiscussion(username, discussionId, (data) => {
+            if (data && typeof data.updated_count === "number") {
+              // Update the visible vote count based on backend value
+              voteCountSpan.textContent = data.updated_count;
+
+              // Optional: Toggle visual state (e.g. highlighted if voted)
+              if (data.incremented) {
+                button.classList.add("voted"); // Add a class if upvoted
+              } else {
+                button.classList.remove("voted"); // Remove class if vote removed
+              }
+            } else {
+              alert("Vote failed. Try again later.");
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discussion - Abyss</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'abyss-dark': '#0b0c10',
+                        'abyss-dark-secondary': '#1f2833',
+                        'abyss-light': '#c5c6c7',
+                        'abyss-accent': '#66fcf1',
+                        'abyss-accent-dark': '#45a29e',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b0c10;
+            color: #c5c6c7;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Top Navigation Bar - Dark theme -->
+<nav class="top-ribbon py-5 px-8 flex justify-between items-center shadow-lg" style="background-color: #1f2833;">
+    <div class="flex items-center">
+        <button id="backButton" class="mr-5 hover:text-#66fcf1" style="color: #c5c6c7;">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <a href="/" class="text-3xl font-bold" style="color: #66fcf1;">ABYSS</a>
+    </div>
+    <div class="flex items-center space-x-8">
+        <a href="/leaderboard" class="text-lg hover:text-#66fcf1 transition duration-300" style="color: #c5c6c7;">Leaderboard</a>
+        <a href="/discussions" class="text-lg font-medium" style="color: #66fcf1;">Community</a>
+        <a href="/profile" class="text-lg hover:text-#66fcf1 transition duration-300" style="color: #c5c6c7;">Profile</a>
+    </div>
+</nav>
+
+    <!-- Main Content -->
+<main class="container mx-auto px-4 py-8 flex-1">
+    <!-- Page Title and Create Discussion Button -->
+    <div class="relative mb-12">
+        <div class="text-center">
+            <h1 class="text-6xl font-bold text-abyss-light">Community Discussions</h1>
+        </div>
+        <div class="absolute right-0 top-8">
+            <button id="createDiscussionBtn" class="bg-[#66fcf1] hover:bg-[#45a29e] text-[#0b0c10] font-medium py-1.5 px-4 rounded-full transition duration-300 text-sm border border-[#66fcf1]">
+                Create Discussion
+            </button>
+        </div>
+    </div>
+
+    <!-- Two-column layout -->
+    <div class="flex flex-col md:flex-row gap-6">
+        <!-- Left column (main discussion) -->
+        <div class="w-full md:w-2/3">
+            <!-- Single Discussion Content -->
+            <div class="bg-abyss-dark-secondary rounded-lg overflow-hidden shadow-lg mb-8">
+                <!-- Discussion Header -->
+                <div class="p-6 border-b border-abyss-dark">
+                    <div class="flex items-start">
+                        <!-- User info -->
+                        <div class="flex items-center mr-6">
+                            <a href="/profile/CosmicExplorer">
+                                <img src="/api/placeholder/60/60" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-abyss-accent">
+                            </a>
+                            <div class="ml-3">
+                                <a href="/profile/CosmicExplorer" class="text-abyss-accent font-medium hover:underline">CosmicExplorer</a>
+                                <p class="text-sm text-abyss-light">Posted 2 days ago</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Discussion title and media tag -->
+                        <div class="flex-1">
+                            <h2 class="text-2xl font-bold text-abyss-light mb-2">Is Interstellar the best sci-fi movie of the last decade?</h2>
+                            <span class="inline-block bg-abyss-accent-dark text-abyss-dark text-xs font-semibold px-2.5 py-0.5 rounded">Movies</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Discussion content -->
+                <div class="p-6 border-b border-abyss-dark">
+                    <p class="text-abyss-light mb-6">
+                        After rewatching Interstellar for the fifth time last night, I'm more convinced than ever that it might be the greatest science fiction movie of the 2010s. The blend of hard science, emotional storytelling, and breathtaking visuals creates something truly special.
+                    </p>
+                    <p class="text-abyss-light mb-6">
+                        The movie tackles complex concepts like relativity, black holes, and the nature of time in a way that's accessible without dumbing things down too much. Hans Zimmer's score perfectly complements the vast emptiness of space while still feeling intimate during the family moments.
+                    </p>
+                    <p class="text-abyss-light mb-6">
+                        What do you all think? Does Interstellar deserve to be considered the best sci-fi film of the last decade, or are there other contenders that surpass it? I'm especially interested in hearing from those who might rank Arrival, Ex Machina, or Blade Runner 2049 above it.
+                    </p>
+                    
+                    <!-- Voting buttons -->
+                    <div class="flex justify-end space-x-4">
+                        <div class="flex items-center">
+                            <button id="upvoteBtn" class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-abyss-dark transition duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-abyss-accent" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <span id="voteCount" class="text-abyss-light font-medium ml-1">142</span>
+                        </div>
+                        <div class="flex items-center">
+                            <button id="downvoteBtn" class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-abyss-dark transition duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-abyss-light" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Comments section -->
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-abyss-light mb-6">Comments (23)</h3>
+                    
+                    <!-- Add comment form -->
+                    <div class="mb-8">
+                        <textarea class="w-full bg-abyss-dark rounded-lg p-4 text-abyss-light border border-abyss-dark-secondary focus:outline-none focus:border-abyss-accent" rows="3" placeholder="Share your thoughts..."></textarea>
+                        <div class="flex justify-end mt-2">
+                            <button class="bg-abyss-accent-dark hover:bg-abyss-accent text-abyss-dark font-medium py-1.5 px-4 rounded-md transition duration-300 text-sm">
+                                Post Comment
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Comments -->
+                    <div class="space-y-6">
+                        <!-- Comment 1 -->
+                        <div class="flex items-start bg-abyss-dark p-4 rounded-lg">
+                            <a href="/profile/StarGazer42">
+                                <img src="/api/placeholder/40/40" alt="User Avatar" class="w-10 h-10 rounded-full flex-shrink-0">
+                            </a>
+                            <div class="ml-3 flex-1">
+                                <div class="flex items-center justify-between">
+                                    <a href="/profile/StarGazer42" class="font-medium text-abyss-accent hover:underline">StarGazer42</a>
+                                    <div class="flex items-center space-x-1">
+                                        <button class="like-button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-abyss-light hover:text-red-500 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            </svg>
+                                        </button>
+                                        <span class="text-xs text-abyss-light">24</span>
+                                    </div>
+                                </div>
+                                <p class="text-abyss-light mt-1">I'd argue that Arrival is actually the better film. While Interstellar is visually stunning and emotionally powerful, Arrival's focus on language and its non-linear approach to time created something truly unique in sci-fi storytelling.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Comment 2 -->
+                        <div class="flex items-start bg-abyss-dark p-4 rounded-lg">
+                            <a href="/profile/QuantumDreamer">
+                                <img src="/api/placeholder/40/40" alt="User Avatar" class="w-10 h-10 rounded-full flex-shrink-0">
+                            </a>
+                            <div class="ml-3 flex-1">
+                                <div class="flex items-center justify-between">
+                                    <a href="/profile/QuantumDreamer" class="font-medium text-abyss-accent hover:underline">QuantumDreamer</a>
+                                    <div class="flex items-center space-x-1">
+                                        <button class="like-button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        <span class="text-xs text-abyss-light">52</span>
+                                    </div>
+                                </div>
+                                <p class="text-abyss-light mt-1">Interstellar's representation of a black hole was groundbreaking! The VFX team actually worked with physicist Kip Thorne to create the most scientifically accurate depiction ever put to film. That alone makes it special, but the father-daughter story at its core gives it emotional weight that many sci-fi films lack.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Comment 3 -->
+                        <div class="flex items-start bg-abyss-dark p-4 rounded-lg">
+                            <a href="/profile/CinematicVoyager">
+                                <img src="/api/placeholder/40/40" alt="User Avatar" class="w-10 h-10 rounded-full flex-shrink-0">
+                            </a>
+                            <div class="ml-3 flex-1">
+                                <div class="flex items-center justify-between">
+                                    <a href="/profile/CinematicVoyager" class="font-medium text-abyss-accent hover:underline">CinematicVoyager</a>
+                                    <div class="flex items-center space-x-1">
+                                        <button class="like-button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-abyss-light hover:text-red-500 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            </svg>
+                                        </button>
+                                        <span class="text-xs text-abyss-light">17</span>
+                                    </div>
+                                </div>
+                                <p class="text-abyss-light mt-1">I think Blade Runner 2049 deserves to be in this conversation. Villeneuve created a visual masterpiece that expanded on the themes of the original while establishing its own identity. The cinematography by Roger Deakins alone makes it one of the most beautiful films of the decade.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Comment 4 -->
+                        <div class="flex items-start bg-abyss-dark p-4 rounded-lg">
+                            <a href="/profile/NolanEnthusiast">
+                                <img src="/api/placeholder/40/40" alt="User Avatar" class="w-10 h-10 rounded-full flex-shrink-0">
+                            </a>
+                            <div class="ml-3 flex-1">
+                                <div class="flex items-center justify-between">
+                                    <a href="/profile/NolanEnthusiast" class="font-medium text-abyss-accent hover:underline">NolanEnthusiast</a>
+                                    <div class="flex items-center space-x-1">
+                                        <button class="like-button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-abyss-light hover:text-red-500 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            </svg>
+                                        </button>
+                                        <span class="text-xs text-abyss-light">36</span>
+                                    </div>
+                                </div>
+                                <p class="text-abyss-light mt-1">The docking scene with Hans Zimmer's score is possibly the most intense cinematic experience I've had in a theater. That scene alone solidifies Interstellar as the greatest sci-fi film of the decade for me. The way it builds tension through sound and visuals is unmatched.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Comment 5 -->
+                        <div class="flex items-start bg-abyss-dark p-4 rounded-lg">
+                            <a href="/profile/SciFiScholar">
+                                <img src="/api/placeholder/40/40" alt="User Avatar" class="w-10 h-10 rounded-full flex-shrink-0">
+                            </a>
+                            <div class="ml-3 flex-1">
+                                <div class="flex items-center justify-between">
+                                    <a href="/profile/SciFiScholar" class="font-medium text-abyss-accent hover:underline">SciFiScholar</a>
+                                    <div class="flex items-center space-x-1">
+                                        <button class="like-button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                        <span class="text-xs text-abyss-light">41</span>
+                                    </div>
+                                </div>
+                                <p class="text-abyss-light mt-1">I think we're overlooking Ex Machina here. While it may not have the grand scale of Interstellar, its intimate exploration of artificial intelligence and what it means to be human offers a depth of philosophical inquiry that few sci-fi films achieve. Plus, the performances are absolutely stellar.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Load more comments button -->
+                        <div class="text-center pt-4">
+                            <button id="loadMoreComments" class="text-abyss-accent hover:text-abyss-accent-dark font-medium transition">
+                                Load more comments
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right column (related discussions) -->
+        <div class="w-full md:w-1/3">
+            <div class="bg-abyss-dark-secondary rounded-lg overflow-hidden shadow-lg sticky top-4">
+                <div class="p-4 border-b border-abyss-dark">
+                    <h3 class="text-xl font-semibold text-abyss-accent">Related Discussions</h3>
+                </div>
+                
+                <!-- Related discussion 1 -->
+                <a href="/discussions/blade-runner-legacy" class="block hover:bg-abyss-dark transition duration-200">
+                    <div class="p-4 border-b border-abyss-dark">
+                        <div class="flex items-start">
+                            <img src="/api/placeholder/40/40" alt="User Avatar" class="w-8 h-8 rounded-full flex-shrink-0">
+                            <div class="ml-2">
+                                <p class="text-abyss-accent text-sm">NeonNoir</p>
+                                <h4 class="text-abyss-light font-medium">Blade Runner's Legacy in Modern Sci-Fi</h4>
+                                <p class="text-abyss-light text-sm mt-1 line-clamp-2">Examining how Blade Runner's visual aesthetic and themes continue to influence science fiction today.</p>
+                                <div class="flex items-center mt-2 text-xs text-abyss-light">
+                                    <span>89 votes</span>
+                                    <span class="mx-2">•</span>
+                                    <span>42 comments</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Related discussion 2 -->
+                <a href="/discussions/arrival-linguistics" class="block hover:bg-abyss-dark transition duration-200">
+                    <div class="p-4 border-b border-abyss-dark">
+                        <div class="flex items-start">
+                            <img src="/api/placeholder/40/40" alt="User Avatar" class="w-8 h-8 rounded-full flex-shrink-0">
+                            <div class="ml-2">
+                                <p class="text-abyss-accent text-sm">LinguisticTheory</p>
+                                <h4 class="text-abyss-light font-medium">Arrival's Approach to Alien Communication</h4>
+                                <p class="text-abyss-light text-sm mt-1 line-clamp-2">How Arrival's focus on linguistics created a unique first contact scenario unlike anything we've seen before.</p>
+                                <div class="flex items-center mt-2 text-xs text-abyss-light">
+                                    <span>127 votes</span>
+                                    <span class="mx-2">•</span>
+                                    <span>67 comments</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Related discussion 3 -->
+                <a href="/discussions/dune-2021-review" class="block hover:bg-abyss-dark transition duration-200">
+                    <div class="p-4 border-b border-abyss-dark">
+                        <div class="flex items-start">
+                            <img src="/api/placeholder/40/40" alt="User Avatar" class="w-8 h-8 rounded-full flex-shrink-0">
+                            <div class="ml-2">
+                                <p class="text-abyss-accent text-sm">SpiceTrader</p>
+                                <h4 class="text-abyss-light font-medium">Dune (2021): A New Standard for Sci-Fi Adaptations?</h4>
+                                <p class="text-abyss-light text-sm mt-1 line-clamp-2">Discussing Villeneuve's adaptation of the classic novel and whether it raises the bar for sci-fi films.</p>
+                                <div class="flex items-center mt-2 text-xs text-abyss-light">
+                                    <span>176 votes</span>
+                                    <span class="mx-2">•</span>
+                                    <span>93 comments</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Related discussion 4 -->
+                <a href="/discussions/ex-machina-ai-ethics" class="block hover:bg-abyss-dark transition duration-200">
+                    <div class="p-4">
+                        <div class="flex items-start">
+                            <img src="/api/placeholder/40/40" alt="User Avatar" class="w-8 h-8 rounded-full flex-shrink-0">
+                            <div class="ml-2">
+                                <p class="text-abyss-accent text-sm">SiliconEthicist</p>
+                                <h4 class="text-abyss-light font-medium">Ex Machina and the Ethics of AI Development</h4>
+                                <p class="text-abyss-light text-sm mt-1 line-clamp-2">How Ex Machina forces us to confront the moral implications of creating artificial consciousness.</p>
+                                <div class="flex items-center mt-2 text-xs text-abyss-light">
+                                    <span>103 votes</span>
+                                    <span class="mx-2">•</span>
+                                    <span>58 comments</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- View more link -->
+                <div class="p-3 text-center bg-abyss-dark">
+                    <a href="/discussions/category/movies" class="text-abyss-accent hover:text-abyss-accent-dark text-sm font-medium">View more discussions</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<!-- Footer -->
+<footer class="bg-abyss-dark-secondary py-8">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="footer-column">
+                <h3 class="text-abyss-accent font-semibold mb-4">About ABYSS</h3>
+                <p class="text-abyss-light mb-4">A community platform for discussing and rating movies, TV shows, anime, books, and more.</p>
+                <div class="social-icons flex space-x-4">
+                    <a href="#" class="text-abyss-light hover:text-abyss-accent transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="text-abyss-light hover:text-abyss-accent transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                        </svg>
+                    </a>
+                    <a href="#" class="text-abyss-light hover:text-abyss-accent transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3 class="text-abyss-accent font-semibold mb-4">Navigation</h3>
+                <ul class="space-y-2">
+                    <li><a href="/" class="text-abyss-light hover:text-abyss-accent transition">Home</a></li>
+                    <li><a href="/leaderboard" class="text-abyss-light hover:text-abyss-accent transition">Leaderboard</a></li>
+                    <li><a href="/discussions" class="text-abyss-light hover:text-abyss-accent transition">Community</a></li>
+                    <li><a href="/profile" class="text-abyss-light hover:text-abyss-accent transition">Profile</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3 class="text-abyss-accent font-semibold mb-4">Categories</h3>
+                <ul class="space-y-2">
+                    <li><a href="/category/movies" class="text-abyss-light hover:text-abyss-accent transition">Movies</a></li>
+                    <li><a href="/category/series" class="text-abyss-light hover:text-abyss-accent transition">Series</a></li>
+                    <li><a href="/category/cartoons" class="text-abyss-light hover:text-abyss-accent transition">Cartoons</a></li>
+                    <li><a href="/category/anime" class="text-abyss-light hover:text-abyss-accent transition">Anime</a></li>
+                    <li><a href="/category/games" class="text-abyss-light hover:text-abyss-accent transition">Games</a></li>
+                    <li><a href="/category/books" class="text-abyss-light hover:text-abyss-accent transition">Books</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3 class="text-abyss-accent font-semibold mb-4">Help & Support</h3>
+                <ul class="space-y-2">
+                    <li><a href="/faq" class="text-abyss-light hover:text-abyss-accent transition">FAQ</a></li>
+                    <li><a href="/contact" class="text-abyss-light hover:text-abyss-accent transition">Contact Us</a></li>
+                    <li><a href="/terms" class="text-abyss-light hover:text-abyss-accent transition">Terms of Service</a></li>
+                    <li><a href="/privacy" class="text-abyss-light hover:text-abyss-accent transition">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright border-t border-abyss-dark mt-8 pt-6 text-center text-abyss-light text-sm">
+            &copy; 2025 ABYSS. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Voting functionality
+        const upvoteBtn = document.getElementById('upvoteBtn');
+        const downvoteBtn = document.getElementById('downvoteBtn');
+        const voteCount = document.getElementById('voteCount');
+        
+        let currentVote = null; // null, 'up', or 'down'
+        let count = 142;
+        
+        upvoteBtn.addEventListener('click', function() {
+            if (currentVote === 'up') {
+                // Cancel upvote
+                currentVote = null;
+                count--;
+                upvoteBtn.querySelector('svg').classList.remove('text-abyss-accent');
+                upvoteBtn.querySelector('svg').classList.add('text-abyss-light');
+            } else {
+                // Add upvote
+                if (currentVote === 'down') {
+                    // Remove downvote first
+                    count++;
+                    downvoteBtn.querySelector('svg').classList.remove('text-abyss-accent');
+                    downvoteBtn.querySelector('svg').classList.add('text-abyss-light');
+                }
+                currentVote = 'up';
+                count++;
+                upvoteBtn.querySelector('svg').classList.remove('text-abyss-light');
+                upvoteBtn.querySelector('svg').classList.add('text-abyss-accent');
+            }
+            voteCount.textContent = count;
+        });
+        
+        downvoteBtn.addEventListener('click', function() {
+            if (currentVote === 'down') {
+                // Cancel downvote
+                currentVote = null;
+                count++;
+                downvoteBtn.querySelector('svg').classList.remove('text-abyss-accent');
+                downvoteBtn.querySelector('svg').classList.add('text-abyss-light');
+            } else {
+                // Add downvote
+                if (currentVote === 'up') {
+                    // Remove upvote first
+                    count--;
+                    upvoteBtn.querySelector('svg').classList.remove('text-abyss-accent');
+                    upvoteBtn.querySelector('svg').classList.add('text-abyss-light');
+                }
+                currentVote = 'down';
+                count--;
+                downvoteBtn.querySelector('svg').classList.remove('text-abyss-light');
+                downvoteBtn.querySelector('svg').classList.add('text-abyss-accent');
+            }
+            voteCount.textContent = count;
+        });
+        
+        // Like functionality for comments
+        const likeButtons = document.querySelectorAll('.like-button');
+        
+        likeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const svg = this.querySelector('svg');
+                const countEl = this.nextElementSibling;
+                let count = parseInt(countEl.textContent);
+                
+                if (svg.classList.contains('text-red-500')) {
+                    // Unlike
+                    svg.outerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-abyss-light hover:text-red-500 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>`;
+                    countEl.textContent = count - 1;
+                } else {
+                    // Like
+                    svg.outerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                    </svg>`;
+                    countEl.textContent = count + 1;
+                }
+            });
+        });
+        
+        // Load more comments functionality
+        document.getElementById('loadMoreComments').addEventListener('click', function() {
+            // In a real application, this would fetch more comments from the server
+            // For this demo, we'll add some placeholder comments
+            const commentSection = document.querySelector('.space-y-6');
+            const newComments = document.createElement('div');
+            
+            newComments.innerHTML = `
+                <!-- Additional Comment 1 -->
+                <div class="flex items-start bg-abyss-dark p-4 rounded-lg">
+                    <a href="/profile/Galacticwanderer">
+  <img src="/api/placeholder/60/60" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-abyss-accent">
+</a>
+                    <div class="ml-3 flex-1">
+                        <div class="flex items-center justify-between">
+                            <a href="/profile/Galacticwanderer" class="font-medium text-abyss-accent hover:underline">Galacticwanderer</a>
+                            <div class="flex items-center space-x-1">
+                                <button class="like-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-abyss-light hover:text-red-500 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                </button>
+                                <span class="text-xs text-abyss-light">8</span>
+                            </div>
+                        </div>
+                        <p class="text-abyss-light mt-1">I think we need to consider the distinction between "best" and "most influential." Interstellar might be incredible, but did it change sci-fi filmmaking the way 2001: A Space Odyssey did for its generation? That's my measuring stick.</p>
+                    </div>
+                </div>
+                
+                <!-- Additional Comment 2 -->
+                <div class="flex items-start bg-abyss-dark p-4 rounded-lg">
+                    <a href="/profile/CosmicExplorer">
+  <a href="/Telescopeeyes">
+  <img src="/api/placeholder/60/60" alt="User Avatar" class="w-12 h-12 rounded-full border-2 border-abyss-accent">
+</a>
+                    <div class="ml-3 flex-1">
+                        <div class="flex items-center justify-between">
+                            <a href="/profile/Telescopeeyes" class="font-medium text-abyss-accent hover:underline">Telescopeeyes</a>
+                            <div class="flex items-center space-x-1">
+                                <button class="like-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-abyss-light hover:text-red-500 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                </button>
+                                <span class="text-xs text-abyss-light">19</span>
+                            </div>
+                        </div>
+                        <p class="text-abyss-light mt-1">Unpopular opinion maybe, but I found the third act of Interstellar to be a bit of a letdown. The "love transcends dimensions" theme felt like a cop-out after such a scientifically grounded setup. Still a great film, but that keeps it from being the absolute best for me.</p>
+                    </div>
+                </div>
+            `;
+            
+            // Insert before the "Load more" button
+            commentSection.insertBefore(newComments, document.getElementById('loadMoreComments').parentNode);
+            
+            // Update button text or hide it
+            this.textContent = "No more comments to load";
+            this.disabled = true;
+            this.classList.add("opacity-50", "cursor-not-allowed");
+            
+            // Add event listeners to new like buttons
+            const newLikeButtons = newComments.querySelectorAll('.like-button');
+            newLikeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const svg = this.querySelector('svg');
+                    const countEl = this.nextElementSibling;
+                    let count = parseInt(countEl.textContent);
+                    
+                    if (svg.classList.contains('text-red-500')) {
+                        // Unlike
+                        svg.outerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-abyss-light hover:text-red-500 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>`;
+                        countEl.textContent = count - 1;
+                    } else {
+                        // Like
+                        svg.outerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                        </svg>`;
+                        countEl.textContent = count + 1;
+                    }
+                });
+            });
+        });
+        
+        // Create Discussion button functionality
+        document.getElementById('createDiscussionBtn').addEventListener('click', function() {
+            alert('Create Discussion feature would open a form here');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile | ABYSS</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Aptos:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Aptos", sans-serif;
+        background-color: #0b0c10;
+        color: #c5c6c7;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      main {
+        flex: 1;
+      }
+      .abyss-teal {
+        color: #66fcf1;
+      }
+      .abyss-teal-bg {
+        background-color: #45a29e;
+      }
+      .abyss-red-border {
+        border-color: #45a29e;
+      }
+      .board-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 16px;
+      }
+      .board-item {
+        position: relative;
+        aspect-ratio: 3/4;
+        overflow: hidden;
+        border-radius: 6px;
+        transition: transform 0.3s ease;
+      }
+      .board-item:hover {
+        transform: translateY(-3px);
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 50;
+      }
+      .modal-content {
+        background-color: #242424;
+        border-radius: 8px;
+        max-width: 500px;
+        width: 90%;
+      }
+      .top-ribbon {
+        background-color: #1f2833; /* Darker background */
+      }
+      .content-box {
+        background-color: #1f2833; /* Same as top ribbon */
+      }
+
+      /* Milestone styles */
+      .milestones-container {
+        max-height: 600px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #45a29e #1f2833;
+      }
+      .milestones-container::-webkit-scrollbar {
+        width: 8px;
+      }
+      .milestones-container::-webkit-scrollbar-track {
+        background: #1f2833;
+      }
+      .milestones-container::-webkit-scrollbar-thumb {
+        background-color: #45a29e;
+        border-radius: 4px;
+      }
+      .milestone-item {
+        position: relative;
+        padding-left: 32px;
+      }
+      .milestone-item:before {
+        content: "";
+        position: absolute;
+        left: 8px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: #45a29e;
+      }
+      .milestone-item:not(:last-child):after {
+        content: "";
+        position: absolute;
+        left: 8px;
+        top: 18px;
+        bottom: 0;
+        width: 2px;
+        background-color: #45a29e;
+      }
+      .milestone-icon {
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background-color: #66fcf1;
+        z-index: 10;
+      }
+
+      /* Footer styles */
+      footer {
+        background-color: #1f2833;
+        padding: 40px 0 20px;
+        margin-top: 60px;
+      }
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        padding: 0 20px;
+      }
+      .footer-column h3 {
+        color: #66fcf1;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+      .footer-column p {
+        color: #b0b0b0;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+      .footer-column ul {
+        list-style: none;
+        padding: 0;
+      }
+      .footer-column ul li {
+        margin-bottom: 0.75rem;
+      }
+      .footer-column ul li a {
+        color: #b0b0b0;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      .footer-column ul li a:hover {
+        color: #66fcf1;
+      }
+      .social-icons {
+        display: flex;
+        gap: 12px;
+      }
+      .social-icon {
+        width: 36px;
+        height: 36px;
+        background-color: #1f2833;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #c5c6c7;
+        text-decoration: none;
+        transition: background-color 0.3s;
+      }
+      .social-icon:hover {
+        background-color: #45a29e;
+      }
+      .copyright {
+        text-align: center;
+        padding-top: 20px;
+        margin-top: 30px;
+        border-top: 1px solid #0b0c10;
+        color: #777;
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Navigation Bar - Lighter gray -->
+    <nav
+      class="top-ribbon py-5 px-8 flex justify-between items-center shadow-lg"
+    >
+      <div class="flex items-center">
+        <button id="backButton" class="mr-5 text-gray-300 hover:text-white">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-7 w-7"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <a href="/" class="text-3xl font-bold" style="color: #66fcf1">ABYSS</a>
+      </div>
+      <div class="flex items-center space-x-8">
+        <a
+          href="/leaderboard"
+          class="text-lg text-gray-300 hover:abyss-red transition duration-300"
+          >Leaderboard</a
+        >
+        <a
+          href="/community"
+          class="text-lg text-gray-300 hover:abyss-red transition duration-300"
+          >Community</a
+        >
+        <a
+          href="/profile"
+          class="text-lg text-[#66fcf1] font-medium"
+          style="color: #66fcf1"
+          >Profile</a
+        >
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+      <div class="flex flex-wrap -mx-4">
+        <!-- Left Column (Profile & Boards) - Now 70% width -->
+        <div class="w-full lg:w-8/12 px-4">
+          <!-- User Profile Section -->
+          <section class="content-box rounded-lg p-6 mb-8 shadow-md">
+            <div class="flex items-start justify-between">
+              <!-- Left side: Profile Picture and User Info -->
+              <div class="flex items-start">
+                <!-- Profile Picture - Smaller and circular -->
+                <div class="mr-6">
+                  <div
+                    class="w-24 h-24 rounded-full overflow-hidden border-2 abyss-red-border"
+                  >
+                    <img
+                      src="/api/placeholder/200/200"
+                      alt="Profile Picture"
+                      class="w-full h-full object-cover"
+                      id="profilePicDisplay"
+                    />
+                  </div>
+                </div>
+
+                <!-- User Info -->
+                <div>
+                  <div class="mb-3 flex items-center">
+                    <div>
+                      <h1 class="text-2xl font-bold" id="usernameDisplay">
+                        Loading...
+                      </h1>
+                      <p class="text-gray-400" id="fullNameDisplay">
+                        Loading...
+                      </p>
+                    </div>
+                    <!-- Edit Profile Button (Only shown if it's the user's own profile) -->
+                    <button
+                      id="editProfileBtn"
+                      class="ml-4 abyss-teal-bg hover:bg-red-800 text-white font-medium py-1 px-3 text-sm rounded-md transition duration-300 hidden"
+                    >
+                      Edit Profile
+                    </button>
+                  </div>
+
+                  <!-- Bio -->
+                  <p class="text-gray-300 mb-4" id="bioDisplay">
+                    Loading profile...
+                  </p>
+
+                  <!-- Followers/Following - Side by side -->
+                  <div class="flex space-x-6">
+                    <div class="text-center">
+                      <span class="font-bold text-xl" id="boardCount">0</span>
+                      <p class="text-gray-400">Boards</p>
+                    </div>
+                    <div class="text-center">
+                      <span class="font-bold text-xl" id="followerCount"
+                        >0</span
+                      >
+                      <p class="text-gray-400">Followers</p>
+                    </div>
+                    <div class="text-center">
+                      <span class="font-bold text-xl" id="followingCount"
+                        >0</span
+                      >
+                      <p class="text-gray-400">Following</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right side: Follow Button (only shows when viewing someone else's profile) -->
+              <div id="followButtonContainer" class="hidden">
+                <button
+                  id="followButton"
+                  class="abyss-teal-bg hover:bg-red-800 text-white font-medium py-2 px-5 rounded-md transition duration-300"
+                >
+                  Follow
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Boards Section -->
+          <section class="mb-12">
+            <div class="flex items-center justify-between mb-5">
+              <h2 class="text-2xl font-bold">Boards</h2>
+              <button
+                id="createBoardBtn"
+                class="abyss-teal-bg hover:bg-red-800 text-white font-medium py-1 px-3 text-sm rounded-md transition duration-300"
+              >
+                Create Board
+              </button>
+            </div>
+
+            <!-- Boards Grid - Now with matching lighter gray -->
+            <div class="content-box rounded-lg p-5 shadow-md">
+              <div class="board-container">
+                <!-- Boards will be dynamically added here by JavaScript -->
+                <p class="text-gray-400">Loading boards...</p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Right Column (Milestones) - Now 30% width -->
+        <div class="w-full lg:w-4/12 px-4">
+          <section class="mb-12">
+            <div class="flex items-center justify-between mb-5">
+              <h2 class="text-2xl font-bold">Milestones</h2>
+              <span id="milestone-counter" class="text-sm text-gray-400"
+                >0/100 Unlocked</span
+              >
+              <!-- Dynamic Counter -->
+            </div>
+
+            <!-- Milestones Box with Scroll -->
+            <div class="content-box rounded-lg p-5 shadow-md">
+              <div id="milestones-container" class="milestones-container">
+                <!-- Milestones will be dynamically inserted here by JavaScript -->
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-abyss-dark-secondary py-8">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="footer-column">
+            <h3 class="text-abyss-accent font-semibold mb-4">About ABYSS</h3>
+            <p class="text-abyss-light mb-4">
+              A community platform for discussing and rating movies, TV shows,
+              anime, books, and more.
+            </p>
+            <div class="social-icons flex space-x-4">
+              <a
+                href="#"
+                class="text-abyss-light hover:text-abyss-accent transition"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="text-abyss-light hover:text-abyss-accent transition"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="text-abyss-light hover:text-abyss-accent transition"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="footer-column">
+            <h3 class="text-abyss-accent font-semibold mb-4">Navigation</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="/"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/leaderboard"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Leaderboard</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/discussions"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Community</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/profile"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Profile</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3 class="text-abyss-accent font-semibold mb-4">Categories</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="/category/movies"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Movies</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/category/series"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Series</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/category/cartoons"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Cartoons</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/category/anime"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Anime</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/category/games"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Games</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/category/books"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Books</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3 class="text-abyss-accent font-semibold mb-4">Help & Support</h3>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="/faq"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >FAQ</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/contact"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Contact Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/terms"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Terms of Service</a
+                >
+              </li>
+              <li>
+                <a
+                  href="/privacy"
+                  class="text-abyss-light hover:text-abyss-accent transition"
+                  >Privacy Policy</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="copyright border-t border-abyss-dark mt-8 pt-6 text-center text-abyss-light text-sm"
+        >
+          &copy; 2025 ABYSS. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <!-- Create Board Modal -->
+    <div
+      id="createBoardModal"
+      class="modal flex items-center justify-center p-4"
+    >
+      <div class="modal-content p-6 animate-fade-in">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-bold">Create New Board</h3>
+          <button id="closeModal" class="text-gray-400 hover:text-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+        <form id="createBoardForm">
+          <div class="mb-4">
+            <label
+              for="boardName"
+              class="block text-sm font-medium text-gray-300 mb-2"
+              >Board Name</label
+            >
+            <input
+              type="text"
+              id="boardName"
+              name="boardName"
+              class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#45a29e]"
+              placeholder="Enter board name"
+              required
+            />
+          </div>
+          <div class="mb-6">
+            <label
+              for="boardDescription"
+              class="block text-sm font-medium text-gray-300 mb-2"
+              >Description (optional)</label
+            >
+            <textarea
+              id="boardDescription"
+              name="boardDescription"
+              rows="3"
+              class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#45a29e]"
+              placeholder="Add a description for your board"
+            ></textarea>
+          </div>
+          <div class="flex justify-end">
+            <button
+              type="button"
+              id="cancelCreate"
+              class="mr-4 py-2 px-4 border border-gray-600 rounded-md text-white hover:bg-gray-700 transition duration-300"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="abyss-teal-bg hover:bg-red-800 text-white font-medium py-2 px-4 rounded-md transition duration-300"
+            >
+              Create Board
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div
+      id="editProfileModal"
+      class="modal flex items-center justify-center p-4"
+    >
+      <div class="modal-content p-6 animate-fade-in">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-bold">Edit Profile</h3>
+          <button
+            id="closeEditProfileModal"
+            class="text-gray-400 hover:text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+        <form id="editProfileForm" enctype="multipart/form-data">
+          <div class="mb-4">
+            <label
+              for="username"
+              class="block text-sm font-medium text-gray-300 mb-2"
+            >
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#45a29e]"
+              placeholder="Enter username"
+              required
+            />
+          </div>
+
+          <div class="mb-4">
+            <label
+              for="firstName"
+              class="block text-sm font-medium text-gray-300 mb-2"
+            >
+              First Name
+            </label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#45a29e]"
+              placeholder="Enter first name"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label
+              for="lastName"
+              class="block text-sm font-medium text-gray-300 mb-2"
+            >
+              Last Name
+            </label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#45a29e]"
+              placeholder="Enter last name"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label
+              for="profilePic"
+              class="block text-sm font-medium text-gray-300 mb-2"
+            >
+              Upload Profile Picture
+            </label>
+            <input
+              type="file"
+              id="profilePic"
+              name="profilePic"
+              accept="image/*"
+              class="w-full text-sm text-gray-300 bg-gray-700 border border-gray-600 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#45a29e]"
+            />
+          </div>
+
+          <div class="mb-6">
+            <label
+              for="bio"
+              class="block text-sm font-medium text-gray-300 mb-2"
+            >
+              Bio
+            </label>
+            <textarea
+              id="bio"
+              name="bio"
+              rows="3"
+              class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-4 text-white focus:outline-none focus:ring-2 focus:ring-[#45a29e]"
+              placeholder="Tell us about yourself"
+            ></textarea>
+          </div>
+
+          <div class="flex justify-end">
+            <button
+              type="button"
+              id="cancelEditProfile"
+              class="mr-4 py-2 px-4 border border-gray-600 rounded-md text-white hover:bg-gray-700 transition duration-300"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="abyss-teal-bg hover:bg-red-800 text-white font-medium py-2 px-4 rounded-md transition duration-300"
+            >
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="/static/js/script.js"></script>
+    <script>
+      // User profile related elements
+      const usernameDisplay = document.getElementById("usernameDisplay");
+      const fullNameDisplay = document.getElementById("fullNameDisplay");
+      const bioDisplay = document.getElementById("bioDisplay");
+      const profilePicDisplay = document.getElementById("profilePicDisplay");
+      const followerCount = document.getElementById("followerCount");
+      const followingCount = document.getElementById("followingCount");
+      const boardCount = document.getElementById("boardCount");
+      const boardsContainer = document.querySelector(".board-container");
+      const milestonesContainer = document.querySelector(
+        ".milestones-container"
+      );
+      const milestoneCounter = document.querySelector(
+        ".flex.items-center.justify-between.mb-5 span"
+      );
+
+      // Modal elements from your original code
+      const modal = document.getElementById("createBoardModal");
+      const createBoardBtn = document.getElementById("createBoardBtn");
+      const closeModal = document.getElementById("closeModal");
+      const cancelCreate = document.getElementById("cancelCreate");
+      const createBoardForm = document.getElementById("createBoardForm");
+      const backButton = document.getElementById("backButton");
+      const followButtonContainer = document.getElementById(
+        "followButtonContainer"
+      );
+      const followButton = document.getElementById("followButton");
+
+      // Edit Profile Modal Elements
+      const editProfileModal = document.getElementById("editProfileModal");
+      const editProfileBtn = document.getElementById("editProfileBtn");
+      const closeEditProfileModal = document.getElementById(
+        "closeEditProfileModal"
+      );
+      const cancelEditProfile = document.getElementById("cancelEditProfile");
+      const editProfileForm = document.getElementById("editProfileForm");
+
+      //   this function fetches the user profile data from the server
+      async function fetchUserProfile(profileusername) {
+        try {
+          const response = await fetch(`/api/profile/${profileusername}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Requested-With": "XMLHttpRequest", // AJAX header
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch user profile");
+          }
+
+          const userData = await response.json();
+          const {
+            username: userUsername,
+            firstname,
+            lastname,
+            bio,
+            img_link,
+          } = userData.userdata;
+
+          // if the user is loggedin and the profile is not theirs, then we will check whether the user is following them or not
+          const visitingusername = await fetchLoggedInUser();
+          if (visitingusername) {
+            if (visitingusername != profileusername) {
+              // here we will check if the user is following the profile or not
+              checkIfFollowing(profileusername, visitingusername).then(
+                (isFollowing) => {
+                  console.log("following status:", isFollowing);
+                  
+                  if (isFollowing) {
+                    // Follow logic
+                  followButton.textContent = "Following";
+                  followButton.classList.add("following");
+                  followButton.classList.remove("abyss-teal-bg");
+                  followButton.classList.add("bg-gray-700");
+                  followButton.classList.remove("hidden");
+                  } else {
+                    followButton.classList.remove("following");
+                    followButton.textContent = "Follow";
+                    followButton.classList.remove("bg-gray-700");
+                    followButton.classList.add("abyss-teal-bg");
+                    followButton.classList.remove("hidden");
+
+                  }
+                }
+              );
+            } else {
+              editProfileBtn.classList.remove("hidden");
+            }
+          }
+          // Update DOM
+          usernameDisplay.textContent = userUsername || "Unknown";
+          fullNameDisplay.textContent =
+            `${firstname || ""} ${lastname || ""}`.trim() ||
+            "No name available";
+          bioDisplay.textContent = bio || "No bio available";
+
+          // Fix Windows-style path and serve as a relative web URL
+          if (img_link) {
+            // Extract only the relative path from full Windows path
+            const relativePath = img_link
+              .split("uploads")[1]
+              .replace(/\\/g, "/");
+            profilePicDisplay.src = `/uploads${relativePath}`;
+          } else {
+            profilePicDisplay.src = "/uploads/profile_pics/pfp.png"; // fallback
+          }
+
+          // Follower counts
+          followerCount.textContent = formatCount(userData.followerCount);
+          followingCount.textContent = formatCount(userData.followingCount);
+
+          return userData;
+        } catch (error) {
+          console.error("Error fetching user profile:", error);
+          bioDisplay.textContent =
+            "Error loading user profile. Please try again later.";
+        }
+      }
+      //   helper function to check whether the user is following the profile he is viewing or not
+      async function checkIfFollowing(profileusername, follower) {
+        try {
+          const response = await fetch(
+            `/api/checkfollow/${profileusername}/${follower}`,
+            {
+              method: "GET",
+              headers: {
+                "X-Requested-With": "XMLHttpRequest",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to check follow status");
+          }
+
+          const data = await response.json();
+          return data.following; // true or false
+        } catch (error) {
+          console.error("Error:", error);
+          return null;
+        }
+      }
+
+      //   this function fetches the user boards from the server
+      async function fetchUserBoards(username) {
+        try {
+          const response = await fetch(`/api/profile/${username}/boards`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Requested-With": "XMLHttpRequest", // AJAX header
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch user boards");
+          }
+
+          const data = await response.json();
+          const userBoards = data.boards;
+          const boardCountValue = data.count.board_count;
+
+          // Update board count
+          boardCount.textContent = boardCountValue;
+
+          // Clear existing boards
+          boardsContainer.innerHTML = "";
+
+          // Create and append board elements
+          userBoards.forEach((board) => {
+            const boardElement = createBoardElement(board);
+            boardsContainer.appendChild(boardElement);
+          });
+
+          // Add click event listeners to new boards
+          addBoardClickListeners();
+
+          return userBoards;
+        } catch (error) {
+          console.error("Error fetching user boards:", error);
+          boardsContainer.innerHTML =
+            '<p class="text-gray-400">Error loading boards. Please try again later.</p>';
+        }
+      }
+
+      // function to display the milestones
+      async function fetchUserMilestones(username) {
+        try {
+          const response = await fetch(`/api/profile/${username}/milestones`, {
+            method: "GET",
+            headers: {
+              "X-Requested-With": "XMLHttpRequest",
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const milestones = await response.json();
+
+          const container = document.getElementById("milestones-container");
+          const counter = document.getElementById("milestone-counter");
+
+          // Clear existing content
+          container.innerHTML = "";
+
+          // Update milestone counter
+          counter.textContent = `${milestones.length}/100 Unlocked`;
+          counter.classList.remove("text-gray-400");
+          counter.classList.add("text-abyss-accent-dark");
+
+          // Render each milestone
+          milestones.forEach((milestone) => {
+            const milestoneElement = document.createElement("div");
+            milestoneElement.className = `
+    relative group overflow-hidden
+    mb-5 p-5 rounded-xl
+    bg-[#1f2833] border border-[#2c3e50]
+    text-[#c5c6c7] shadow-md
+    transition-all duration-300 ease-in-out
+    hover:shadow-[0_4px_20px_rgba(102,252,241,0.3)]
+    hover:scale-[1.02] hover:border-[#66fcf1]
+  `;
+
+            milestoneElement.innerHTML = `
+    <div class="flex items-center gap-3 mb-2">
+      <div class="bg-[#66fcf1] text-[#0b0c10] p-2 rounded-full shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9 12l2 2 4-4m-6 6h.01M4 6h16M4 10h16M4 14h16M4 18h16"/>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold text-[#66fcf1]">${milestone.name}</h3>
+    </div>
+    <p class="text-sm leading-relaxed mb-2">${milestone.description}</p>
+    <p class="text-xs text-gray-400">🏆 Achieved on <span class="text-gray-300">${milestone.date_achieved}</span></p>
+  `;
+
+            container.appendChild(milestoneElement);
+          });
+        } catch (error) {
+          console.error("Error loading milestones:", error);
+          const container = document.getElementById("milestones-container");
+          container.innerHTML = `<p class="text-red-400">⚠️ Failed to load milestones.</p>`;
+        }
+      }
+
+      //   helper function that creates a board element and is being used to display the boards in a loop
+      function createBoardElement(board) {
+        console.log(board);
+        const boardWrapper = document.createElement("div");
+        boardWrapper.className = "board-item-wrapper";
+
+        console.log(board.img_link)
+        boardWrapper.innerHTML = `
+        <div class="board-item bg-gray-700 cursor-pointer shadow-md" data-id="${
+          board.id
+        }">
+            <img src="/${board.img_link}" alt="${
+          board.name
+        }" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div>
+        </div>
+        <h3 class="mt-1 font-medium text-sm">${board.name}</h3>
+        <p class="text-xs text-gray-400">${board.itemCount} items</p>
+    `;
+
+        return boardWrapper;
+      }
+
+      // Adds click event listeners to board items
+      // this will take the user to the board detail page when they click on a board
+
+      function addBoardClickListeners() {
+        document.querySelectorAll(".board-item").forEach((board) => {
+          board.addEventListener("click", function () {
+            const boardId = this.dataset.id;
+            const boardName = this.nextElementSibling.textContent;
+            console.log(`Opening board: ${boardName} (ID: ${boardId})`);
+            // Redirect to board detail page
+            window.location.href = `/board/${boardId}`;
+          });
+        });
+      }
+
+      //   this function is used to format the count of followers and boards like 1K, 2M, etc.
+      function formatCount(count) {
+        if (count >= 1000000) {
+          return (count / 1000000).toFixed(1) + "M";
+        } else if (count >= 1000) {
+          return (count / 1000).toFixed(1) + "K";
+        }
+        return count.toString();
+      }
+
+      //   this function is used to pick the username from the URL
+      function getProfileUsername(url = window.location.href) {
+        try {
+          // Use the built‑in URL parser to isolate the pathname
+          const pathname = new URL(url).pathname;
+          // Match "/profilepage/<username>"
+          const match = pathname.match(/^\/profilepage\/([^\/]+)/);
+          console.log(match[1]);
+          return match ? match[1] : null;
+        } catch (e) {
+          // In case url is not a valid absolute URL, try parsing just the path
+          const match = url.match(/^\/?profilepage\/([^\/]+)/);
+          return match ? match[1] : null;
+        }
+      }
+
+      // Check if logged-in user matches profile user
+      //   if the user is logged in and is viewing their own profile, the edit button will be shown and the follow button will be hidden
+      async function checkProfileOwnership() {
+        const loggedInUser = await fetchLoggedInUser();
+        const profileUsername = getProfileUsername();
+        if (loggedInUser === profileUsername) {
+          editProfileBtn.classList.remove("hidden");
+          followButtonContainer.classList.add("hidden");
+        } else {
+          editProfileBtn.classList.add("hidden");
+          followButtonContainer.classList.remove("hidden");
+          //   the create board button will be hidden if the user is viewing someone else's profile
+          createBoardBtn.classList.add("hidden");
+        }
+        return profileUsername;
+      }
+
+      //   this function is called when the user submits the form for creating a new board
+      //   it will add the new board to the UI and update the board count
+      function addNewBoard(boardName) {
+        const boardsContainer = document.querySelector(".board-container");
+
+        const newBoardWrapper = document.createElement("div");
+        newBoardWrapper.className = "board-item-wrapper";
+
+        const boardId = Date.now(); // Temporary ID for demo purposes
+
+        newBoardWrapper.innerHTML = `
+        <div class="board-item bg-gray-700 cursor-pointer shadow-md" data-id="${boardId}">
+            <img src="/api/placeholder/200/${Math.floor(
+              Math.random() * 1000
+            )}" alt="${boardName}" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div>
+        </div>
+        <h3 class="mt-1 font-medium text-sm">${boardName}</h3>
+        <p class="text-xs text-gray-400">0 items</p>
+    `;
+
+        boardsContainer.prepend(newBoardWrapper);
+
+        // Update board count
+        const currentCount = parseInt(boardCount.textContent) || 0;
+        boardCount.textContent = currentCount + 1;
+
+        // Add click event listener to the new board
+        const boardItem = newBoardWrapper.querySelector(".board-item");
+        boardItem.addEventListener("click", function () {
+          console.log(`Opening board: ${boardName} (ID: ${boardId})`);
+          window.location.href = `/board/${boardId}`;
+        });
+      }
+
+      //   this is handling the follow button click event
+      followButton.addEventListener("click", async function () {
+        const userloggedin = await fetchLoggedInUser();
+
+        if (!userloggedin) {
+          // Show login popup
+          const loggedIn = await showLoginPopup();
+          if (loggedIn) {
+            location.reload(); // Reload after login if needed
+          }
+          return;
+        }
+
+        const profileusername = getProfileUsername();
+        const isFollowing = this.classList.contains("following");
+        console.log("isfollowing" , isFollowing);
+
+        if (isFollowing) {
+          // Unfollow logic
+          this.textContent = "Follow";
+          this.classList.remove("following");
+          this.classList.add("abyss-teal-bg");
+          this.classList.remove("bg-gray-700");
+
+          // Update follower count
+          const currentCount = parseInt(
+            followerCount.textContent.replace(/[^0-9]/g, "")
+          );
+          followerCount.textContent = formatCount(currentCount - 1);
+
+          // API call to unfollow
+          fetch(`/api/unfollow/${profileusername}/${userloggedin}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Requested-With": "XMLHttpRequest",
+            },
+          }).catch((error) => console.error("Error unfollowing user:", error));
+        } else {
+          // Follow logic
+          this.textContent = "Following";
+          this.classList.add("following");
+          this.classList.remove("abyss-teal-bg");
+          this.classList.add("bg-gray-700");
+
+          // Update follower count
+          const currentCount = parseInt(
+            followerCount.textContent.replace(/[^0-9]/g, "")
+          );
+          followerCount.textContent = formatCount(currentCount + 1);
+
+          // API call to follow
+          fetch(`/api/follow/${profileusername}/${userloggedin}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Requested-With": "XMLHttpRequest",
+            },
+          }).catch((error) => console.error("Error following user:", error));
+        }
+      });
+
+      // Modal event listeners
+      // Open create board modal
+      if (createBoardBtn) {
+        +createBoardBtn.addEventListener("click", () => {
+          modal.style.display = "flex";
+        });
+      }
+
+      // Close create board modal
+      const closeModalFunction = () => {
+        modal.style.display = "none";
+      };
+
+      if (closeModal) closeModal.addEventListener("click", closeModalFunction);
+      if (cancelCreate)
+        cancelCreate.addEventListener("click", closeModalFunction);
+
+      // Form submission for creating a board 
+    //   this is called when the user submits the form for creating a new board
+      if (createBoardForm) {
+        createBoardForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+
+          const boardName = document.getElementById("boardName").value;
+          const boardDescription =
+            document.getElementById("boardDescription").value;
+          // Send data to backend
+          fetch("/api/createBoard", {
+            method: "POST",
+            headers: {
+                 "Content-Type": "application/json",
+                 "X-Requested-With": "XMLHttpRequest"
+                 },
+            body: JSON.stringify({
+              name: boardName,
+              description: boardDescription
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Add the new board to UI
+              addNewBoard(boardName);
+            })
+            .catch((error) => console.error("Error creating board:", error));
+
+          // Close modal and reset form
+          closeModalFunction();
+          createBoardForm.reset();
+        });
+      }
+
+      // Back button functionality
+      if (backButton) {
+        backButton.addEventListener("click", () => {
+          window.history.back();
+        });
+      }
+
+      // Edit Profile Modal functionality
+      // Open edit profile modal
+      if (editProfileBtn) {
+        editProfileBtn.addEventListener("click", () => {
+          // Pre-fill form with current values
+          document.getElementById("username").value =
+            usernameDisplay.textContent;
+          const nameParts = fullNameDisplay.textContent.split(" ");
+          document.getElementById("firstName").value = nameParts[0] || "";
+          document.getElementById("lastName").value =
+            nameParts.slice(1).join(" ") || "";
+          document.getElementById("bio").value = bioDisplay.textContent;
+
+          editProfileModal.style.display = "flex";
+        });
+      }
+
+      // Close edit profile modal
+      const closeEditProfileModalFunction = () => {
+        editProfileModal.style.display = "none";
+      };
+
+      if (closeEditProfileModal)
+        closeEditProfileModal.addEventListener(
+          "click",
+          closeEditProfileModalFunction
+        );
+      if (cancelEditProfile)
+        cancelEditProfile.addEventListener(
+          "click",
+          closeEditProfileModalFunction
+        );
+
+      // Close modals when clicking outside
+      window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          closeModalFunction();
+        }
+        if (event.target === editProfileModal) {
+          closeEditProfileModalFunction();
+        }
+      });
+
+      // Edit profile form submission
+    //   this is called when the user submits the form for editing their profile
+      if (editProfileForm) {
+        editProfileForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+
+          // Create a FormData object to handle file and form data
+          const formData = new FormData();
+
+          // Get form field values
+          const username = document.getElementById("username").value;
+          const firstName = document.getElementById("firstName").value;
+          const lastName = document.getElementById("lastName").value;
+          const profilePic = document.getElementById("profilePic").files[0]; // Access the file input
+          const bio = document.getElementById("bio").value;
+
+          // Append form data to FormData object
+          formData.append("username", username);
+          formData.append("firstname", firstName);
+          formData.append("lastname", lastName);
+          formData.append("bio", bio);
+          // Append the profile picture if provided
+          if (profilePic) {
+            formData.append("profilePic", profilePic);
+          }
+
+          // Send the data to the backend using fetch
+          fetch("/api/editProfile", {
+            method: "POST",
+            headers: {
+              "X-Requested-With": "XMLHttpRequest", // This header is required by your Flask check
+            },
+            body: formData, // Send the form data, including the image
+          })
+            .then((response) => {
+              if (!response.ok) throw new Error("Profile update failed");
+              return response.json();
+            })
+            .then((data) => {
+              if (data === true) {
+                // Optionally update UI after successful update
+                usernameDisplay.textContent = username;
+                fullNameDisplay.textContent = `${firstName} ${lastName}`.trim();
+                bioDisplay.textContent = bio;
+
+                // Update profile picture preview if an image was uploaded
+                if (profilePic) {
+                  const reader = new FileReader();
+                  reader.onload = function (e) {
+                    profilePicDisplay.src = e.target.result; // Display the new profile picture
+                  };
+                  reader.readAsDataURL(profilePic); // Read file as DataURL to display it
+                }
+              } else {
+                console.error("Failed to update profile.");
+              }
+            })
+            .catch((error) => console.error("Error updating profile:", error));
+
+          // Close the edit profile modal (if applicable)
+          closeEditProfileModalFunction();
+        });
+      }
+
+      // Initialize the page when DOM content is loaded
+      document.addEventListener("DOMContentLoaded", async function () {
+        try {
+          // Determine which profile to load and check ownership
+          const username = await checkProfileOwnership();
+
+          if (!username) {
+            // Handle case where no username was found
+            console.error("No username found to load profile");
+            bioDisplay.textContent =
+              "Error: Could not determine which profile to load.";
+            return;
+          }
+
+          // Fetch and display user data
+          await fetchUserProfile(username);
+          await fetchUserBoards(username);
+          await fetchUserMilestones(username);
+        } catch (error) {
+          console.error("Error initializing profile page:", error);
+        }
+      });
+    </script>
+  </body>
+</html>

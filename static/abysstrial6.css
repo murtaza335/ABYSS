@@ -1,0 +1,211 @@
+/* Dark Mode Theme */
+body {
+    background-color: #121212;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Navigation Bar */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1E1E1E;
+    padding: 15px 30px;
+}
+
+nav .logo {
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+/* Header */
+header {
+    margin-top: 20px;
+}
+
+.search-bar {
+    margin: 20px auto;
+    width: 50%;
+    display: flex;
+    border: 1px solid white;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.search-bar input {
+    width: 80%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    background: black;
+    color: white;
+}
+
+.search-bar button {
+    width: 18%;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    background: white;
+    color: black;
+}
+
+/* Category Buttons */
+.category-buttons {
+    margin: 20px 0;
+}
+
+.category-buttons button {
+    background: #333;
+    color: white;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.category-buttons button:hover {
+    background: #555;
+}
+
+ .timeline-container {
+      top: 40px;
+      margin: 30px;
+      width: 100%;
+      max-width: 1200px;
+      position: relative;
+    }
+
+    .era {
+      position: absolute;
+      color: white;
+      background-color: #1a1a1a;
+      border: 2px solid white;
+      border-radius: 30px;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .era-label {
+      position: absolute;
+      background-color: transparent;
+      border: 2px transparent;
+      border-radius: 30px;
+      padding: 10px 20px transparent;
+      font-weight: bold;
+      white-space: nowrap;
+      color: white;
+      cursor: pointer;
+    }
+
+    .era:hover {
+      background-color: #555;
+    }
+
+    .era-label:hover {
+      background-color: transparent;
+    }
+
+    .connector {
+      position: absolute;
+      border-top: 2px dotted white;
+    }
+
+    /* Positioning each era and label */
+    #prehistory { top: 60px; left: 5%; }
+    #classical { top: 60px; right: 5%; }
+    #medieval { top: 220px; right: 20.5%; }
+    #early-modern { top: 220px; left: 20%; }
+    #modern { top: 350px; left: 58%; }
+    #future { top: 500px; left: 15%; }
+
+    /* Era labels */
+    #stone-label { top: 50px; left: 30%; }
+    #iron-label { top: 50px; right: 30%; }
+    #bronze-label { top: 111px; left: 47%; }
+    #renaissance-label { top: 337px; left: 10%; }
+    #industrial-label { top: 380px; left: 34%; }
+    #information-label { top: 490px; left: 40%; }
+    #atomic-label { top: 542px; right: 35%; }
+    #twentieth-label { top: 490px; right: 15%; }
+
+    /* Connectors */
+    #prehistory-classical { top: 80px; left: 14%; width: 70.2%; }
+    #classical-medieval {
+      top: 101px;
+      right: 10%;
+      width: 2px;
+      height: 138px;
+      border-left: 2px dotted white;
+      border-top: none;
+    }
+    #classical-medieval-horiz { top: 238px; right: 10.5%; width: 10%; }
+    #medieval-early { top: 238px; left: 33%; width: 36%; }
+    #early-horiz { top: 238px; left: 6%; width: 14%; }
+    #early-modern-renaissance {
+      top: 238px;
+      left: 6%;
+      width: 2px;
+      height: 130px;
+      border-left: 2px dotted white;
+      border-top: none;
+    }
+    #renaissance-to-modern { top: 366px; left: 6%; width: 52%; }
+    #modern-horiz { top: 366px; right: 6.5%; width: 25.5%; }
+    #modern-twentieth {
+      top: 366px;
+      right: 6%;
+      width: 2px;
+      height: 152px;
+      border-left: 2px dotted white;
+      border-top: none;
+    }
+    #future-twenty { top: 520px; right: 6.15%; width: 71.5%; }
+    #future-line { top: 520px; left: 9%; width: 6%; }
+    #future-dot {
+      position: absolute;
+      top: 516px;
+      left: 8.5%;
+      width: 10px;
+      height: 10px;
+      background-color: white;
+      border-radius: 50%;
+    }
+
+ .floating {
+    animation: floatText 1s infinite alternate ease-in-out;
+}
+
+@keyframes floatText {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-10px);
+    }
+}

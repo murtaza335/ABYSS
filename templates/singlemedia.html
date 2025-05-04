@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-abyss-dark text-abyss-light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ABYSS - Interstellar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "abyss-dark": "#0b0c10",
+                        "abyss-dark-secondary": "#1f2833",
+                        "abyss-light": "#c5c6c7",
+                        "abyss-accent": "#66fcf1",
+                        "abyss-accent-dark": "#45a29e",
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+
+<body class="font-sans">
+
+
+
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6 mt-4">
+        <!-- Media Detail Section -->
+        <div class="md:col-span-3 bg-abyss-dark-secondary p-6 rounded-lg shadow-md">
+            <!-- Poster Image -->
+            <img src="https://th.bing.com/th/id/OIP.sVh8VQN_A0JLiqKUUoyXcwHaEK?rs=1&pid=ImgDetMain"
+                alt="Interstellar Poster"
+                class="w-full h-auto rounded-lg mb-6 shadow-lg border border-abyss-accent-dark">
+
+            <!-- Title & Info -->
+            <h2 class="text-3xl font-bold text-abyss-light mb-2">Interstellar (2014)</h2>
+            <span class="bg-abyss-accent-dark text-abyss-dark text-sm px-2 py-1 rounded-full">Movie</span>
+
+            <!-- Description -->
+            <p class="mt-4 text-abyss-light leading-relaxed">
+                A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.
+                Directed by Christopher Nolan, "Interstellar" blends scientific realism with emotional storytelling.
+            </p>
+
+            <!-- Metadata -->
+            <p class="mt-4 text-sm text-abyss-accent-dark italic">
+                Genres: Sci-Fi, Drama | Director: Christopher Nolan | Duration: 169 mins
+            </p>
+            <!-- Add to Board Button -->
+            <div class="mt-6">
+                <button id="add-to-board-btn"
+                    class="bg-abyss-accent text-abyss-dark px-4 py-2 rounded-lg hover:bg-abyss-accent-dark transition duration-200">
+                    ➕ Add to Board
+                </button>
+            </div>
+
+
+        </div>
+
+
+
+        <!-- Related Media Section -->
+        <div class="bg-abyss-dark-secondary p-4 rounded-lg shadow-md">
+            <h3 class="text-lg font-semibold text-abyss-accent mb-4">Related Media</h3>
+            <ul class="space-y-4">
+                <li>
+                    <h4 class="font-semibold text-abyss-light hover:text-abyss-accent cursor-pointer">Blade Runner 2049
+                    </h4>
+                    <p class="text-sm text-abyss-accent-dark">Neo-noir sci-fi exploring identity and consciousness.</p>
+                </li>
+                <li>
+                    <h4 class="font-semibold text-abyss-light hover:text-abyss-accent cursor-pointer">Arrival</h4>
+                    <p class="text-sm text-abyss-accent-dark">Linguistic puzzles meet alien contact.</p>
+                </li>
+                <li>
+                    <h4 class="font-semibold text-abyss-light hover:text-abyss-accent cursor-pointer">Ex Machina</h4>
+                    <p class="text-sm text-abyss-accent-dark">A tense psychological sci-fi drama on AI.</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Popup Modal -->
+    <div id="board-popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+        <div class="bg-abyss-dark-secondary p-6 rounded-lg shadow-lg text-center max-w-xs w-full">
+            <h3 class="text-xl font-semibold text-abyss-light mb-2">Added to Your Board</h3>
+            <p class="text-abyss-accent-dark text-sm mb-4">Media has been added to your <span
+                    class="text-abyss-accent font-bold">Default Board</span>.</p>
+            <button id="close-popup"
+                class="bg-abyss-accent text-abyss-dark px-4 py-2 rounded hover:bg-abyss-accent-dark">Close</button>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+    <!-- script -->
+    <script>
+        // Extract category and media ID from URL like /media/<category>/<id>
+        function getMediaParamsFromUrl() {
+            const url = window.location.href;
+            const match = url.match(/\/media\/([^/]+)\/(\d+)/); // e.g., /media/movie/4
+            if (match) {
+                return {
+                    category: match[1],
+                    mediaId: match[2]
+                };
+            }
+            return null;
+        }
+
+        // Update DOM with fetched media data
+        function updateMediaPage(data) {
+            // Update poster
+            const poster = document.querySelector("img[alt$='Poster']");
+            poster.src = data.image_url;
+            poster.alt = `${data.title} Poster`;
+
+            // Update title
+            const titleElem = document.querySelector("h2");
+            titleElem.textContent = `${data.title} (${data.year})`;
+
+            // Update media type badge
+            const badge = document.querySelector("span");
+            badge.textContent = data.type;
+
+            // Update description
+            const desc = document.querySelector("p.mt-4.text-abyss-light");
+            desc.textContent = data.description;
+
+            // Update metadata
+            const metadata = document.querySelector("p.text-sm.text-abyss-accent-dark");
+            metadata.textContent = `Genres: ${data.genres.join(', ')} | Director: ${data.director} | Duration: ${data.duration} mins`;
+
+            // Update related media
+            const relatedList = document.querySelector("ul.space-y-4");
+            relatedList.innerHTML = ""; // clear old items
+
+            data.related_media.forEach(item => {
+                const li = document.createElement("li");
+
+                const title = document.createElement("h4");
+                title.className = "font-semibold text-abyss-light hover:text-abyss-accent cursor-pointer";
+                title.textContent = item.title;
+
+                const desc = document.createElement("p");
+                desc.className = "text-sm text-abyss-accent-dark";
+                desc.textContent = item.description;
+
+                li.appendChild(title);
+                li.appendChild(desc);
+                relatedList.appendChild(li);
+            });
+        }
+
+        // Load media content on DOM ready
+        document.addEventListener("DOMContentLoaded", async () => {
+            const params = getMediaParamsFromUrl();
+
+            if (!params) {
+                console.error("Missing category or media ID in URL.");
+                return;
+            }
+
+            const { category, mediaId } = params;
+
+            try {
+                const response = await fetch(`/api/mediadata/${category}/${mediaId}`, {
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch media data.");
+
+                const data = await response.json();
+                updateMediaPage(data);
+            } catch (err) {
+                console.error("Error loading media page:", err);
+            }
+        });
+
+
+
+
+        // add to the board button functionality
+        async function addToBoardHandler() {
+            const params = getMediaParamsFromUrl();
+            const { mediaId } = params;
+            const username = await fetchLoggedInUser(); // Fetch the username from the server
+            if(!username){
+                // show the popup of login
+                showLoginPopup();
+            }
+
+            try {
+                const response = await fetch("/api/addToBoard", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
+                    body: JSON.stringify({
+                        media_id: mediaId,
+                        board_id: defaultBoardId
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showBoardPopup(); // show confirmation popup
+                } else {
+                    alert("❌ Failed to add to board: " + (result.message || "Unknown error"));
+                }
+            } catch (err) {
+                console.error("Add to board failed:", err);
+                alert("❌ Could not add to board due to a network or server error.");
+            }
+        }
+
+        // Optional popup logic
+        function showBoardPopup() {
+            const popup = document.getElementById("board-popup");
+            if (popup) {
+                popup.classList.remove("hidden");
+                setTimeout(() => {
+                    popup.classList.add("hidden");
+                }, 2000); // auto-hide after 2s
+            }
+        }
+
+        // Add button listener
+        document.addEventListener("DOMContentLoaded", () => {
+            const addBtn = document.getElementById("add-to-board-btn");
+            if (addBtn) {
+                addBtn.addEventListener("click", addToBoardHandler);
+            }
+
+            const closeBtn = document.getElementById("close-popup");
+            if (closeBtn) {
+                closeBtn.addEventListener("click", () => {
+                    document.getElementById("board-popup").classList.add("hidden");
+                });
+            }
+        });
+
+        function showBoardPopup() {
+            const popup = document.getElementById('board-popup');
+            if (popup) {
+                popup.classList.remove('hidden');
+            }
+        }
+
+        // Initialize event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const closeBtn = document.getElementById('close-popup');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    document.getElementById('board-popup').classList.add('hidden');
+                });
+            }
+
+            const addButton = document.getElementById('add-to-board-btn');
+            if (addButton) {
+                addButton.addEventListener('click', addToDefaultBoard);
+            }
+        });
+    </script>
+
+
+
+</body>
+
+</html>
