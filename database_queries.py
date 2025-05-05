@@ -262,16 +262,51 @@ def fetchLeaderBoardData():
     conn.close()
     return result
 
-def fetchCommunityData():
+def fetchCommunityData(type, mediacategory):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    # query for fetching the data for the community
-    query = f"select d.discussion_id, title, upvotes, description, d.username, img_link , count(comment_id) as comment_count from discussions d join users u on d.username = u.username join comments c on c.discussion_id = d.discussion_id group by d.discussion_id order by created_at desc limit 20"
-    cursor.execute(query)
+
+    # Base query: fetch all required fields and aggregate comment counts
+    base_query = """
+        SELECT mediatag, discussion_id, title, upvotes, description, username, img_link, comment_count, created_at
+        FROM (
+            SELECT d.mediatag, d.created_at, d.discussion_id, d.title, d.upvotes, d.description,
+                   d.username, u.img_link, COUNT(c.comment_id) AS comment_count
+            FROM discussions d
+            JOIN users u ON d.username = u.username
+            LEFT JOIN comments c ON c.discussion_id = d.discussion_id
+            {where_clause}
+            GROUP BY d.discussion_id
+        ) AS sub
+        ORDER BY {order_column} DESC
+        LIMIT 20
+    """
+
+    # Determine WHERE clause and order column
+    where_clause = ""
+    params = ()
+    print(mediacategory)
+    if mediacategory != 'all':
+        where_clause = "WHERE d.mediatag = %s"
+        params = (mediacategory,)
+
+    order_column = "created_at" if type == "recent" else "upvotes"
+
+    # Fill in the final query with dynamic parts
+    final_query = base_query.format(where_clause=where_clause, order_column=order_column)
+
+    # Execute and fetch
+    cursor.execute(final_query, params)
     result = cursor.fetchall()
+
     cursor.close()
     conn.close()
+    # Example in Python/Flask
+    # result['created_at'] = result['created_at'].strftime('%b %d, %Y %I:%M %p')
+    print(result)
     return result
+
+
 
 # editing the user data in the database
 

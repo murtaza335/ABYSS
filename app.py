@@ -111,14 +111,11 @@ def leaderboard():
 # -------community/ discussions page--------
 @app.route('/community', methods=['GET'])
 def community():
-    return render_template('community.html')
+    return render_template('discussions.html')
 # --------user profile page----------
 @app.route('/profilepage/<username>', methods = ['GET'])
 def userProfilePage(username):
-    if username == session.get('username'):
-            return render_template('dynamicuserprofile.html')
-    else:
-        return render_template('dynamicuserprofile.html')
+    return render_template('dynamicuserprofile.html')
     
 # -------one discussion page-------------
 @app.route('/discussion/<discussion_id>', methods = ['GET'])    
@@ -184,14 +181,13 @@ def mainMediaPageData(era,media):
     # Only allow AJAX (fetch) calls
     if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
         abort(403)  # Forbidden if not AJAX
-    data = {}
     media = fetchAllMediaByEra(era, media)
     eras = fetchAllEras()
     data = {
         "eras" : eras,
         "media" : media
     }
-    return render_template('movies.html'),jsonify(data) 
+    return jsonify(data) 
 # ---------single media page----------
 @app.route('/api/mediadata/<category>/<media_id>', methods = ['GET'])
 def singleMediaPageData(category, media_id):
@@ -324,8 +320,12 @@ def communityData():
     # Only allow AJAX (fetch) calls
     if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
         abort(403)
-    community = fetchCommunityData()
-    return jsonify(community)
+
+    type = request.args.get('type', 'popular')
+    mediacategory = request.args.get("mediacategory", 'all')
+
+    community = fetchCommunityData(type, mediacategory)
+    return jsonify({ "discussions": community })
 
 # api routes for the main search bar 
 # if no toggle button is selected 
