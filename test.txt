@@ -1,0 +1,11 @@
+<!-- Navigation Bar -->
+    <nav id="main-nav">
+      <div class="logo" onclick="location.href='abysstrial6.html'">ABYSS</div>
+      <ul>
+        <li><a href="#" id="leaderboardLink">Leaderboard</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+    </nav>
+
+

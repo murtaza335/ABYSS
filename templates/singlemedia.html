@@ -1,280 +1,788 @@
 <!DOCTYPE html>
 <html lang="en" class="bg-abyss-dark text-abyss-light">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ABYSS - Interstellar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        "abyss-dark": "#0b0c10",
-                        "abyss-dark-secondary": "#1f2833",
-                        "abyss-light": "#c5c6c7",
-                        "abyss-accent": "#66fcf1",
-                        "abyss-accent-dark": "#45a29e",
-                    },
-                },
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "abyss-dark": "#0b0c10",
+              "abyss-dark-secondary": "#1f2833",
+              "abyss-light": "#c5c6c7",
+              "abyss-accent": "#66fcf1",
+              "abyss-accent-dark": "#45a29e",
             },
-        };
+          },
+        },
+      };
     </script>
-</head>
+    <style>
+      .upvote-btn svg {
+        width: 1rem;
+        height: 1rem;
+        stroke-width: 2;
+        stroke: currentColor;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
 
-<body class="font-sans">
+      .upvote-btn:hover {
+        color: #66fcf1;
+      }
 
+      .upvote-count {
+        margin-left: 0.5rem;
+        font-size: 0.875rem;
+        color: #c5c6c7;
+      }
 
+      #login-popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
 
+      #login-popup-content {
+        background-color: #1f2833;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 90%;
+      }
 
-    </div>
+      #login-popup-content h2 {
+        margin-bottom: 1rem;
+        color: #c5c6c7;
+      }
 
-    <!-- Main Content -->
-    <div class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6 mt-4">
-        <!-- Media Detail Section -->
-        <div class="md:col-span-3 bg-abyss-dark-secondary p-6 rounded-lg shadow-md">
-            <!-- Poster Image -->
-            <img src="https://th.bing.com/th/id/OIP.sVh8VQN_A0JLiqKUUoyXcwHaEK?rs=1&pid=ImgDetMain"
-                alt="Interstellar Poster"
-                class="w-full h-auto rounded-lg mb-6 shadow-lg border border-abyss-accent-dark">
+      #login-popup-content input {
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        border-radius: 0.375rem;
+        border: 1px solid #45a29e;
+        width: 100%;
+        max-width: 300px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #0b0c10;
+        color: #c5c6c7;
+      }
 
-            <!-- Title & Info -->
-            <h2 class="text-3xl font-bold text-abyss-light mb-2">Interstellar (2014)</h2>
-            <span class="bg-abyss-accent-dark text-abyss-dark text-sm px-2 py-1 rounded-full">Movie</span>
+      #login-popup-content button {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.375rem;
+        background-color: #66fcf1;
+        color: #0b0c10;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        border: none;
+        font-size: 1rem;
+      }
 
-            <!-- Description -->
-            <p class="mt-4 text-abyss-light leading-relaxed">
-                A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.
-                Directed by Christopher Nolan, "Interstellar" blends scientific realism with emotional storytelling.
+      #login-popup-content button:hover {
+        background-color: #45a29e;
+      }
+
+      #login-popup-close {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        color: #c5c6c7;
+        cursor: pointer;
+        font-size: 1.5rem;
+      }
+
+      /* Rating Stars */
+      .rating {
+        display: inline-block;
+      }
+
+      .rating input {
+        display: none;
+      }
+
+      .rating label {
+        float: right;
+        cursor: pointer;
+        color: #abadaf;
+      }
+
+      .rating label:before {
+        content: "\2605";
+        /* Star character */
+        font-size: 1.25rem;
+      }
+
+      .rating .half:before {
+        content: "\2605";
+        position: absolute;
+        padding-right: 0;
+      }
+
+      .rating input:checked ~ label,
+      .rating input:checked ~ label:before {
+        color: #66fcf1;
+      }
+
+      .rating label:hover,
+      .rating label:hover ~ label,
+      .rating label:hover:before,
+      .rating label:hover ~ label:before {
+        color: #66fcf1;
+      }
+    </style>
+  </head>
+
+  <body class="font-sans">
+    <div
+      class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6 mt-4"
+    >
+      <div
+        class="md:col-span-3 bg-abyss-dark-secondary p-6 rounded-lg shadow-md"
+      >
+        <img
+          src="https://th.bing.com/th/id/OIP.sVh8VQN_A0JLiqKUUoyXcwHaEK?rs=1&pid=ImgDetMain"
+          alt="Interstellar Poster"
+          class="w-full h-auto rounded-lg mb-6 shadow-lg border border-abyss-accent-dark"
+        />
+
+        <h2 class="text-3xl font-bold text-abyss-light mb-2">
+          Interstellar (2014)
+        </h2>
+        <span
+          class="bg-abyss-accent-dark text-abyss-dark text-sm px-2 py-1 rounded-full"
+          >Movie</span
+        >
+
+        <p class="mt-4 text-abyss-light leading-relaxed">
+          A team of explorers travel through a wormhole in space in an attempt
+          to ensure humanity's survival. Directed by Christopher Nolan,
+          "Interstellar" blends scientific realism with emotional storytelling.
+        </p>
+
+        <p class="mt-4 text-sm text-abyss-accent-dark italic">
+          Genres: Sci-Fi, Drama | Director: Christopher Nolan | Duration: 169
+          mins
+        </p>
+        <div class="mt-6">
+          <button
+            id="add-to-board-btn"
+            class="bg-abyss-accent text-abyss-dark px-4 py-2 rounded-lg hover:bg-abyss-accent-dark transition duration-200"
+          >
+            ➕ Add to Board
+          </button>
+        </div>
+
+        <div class="mt-8">
+          <h3 class="text-2xl font-semibold text-abyss-light mb-4">Reviews</h3>
+
+          <div class="mb-4">
+            <p class="text-abyss-light">Rate this:</p>
+            <div class="rating">
+              <input type="radio" id="star5" name="rating" value="5" /><label
+                for="star5"
+              ></label>
+              <input type="radio" id="star4" name="rating" value="4" /><label
+                for="star4"
+              ></label>
+              <input type="radio" id="star3" name="rating" value="3" /><label
+                for="star3"
+              ></label>
+              <input type="radio" id="star2" name="rating" value="2" /><label
+                for="star2"
+              ></label>
+              <input type="radio" id="star1" name="rating" value="1" /><label
+                for="star1"
+              ></label>
+            </div>
+            <p class="text-sm text-abyss-accent-dark mt-2">
+              Average Rating: <span id="average-rating">0</span> / 5
             </p>
+          </div>
 
-            <!-- Metadata -->
-            <p class="mt-4 text-sm text-abyss-accent-dark italic">
-                Genres: Sci-Fi, Drama | Director: Christopher Nolan | Duration: 169 mins
-            </p>
-            <!-- Add to Board Button -->
-            <div class="mt-6">
-                <button id="add-to-board-btn"
-                    class="bg-abyss-accent text-abyss-dark px-4 py-2 rounded-lg hover:bg-abyss-accent-dark transition duration-200">
-                    ➕ Add to Board
+          <div class="mb-4 p-4 bg-abyss-dark rounded-md">
+            <h4 class="text-lg font-semibold text-abyss-accent mb-2">
+              Write a Review
+            </h4>
+            <textarea
+              id="review-text"
+              class="w-full p-2 bg-abyss-dark-secondary text-abyss-light rounded-md"
+              placeholder="Your review here..."
+            ></textarea>
+            <button
+              id="submit-review"
+              class="mt-2 bg-abyss-accent text-abyss-dark px-4 py-2 rounded-lg hover:bg-abyss-accent-dark transition duration-200"
+            >
+              Submit Review
+            </button>
+          </div>
+
+          <div id="reviews-container" class="space-y-4">
+            <div class="p-4 bg-abyss-dark rounded-md flex flex-col gap-2">
+              <div>
+                <h5 class="font-semibold text-abyss-light">Awesome Movie!</h5>
+                <p class="text-sm text-abyss-accent-dark">
+                  A must-watch for any sci-fi fan. The visuals and story are
+                  amazing.
+                </p>
+                <span class="text-xs text-abyss-light"> - John Doe</span>
+              </div>
+              <div class="flex items-center">
+                <button
+                  class="upvote-btn text-abyss-light hover:text-abyss-accent focus:outline-none mr-2"
+                >
+                  <svg
+                    class="h-5 w-5 inline-block align-middle"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7l4-4m0 0l4 4m-4-4v18"
+                    />
+                  </svg>
                 </button>
+                <span class="upvote-count text-abyss-light text-sm">12</span>
+              </div>
             </div>
 
-
+            <div class="p-4 bg-abyss-dark rounded-md flex flex-col gap-2">
+              <div>
+                <h5 class="font-semibold text-abyss-light">A Bit Slow</h5>
+                <p class="text-sm text-abyss-accent-dark">
+                  I found the pacing to be a bit slow at times, but the concepts
+                  were interesting.
+                </p>
+                <span class="text-xs text-abyss-light"> - Jane Smith</span>
+              </div>
+              <div class="flex items-center">
+                <button
+                  class="upvote-btn text-abyss-light hover:text-abyss-accent focus:outline-none mr-2"
+                >
+                  <svg
+                    class="h-5 w-5 inline-block align-middle"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7l4-4m0 0l4 4m-4-4v18"
+                    />
+                  </svg>
+                </button>
+                <span class="upvote-count text-abyss-light text-sm">5</span>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
 
-
-
-        <!-- Related Media Section -->
-        <div class="bg-abyss-dark-secondary p-4 rounded-lg shadow-md">
-            <h3 class="text-lg font-semibold text-abyss-accent mb-4">Related Media</h3>
-            <ul class="space-y-4">
-                <li>
-                    <h4 class="font-semibold text-abyss-light hover:text-abyss-accent cursor-pointer">Blade Runner 2049
-                    </h4>
-                    <p class="text-sm text-abyss-accent-dark">Neo-noir sci-fi exploring identity and consciousness.</p>
-                </li>
-                <li>
-                    <h4 class="font-semibold text-abyss-light hover:text-abyss-accent cursor-pointer">Arrival</h4>
-                    <p class="text-sm text-abyss-accent-dark">Linguistic puzzles meet alien contact.</p>
-                </li>
-                <li>
-                    <h4 class="font-semibold text-abyss-light hover:text-abyss-accent cursor-pointer">Ex Machina</h4>
-                    <p class="text-sm text-abyss-accent-dark">A tense psychological sci-fi drama on AI.</p>
-                </li>
-            </ul>
-        </div>
+      <div class="bg-abyss-dark-secondary p-4 rounded-lg shadow-md">
+        <h3 class="text-lg font-semibold text-abyss-accent mb-4">
+          Related Media
+        </h3>
+        <ul class="space-y-4">
+          <li>
+            <h4
+              class="font-semibold text-abyss-light hover:text-abyss-accent cursor-pointer"
+            >
+              Blade Runner 2049
+            </h4>
+            <p class="text-sm text-abyss-accent-dark">
+              Neo-noir sci-fi exploring identity and consciousness.
+            </p>
+          </li>
+          <li>
+            <h4
+              class="font-semibold text-abyss-light hover:text-abyss-accent cursor-pointer"
+            >
+              Arrival
+            </h4>
+            <p class="text-sm text-abyss-accent-dark">
+              Linguistic puzzles meet alien contact.
+            </p>
+          </li>
+          <li>
+            <h4
+              class="font-semibold text-abyss-light hover:text-abyss-accent cursor-pointer"
+            >
+              Ex Machina
+            </h4>
+            <p class="text-sm text-abyss-accent-dark">
+              A tense psychological sci-fi drama on AI.
+            </p>
+          </li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Popup Modal -->
-    <div id="board-popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
-        <div class="bg-abyss-dark-secondary p-6 rounded-lg shadow-lg text-center max-w-xs w-full">
-            <h3 class="text-xl font-semibold text-abyss-light mb-2">Added to Your Board</h3>
-            <p class="text-abyss-accent-dark text-sm mb-4">Media has been added to your <span
-                    class="text-abyss-accent font-bold">Default Board</span>.</p>
-            <button id="close-popup"
-                class="bg-abyss-accent text-abyss-dark px-4 py-2 rounded hover:bg-abyss-accent-dark">Close</button>
-        </div>
+    <div
+      id="board-popup"
+      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50"
+    >
+      <div
+        class="bg-abyss-dark-secondary p-6 rounded-lg shadow-lg text-center max-w-xs w-full"
+      >
+        <h3 class="text-xl font-semibold text-abyss-light mb-2">
+          Added to Your Board
+        </h3>
+        <p class="text-abyss-accent-dark text-sm mb-4">
+          Media has been added to your
+          <span class="text-abyss-accent font-bold">Default Board</span>.
+        </p>
+        <button
+          id="close-popup"
+          class="bg-abyss-accent text-abyss-dark px-4 py-2 rounded hover:bg-abyss-accent-dark"
+        >
+          Close
+        </button>
+      </div>
     </div>
 
     <script src="/static/js/script.js"></script>
-    <!-- script -->
     <script>
-        // Extract category and media ID from URL like /media/<category>/<id>
-        function getMediaParamsFromUrl() {
-            const url = window.location.href;
-            const match = url.match(/\/media\/([^/]+)\/(\d+)/); // e.g., /media/movie/4
-            if (match) {
-                return {
-                    category: match[1],
-                    mediaId: match[2]
-                };
-            }
-            return null;
+      document.addEventListener("DOMContentLoaded", () => {
+        const upvoteButtons = document.querySelectorAll(".upvote-btn");
+        upvoteButtons.forEach((button) => {
+          button.addEventListener("click", handleUpvote);
+        });
+
+        // Add event listener for submit review button.
+        const submitReviewButton = document.getElementById("submit-review");
+        if (submitReviewButton) {
+          submitReviewButton.addEventListener("click", handleSubmitReview);
         }
 
-        // Update DOM with fetched media data
-        function updateMediaPage(data) {
-            // Update poster
-            const poster = document.querySelector("img[alt$='Poster']");
-            poster.src = data.image_url;
-            poster.alt = `${data.title} Poster`;
+        const closeBtn = document.getElementById("close-popup");
+        if (closeBtn) {
+          closeBtn.addEventListener("click", () => {
+            document.getElementById("board-popup").classList.add("hidden");
+          });
+        }
 
-            // Update title
-            const titleElem = document.querySelector("h2");
-            titleElem.textContent = `${data.title} (${data.year})`;
+        const addButton = document.getElementById("add-to-board-btn");
+        if (addButton) {
+          addButton.addEventListener("click", addToDefaultBoard);
+        }
+        loadMediaData();
 
-            // Update media type badge
-            const badge = document.querySelector("span");
-            badge.textContent = data.type;
+        // Rating event listeners
+        const ratingInputs = document.querySelectorAll('input[name="rating"]');
+        ratingInputs.forEach((input) => {
+          input.addEventListener("change", handleRatingChange);
+        });
+      });
 
-            // Update description
-            const desc = document.querySelector("p.mt-4.text-abyss-light");
-            desc.textContent = data.description;
+      const username = getLoggedInUserLocal();
+      console.log(username);
 
-            // Update metadata
-            const metadata = document.querySelector("p.text-sm.text-abyss-accent-dark");
-            metadata.textContent = `Genres: ${data.genres.join(', ')} | Director: ${data.director} | Duration: ${data.duration} mins`;
+      async function loadMediaData() {
+        const params = getMediaParamsFromUrl();
+        console.log(params); // For debugging purposes
 
-            // Update related media
-            const relatedList = document.querySelector("ul.space-y-4");
-            relatedList.innerHTML = ""; // clear old items
+        if (!params) {
+          console.error("Missing category or media ID in URL.");
+          return;
+        }
 
-            data.related_media.forEach(item => {
-                const li = document.createElement("li");
+        const { category, mediaId } = params;
 
-                const title = document.createElement("h4");
-                title.className = "font-semibold text-abyss-light hover:text-abyss-accent cursor-pointer";
-                title.textContent = item.title;
+        try {
+          const response = await fetch(
+            `/api/mediadata/${category}/${mediaId}`,
+            {
+              headers: {
+                "X-Requested-With": "XMLHttpRequest",
+              },
+            }
+          );
 
-                const desc = document.createElement("p");
-                desc.className = "text-sm text-abyss-accent-dark";
-                desc.textContent = item.description;
+          if (!response.ok) throw new Error("Failed to fetch media data.");
 
-                li.appendChild(title);
-                li.appendChild(desc);
-                relatedList.appendChild(li);
+          const data = await response.json();
+          updateMediaPage(data);
+        } catch (err) {
+          console.error("Error loading media page:", err);
+        }
+      }
+
+      // Function to handle upvote button clicks
+      async function handleUpvote(event) {
+        const button = event.currentTarget;
+        const reviewContainer = button.closest(".p-4");
+        const reviewId = getReviewId(reviewContainer);
+        const upvoteCountSpan = button.nextElementSibling;
+
+        try {
+          const isLoggedIn = await checkIfUserIsLoggedIn();
+          if (!isLoggedIn) {
+            // Show the login popup
+            showLoginPopup();
+            return; // Stop the upvote action
+          }
+
+          const response = await fetch("/api/reviews/upvote", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Requested-With": "XMLHttpRequest",
+            },
+            body: JSON.stringify({ reviewId: reviewId }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            upvoteCountSpan.textContent = data.upvotes;
+          } else if (response.status === 401) {
+            alert("You have already upvoted this review.");
+          } else {
+            alert("Failed to upvote review.");
+          }
+        } catch (error) {
+          console.error("Error upvoting review:", error);
+          alert("Network error while upvoting.");
+        }
+      }
+
+      // Function to handle review submission
+      async function handleSubmitReview() {
+        const reviewText = document.getElementById("review-text").value.trim();
+        if (!reviewText) {
+          alert("Please enter your review before submitting.");
+          return;
+        }
+
+        const params = getMediaParamsFromUrl();
+        if (!params) {
+          console.error("Missing category or media ID in URL.");
+          return;
+        }
+        const { mediaId } = params;
+
+        try {
+          const isLoggedIn = await checkIfUserIsLoggedIn();
+          if (!isLoggedIn) {
+            alert("You must be logged in to submit a review.");
+            showLoginPopup();
+            return;
+          }
+
+          const response = await fetch("/api/reviews/add", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Requested-With": "XMLHttpRequest",
+            },
+            body: JSON.stringify({
+              mediaId: mediaId,
+              reviewText: reviewText,
+            }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            // Add the new review to the UI
+            addReviewToUI(data.review);
+            document.getElementById("review-text").value = ""; // Clear the textarea
+          } else {
+            alert("Failed to submit review.");
+          }
+        } catch (error) {
+          console.error("Error submitting review:", error);
+          alert("Network error while submitting review.");
+        }
+      }
+
+      function showBoardPopup() {
+        const popup = document.getElementById("board-popup");
+        if (popup) {
+          popup.classList.remove("hidden");
+          setTimeout(() => {
+            popup.classList.add("hidden");
+          }, 2000);
+        }
+      }
+
+      function getReviewId(reviewElement) {
+        // This will depend on how your reviews are structured and identified.
+        // You might have a data-review-id attribute on the review container.
+        // Example:
+        return reviewElement.dataset.reviewId;
+      }
+
+      function getMediaParamsFromUrl() {
+        const url = window.location.href;
+        const match = url.match(/\/media\/([^/]+)\/(\d+)/);
+        if (match) {
+          return {
+            category: match[1],
+            mediaId: match[2],
+          };
+        }
+        return null;
+      }
+
+      function updateMediaPage(data) {
+        // Update poster
+        const poster = document.querySelector("img[alt$='Poster']");
+        poster.src = data.image_url;
+        poster.alt = `${data.title} Poster`;
+
+        // Update title
+        const titleElem = document.querySelector("h2");
+        titleElem.textContent = `${data.title} (${data.year})`;
+
+        // Update media type badge
+        const badge = document.querySelector("span");
+        badge.textContent = data.type;
+
+        // Update description
+        const desc = document.querySelector("p.mt-4.text-abyss-light");
+        desc.textContent = data.description;
+
+        // Update metadata
+        const metadata = document.querySelector(
+          "p.text-sm.text-abyss-accent-dark"
+        );
+        metadata.textContent = `Genres: ${data.genres.join(", ")} | Director: ${
+          data.director
+        } | Duration: ${data.duration} mins`;
+
+        // Update related media
+        const relatedList = document.querySelector("ul.space-y-4");
+        relatedList.innerHTML = ""; // clear old items
+
+        data.related_media.forEach((item) => {
+          const li = document.createElement("li");
+
+          const title = document.createElement("h4");
+          title.className =
+            "font-semibold text-abyss-light hover:text-abyss-accent cursor-pointer";
+          title.textContent = item.title;
+
+          const desc = document.createElement("p");
+          desc.className = "text-sm text-abyss-accent-dark";
+          desc.textContent = item.description;
+
+          li.appendChild(title);
+          li.appendChild(desc);
+          relatedList.appendChild(li);
+        });
+
+        //clear the reviews
+        const reviewList = document.getElementById("reviews-container");
+        reviewList.innerHTML = "";
+
+        let totalRating = 0;
+        if (data.reviews && data.reviews.length > 0) {
+          data.reviews.forEach((review) => {
+            addReviewToUI(review);
+            totalRating += review.rating;
+          });
+          const averageRating = totalRating / data.reviews.length;
+          document.getElementById("average-rating").textContent =
+            averageRating.toFixed(1);
+        } else {
+          document.getElementById("average-rating").textContent = "0";
+        }
+      }
+
+      function addReviewToUI(review) {
+        const reviewList = document.getElementById("reviews-container");
+        const reviewDiv = document.createElement("div");
+        reviewDiv.className =
+          "p-4 bg-abyss-dark rounded-md flex flex-col gap-2";
+        reviewDiv.dataset.reviewId = review.id;
+
+        const reviewContentDiv = document.createElement("div");
+
+        const title = document.createElement("h5");
+        title.className = "font-semibold text-abyss-light";
+        title.textContent = review.title;
+
+        const reviewText = document.createElement("p");
+        reviewText.className = "text-sm text-abyss-accent-dark";
+        reviewText.textContent = review.text;
+
+        const reviewAuthor = document.createElement("span");
+        reviewAuthor.className = "text-xs text-abyss-light";
+        reviewAuthor.textContent = ` - ${review.user}`;
+
+        const reviewRating = document.createElement("p");
+        reviewRating.className = "text-xs text-abyss-accent-dark";
+        reviewRating.textContent = `Rating: ${review.rating}/5`;
+
+        reviewContentDiv.appendChild(title);
+        reviewContentDiv.appendChild(reviewText);
+        reviewContentDiv.appendChild(reviewAuthor);
+        reviewContentDiv.appendChild(reviewRating);
+
+        const upvoteDiv = document.createElement("div");
+        upvoteDiv.className = "flex items-center";
+
+        const upvoteButton = document.createElement("button");
+        upvoteButton.className =
+          "upvote-btn text-abyss-light hover:text-abyss-accent focus:outline-none mr-2";
+        upvoteButton.addEventListener("click", handleUpvote);
+        upvoteButton.innerHTML = `<svg class="h-5 w-5 inline-block align-middle" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7l4-4m0 0l4 4m-4-4v18" />
+                                </svg>`;
+
+        const upvoteCount = document.createElement("span");
+        upvoteCount.className = "upvote-count text-abyss-light text-sm";
+        upvoteCount.textContent = review.upvotes;
+
+        upvoteDiv.appendChild(upvoteButton);
+        upvoteDiv.appendChild(upvoteCount);
+
+        reviewDiv.appendChild(reviewContentDiv);
+        reviewDiv.appendChild(upvoteDiv);
+        reviewList.appendChild(reviewDiv);
+      }
+
+      async function addToBoardHandler() {
+        const params = getMediaParamsFromUrl();
+        const { mediaId } = params;
+        const username = await getLoggedInUserLocal();
+        if (!username) {
+          // show the popup of login
+          showLoginPopup();
+        }
+
+        try {
+          const response = await fetch("/api/addToBoard", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Requested-With": "XMLHttpRequest",
+            },
+            body: JSON.stringify({
+              media_id: mediaId,
+              board_id: defaultBoardId,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            showBoardPopup(); // show confirmation popup
+          } else {
+            alert(
+              "❌ Failed to add to board: " +
+                (result.message || "Unknown error")
+            );
+          }
+        } catch (err) {
+          console.error("Add to board failed:", err);
+          alert("❌ Could not add to board due to a network or server error.");
+        }
+      }
+
+      // Optional popup logic
+      function showBoardPopup() {
+        const popup = document.getElementById("board-popup");
+        if (popup) {
+          popup.classList.remove("hidden");
+          setTimeout(() => {
+            popup.classList.add("hidden");
+          }, 2000);
+        }
+      }
+
+      function getReviewId(reviewElement) {
+        return reviewElement.dataset.reviewId;
+      }
+
+      // Rating
+      const ratingInputs = document.querySelectorAll('input[name="rating"]');
+      let userRating = 0; // Keep track of the user's rating
+
+      ratingInputs.forEach((input) => {
+        input.addEventListener("change", async (event) => {
+          if (!(await getLoggedInUserLocal())) {
+            showLoginPopup();
+            // Reset the rating stars to the previous rating
+            if (userRating === 0) {
+              ratingInputs.forEach((input) => (input.checked = false));
+            } else {
+              document.getElementById(`star${userRating}`).checked = true;
+            }
+            return;
+          }
+
+          userRating = parseInt(event.target.value);
+          const params = getMediaParamsFromUrl();
+          const { mediaId } = params;
+
+          try {
+            const response = await fetch("/api/rate", {
+              //  Corrected endpoint to '/api/rate'
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+              },
+              body: JSON.stringify({
+                mediaId: mediaId,
+                rating: userRating,
+              }),
             });
-        }
 
-        // Load media content on DOM ready
-        document.addEventListener("DOMContentLoaded", async () => {
-            const params = getMediaParamsFromUrl();
-
-            if (!params) {
-                console.error("Missing category or media ID in URL.");
-                return;
+            if (response.ok) {
+              const data = await response.json();
+              // Update the displayed average rating
+              document.getElementById("average-rating").textContent =
+                data.averageRating.toFixed(1);
+              // Optionally, update the user's review with the rating.
+              // findUserReviewAndUpdateRating(userRating);
+            } else {
+              alert("Failed to submit rating.");
             }
-
-            const { category, mediaId } = params;
-
-            try {
-                const response = await fetch(`/api/mediadata/${category}/${mediaId}`, {
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest"
-                    }
-                });
-
-                if (!response.ok) throw new Error("Failed to fetch media data.");
-
-                const data = await response.json();
-                updateMediaPage(data);
-            } catch (err) {
-                console.error("Error loading media page:", err);
-            }
+          } catch (error) {
+            console.error("Error submitting rating:", error);
+            alert("Network error while submitting rating.");
+          }
         });
+      });
 
+      function findUserReviewAndUpdateRating(rating) {
+        const reviewList = document.getElementById("reviews-container");
+        const reviewDivs = reviewList.querySelectorAll(".p-4"); // Select review containers
 
+        reviewDivs.forEach((reviewDiv) => {
+          const reviewId = reviewDiv.dataset.reviewId; // Assuming you have review ID stored
 
-
-        // add to the board button functionality
-        async function addToBoardHandler() {
-            const params = getMediaParamsFromUrl();
-            const { mediaId } = params;
-            const username = await fetchLoggedInUser(); // Fetch the username from the server
-            if(!username){
-                // show the popup of login
-                showLoginPopup();
-            }
-
-            try {
-                const response = await fetch("/api/addToBoard", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-Requested-With": "XMLHttpRequest"
-                    },
-                    body: JSON.stringify({
-                        media_id: mediaId,
-                        board_id: defaultBoardId
-                    })
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    showBoardPopup(); // show confirmation popup
-                } else {
-                    alert("❌ Failed to add to board: " + (result.message || "Unknown error"));
-                }
-            } catch (err) {
-                console.error("Add to board failed:", err);
-                alert("❌ Could not add to board due to a network or server error.");
-            }
-        }
-
-        // Optional popup logic
-        function showBoardPopup() {
-            const popup = document.getElementById("board-popup");
-            if (popup) {
-                popup.classList.remove("hidden");
-                setTimeout(() => {
-                    popup.classList.add("hidden");
-                }, 2000); // auto-hide after 2s
-            }
-        }
-
-        // Add button listener
-        document.addEventListener("DOMContentLoaded", () => {
-            const addBtn = document.getElementById("add-to-board-btn");
-            if (addBtn) {
-                addBtn.addEventListener("click", addToBoardHandler);
-            }
-
-            const closeBtn = document.getElementById("close-popup");
-            if (closeBtn) {
-                closeBtn.addEventListener("click", () => {
-                    document.getElementById("board-popup").classList.add("hidden");
-                });
-            }
+          //  Logic to find the review and update
+          const ratingElement = reviewDiv.querySelector(
+            ".text-xs.text-abyss-accent-dark:last-child"
+          );
+          if (ratingElement) {
+            ratingElement.textContent = `Rating: ${rating}/5`;
+          }
         });
-
-        function showBoardPopup() {
-            const popup = document.getElementById('board-popup');
-            if (popup) {
-                popup.classList.remove('hidden');
-            }
-        }
-
-        // Initialize event listeners
-        document.addEventListener('DOMContentLoaded', () => {
-            const closeBtn = document.getElementById('close-popup');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    document.getElementById('board-popup').classList.add('hidden');
-                });
-            }
-
-            const addButton = document.getElementById('add-to-board-btn');
-            if (addButton) {
-                addButton.addEventListener('click', addToDefaultBoard);
-            }
-        });
+      }
     </script>
-
-
-
-</body>
-
+  </body>
 </html>

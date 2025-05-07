@@ -101,9 +101,9 @@ def mainEraPage(era):
 def mainMediaPage(media,era):
     return render_template('movies.html')
 # ---------singleDiscussionPage----------
-@app.route('/mediapage/<era>/<category>/<title>', methods = ['GET'])
-def singleMediaPage(era, category, title):
-    return render_template('movies.html')
+@app.route('/mediapage/<era>/<category>/<media_id>', methods = ['GET'])
+def singleMediaPage(era, category, media_id):
+    return render_template('singlemedia.html')
 # ----------leaderboard page---------------
 @app.route('/leaderboard', methods=['GET'])
 def leaderboard():

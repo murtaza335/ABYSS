@@ -86,7 +86,7 @@ def fetchDescriptionOfEra(era):
 def fetchAllMediaByEra(era, media_type):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    query = f"select title, description, img_link, age_rating, rating from media m join eras e on m.era_id = e.era_id where e.name = %s and m.mediatype = %s"
+    query = f"select media_id, title, description, img_link, age_rating, rating from media m join eras e on m.era_id = e.era_id where e.name = %s and m.mediatype = %s"
     cursor.execute(query, (era,media_type))
     result = cursor.fetchall()
     cursor.close()
@@ -412,9 +412,11 @@ def createBoardByUsername(username, board_name, description):
         return False
 def fetchDataForSingleMediaPage(category, media_id):
     conn = get_connection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(dictionary=True)
+    # removing the last s from the category just because of the table name in the database
+    table = category[:-1]
     # query for fetching the data for the single media 
-    query = f"select * from media m join {category} s on m.media_id = s.media_id where m.media_id = %s"
+    query = f"select * from media m join {category} s on m.media_id = s.{table}_id where m.media_id = %s"
     cursor.execute(query, (media_id,))
     result = cursor.fetchone()
     cursor.close()
