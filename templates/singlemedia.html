@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ABYSS - Interstellar</title>
+    <link rel="stylesheet" href="/static/styles.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -148,6 +149,22 @@
   </head>
 
   <body class="font-sans">
+    <!-- Navigation Bar -->
+<nav id="main-nav">
+  <div class="logo" onclick="goToHome()">ABYSS</div>
+  <ul>
+    <li><a href="#" id="leaderboardLink" onclick="goToLeaderboard()">Leaderboard</a></li>
+    <li><a href="#" onclick="goToCommunity()">Community</a></li>
+    <li class="profile-menu">
+      <a href="#" onclick="toggleProfileDropdown()">Profile</a>
+      <div id="profileDropdown" class="dropdown-content" style="display: none;">
+        <a href="#" onclick="goToProfile()">View Profile</a>
+        <a href="#" onclick="logout()">Logout</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
     <div
       class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6 mt-4"
     >
@@ -532,13 +549,19 @@
 
       function getMediaParamsFromUrl() {
         const url = window.location.href;
-        const match = url.match(/\/media\/([^/]+)\/(\d+)/);
+        console.log(url); // For debugging purposes
+
+        const match = url.match(/\/mediapage\/([^/]+)\/([^/]+)\/(\d+)/);
+
         if (match) {
+          console.log(match[1], match[2], match[3]);
           return {
-            category: match[1],
-            mediaId: match[2],
+            category: match[1], // 'classical'
+            mediaType: match[2], // 'movies'
+            mediaId: match[3], // '1'
           };
         }
+
         return null;
       }
 

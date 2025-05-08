@@ -8,7 +8,7 @@ async function fetchLoggedInUser() {
     });
 
     const data = await response.json();
-    console.log("Response from logged-in user API:", data);
+    console.log("api called server");
 
     if (data.error) {
       console.warn("User not logged in");
@@ -25,13 +25,16 @@ async function fetchLoggedInUser() {
 }
 
 function getLoggedInUserLocal() {
-  const user = window.localStorage.getItem("user");
+  console.log("local storage called");
+  const user = window.localStorage.getItem("username");
   return user ? JSON.parse(user) : null;
 }
 
+
 function addUserToLocalStorage(user) {
   if (user) {
-    window.localStorage.setItem("user", JSON.stringify(user));
+    window.localStorage.setItem("username", JSON.stringify(user));
+    console.log("User added to local storage:", user);
   } else {
     console.error("Invalid user object provided.");
   }
@@ -117,10 +120,13 @@ function showLoginPopup() {
         return response.json();
       })
       .then((data) => {
-        location.reload();
+        addUserToLocalStorage(data.username);
+        console.log("Username saved:", data.username);
+      // Only reload after storage
+      setTimeout(() => location.reload(), 100);
         // Reload the page to reflect the logged-in state
         //  add the logged in usar to the local storage of the browser
-        addUsernameToLocalStorage(data.username);
+        
         closePopup();
       })
       .catch((err) => {
@@ -200,4 +206,75 @@ async function checkUserUpvoted(username, discussionId) {
     console.error("Error checking upvote status:", err);
   }
 }
-// here is the js for the footer
+// here is the js for the navigation bar
+function goToHome() {
+  window.location.href = '/';
+}
+
+function goToLeaderboard() {
+  window.location.href = '/';
+}
+
+function goToCommunity() {
+  window.location.href = '/community';
+}
+
+function goToProfile() {
+  if (username = getLoggedInUserLocal()) {
+    console.log("User is logged in:", username);
+    window.location.href = `/profilepage/${username}`;
+  }
+  else{
+    showLoginPopup();
+  }
+}
+
+function logout() {
+    fetch('/api/logout', {
+      method: 'GET',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Logout failed");
+      }
+      return response.json();
+    })
+    .then(data => {
+      window.localStorage.removeItem("username");  // Clear local storage
+      //  we will just reload the page to reflect the changes
+      setTimeout(() => location.reload(), 100);
+    })
+    .catch(error => {
+      console.error('Error during logout:', error);
+      alert('Logout failed. Please try again.');
+    });
+  }
+  
+
+function toggleProfileDropdown() {
+  if (!getLoggedInUserLocal()){
+    showLoginPopup();
+    return;
+  }
+  const dropdown = document.getElementById('profileDropdown');
+  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+// Optional: Close dropdown if user clicks outside of it
+document.addEventListener('click', function (event) {
+  const dropdown = document.getElementById('profileDropdown');
+  const profileMenu = document.querySelector('.profile-menu');
+  if (!profileMenu.contains(event.target)) {
+    dropdown.style.display = 'none';
+  }
+});
+
+
+// navigate to page logic
+function navigateToPage(url) {
+  window.location.href = url;
+}
+

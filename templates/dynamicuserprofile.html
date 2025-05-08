@@ -8,6 +8,7 @@
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="/static/styles.css">
     <link
       href="https://fonts.googleapis.com/css2?family=Aptos:wght@400;500;600;700&display=swap"
       rel="stylesheet"
@@ -192,48 +193,21 @@
     </style>
   </head>
   <body>
-    <!-- Top Navigation Bar - Lighter gray -->
-    <nav
-      class="top-ribbon py-5 px-8 flex justify-between items-center shadow-lg"
-    >
-      <div class="flex items-center">
-        <button id="backButton" class="mr-5 text-gray-300 hover:text-white">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-7 w-7"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-        <a href="/" class="text-3xl font-bold" style="color: #66fcf1">ABYSS</a>
+    <!-- Navigation Bar -->
+<nav id="main-nav">
+  <div class="logo" onclick="goToHome()">ABYSS</div>
+  <ul>
+    <li><a href="#" id="leaderboardLink" onclick="goToLeaderboard()">Leaderboard</a></li>
+    <li><a href="#" onclick="goToCommunity()">Community</a></li>
+    <li class="profile-menu">
+      <a href="#" onclick="toggleProfileDropdown()">Profile</a>
+      <div id="profileDropdown" class="dropdown-content" style="display: none;">
+        <a href="#" onclick="goToProfile()">View Profile</a>
+        <a href="#" onclick="logout()">Logout</a>
       </div>
-      <div class="flex items-center space-x-8">
-        <a
-          href="/leaderboard"
-          class="text-lg text-gray-300 hover:abyss-red transition duration-300"
-          >Leaderboard</a
-        >
-        <a
-          href="/community"
-          class="text-lg text-gray-300 hover:abyss-red transition duration-300"
-          >Community</a
-        >
-        <a
-          href="/profile"
-          class="text-lg text-[#66fcf1] font-medium"
-          style="color: #66fcf1"
-          >Profile</a
-        >
-      </div>
-    </nav>
+    </li>
+  </ul>
+</nav>
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">

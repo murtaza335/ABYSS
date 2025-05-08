@@ -1,1350 +1,1135 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Ultimate Timeline</title>
-    <!-- <link rel="stylesheet" href="/static/abysstrial6.css"> -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/static/styles.css" />
-    <style>
-      /* Dark Mode Theme with New Color Palette */
-      body {
-        background-color: #0b0c10;
-        color: #c5c6c7;
-        font-family: "Poppins", "Montserrat", Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        text-align: center;
-      }
-      /* section that contains the search bar and the buttons of movies... */
-      .firstsection {
-        height: 88vh;
-        display: flex;
-        justify-content: center; /* horizontal centering */
-        align-items: center; /* vertical centering */
-        flex-direction: column; /* if you want text and search stacked */
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Ultimate Timeline</title>
+  
+  <!-- <link rel="stylesheet" href="/static/abysstrial6.css"> -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    /* Dark Mode Theme with New Color Palette */
+    body {
+      background-color: #0b0c10;
+      color: #c5c6c7;
+      font-family: "Poppins", "Montserrat", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    /* section that contains the search bar and the buttons of movies... */
+    .firstsection {
+  height: 88vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background: #0b0c10; /* Deep black background */
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  color: #c5c6c7; /* Text color for contrast */
+}
+
+/* Subtle glowing accents using your color palette */
+.firstsection::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle at 50% 50%, #45a29e20 0%, transparent 70%),
+              radial-gradient(circle at 30% 30%, #66fcf120 0%, transparent 70%),
+              radial-gradient(circle at 70% 70%, #c5c6c720 0%, transparent 70%);
+  animation: glowAnimation 25s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes glowAnimation {
+  0% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+}
+
+
+    /* Header */
+    header {
+      margin: 30px;
+    }
+
+    /* Enhanced Search Bar */
+    .search-bar {
+      margin: auto;
+      margin-top: 30px;
+      width: 50vw;
+      display: flex;
+      border: none;
+      border-radius: 50px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(102, 252, 241, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .search-bar:focus-within {
+      box-shadow: 0 8px 25px rgba(102, 252, 241, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .search-bar input {
+      width: 85%;
+      padding: 18px 25px;
+      border: none;
+      outline: none;
+      background: #1f2833;
+      color: #c5c6c7;
+      font-size: 18px;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .search-bar button {
+      width: 15%;
+      padding: 18px 25px;
+      border: none;
+      cursor: pointer;
+      background: #45a29e;
+      color: #0b0c10;
+      font-size: 18px;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background: #66fcf1;
+    }
+
+    /* Category Buttons */
+
+    .category-buttons button {
+      background: #1f2833;
+      color: #c5c6c7;
+      padding: 10px 20px;
+      margin: 5px;
+      border: 2px solid #45a29e;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .category-buttons button:hover {
+      background: #45a29e;
+      color: #0b0c10;
+    }
+
+    /* Enhanced Timeline */
+    .timeline-container {
+      top: 40px;
+      margin: 50px auto;
+      width: 100%;
+      max-width: 1200px;
+      position: relative;
+    }
+
+    .era {
+      position: absolute;
+      color: #c5c6c7;
+      background-color: #1f2833;
+      border: 2px solid #45a29e;
+      border-radius: 30px;
+      padding: 12px 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+      font-family: "Montserrat", sans-serif;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+    }
+
+    .era-label {
+      position: absolute;
+      background-color: transparent;
+      border: 2px transparent;
+      border-radius: 30px;
+      padding: 10px 20px transparent;
+      font-weight: bold;
+      font-size: 16px;
+      font-family: "Montserrat", sans-serif;
+      white-space: nowrap;
+      color: #66fcf1;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      letter-spacing: 0.3px;
+    }
+
+    .era:hover {
+      background-color: #45a29e;
+      color: #0b0c10;
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(102, 252, 241, 0.2);
+    }
+
+    .era-label:hover {
+      background-color: transparent;
+      color: #66fcf1;
+      transform: scale(1.05);
+    }
+
+    .connector {
+      position: absolute;
+      border-top: 5px dotted #45a29e;
+    }
+
+    /* Positioning each era and label */
+    #prehistory {
+      top: 60px;
+      left: 5%;
+    }
+
+    #classical {
+      top: 60px;
+      right: 5%;
+    }
+
+    #medieval {
+      top: 220px;
+      right: 20.5%;
+    }
+
+    #early-modern {
+      top: 220px;
+      left: 20%;
+    }
+
+    #modern {
+      top: 350px;
+      left: 58%;
+    }
+
+    #future {
+      top: 500px;
+      left: 15%;
+    }
+
+    /* Era labels */
+    #stone-label {
+      top: 50px;
+      left: 30%;
+    }
+
+    #iron-label {
+      top: 50px;
+      right: 30%;
+    }
+
+    #bronze-label {
+      top: 111px;
+      left: 47%;
+    }
+
+    #renaissance-label {
+      top: 337px;
+      left: 10%;
+    }
+
+    #industrial-label {
+      top: 380px;
+      left: 34%;
+    }
+
+    #information-label {
+      top: 490px;
+      left: 40%;
+    }
+
+    #atomic-label {
+      top: 542px;
+      right: 35%;
+    }
+
+    #twentieth-label {
+      top: 490px;
+      right: 15%;
+    }
+
+    /* Connectors */
+    #prehistory-classical {
+      top: 80px;
+      left: 14%;
+      width: 70.2%;
+    }
+
+    #classical-medieval {
+      top: 101px;
+      right: 10%;
+      width: 2px;
+      height: 138px;
+      border-left: 5px dotted #45a29e;
+      border-top: none;
+    }
+
+    #classical-medieval-horiz {
+      top: 238px;
+      right: 10.5%;
+      width: 10%;
+    }
+
+    #medieval-early {
+      top: 238px;
+      left: 33%;
+      width: 36%;
+    }
+
+    #early-horiz {
+      top: 238px;
+      left: 6%;
+      width: 14%;
+    }
+
+    #early-modern-renaissance {
+      top: 238px;
+      left: 6%;
+      width: 2px;
+      height: 130px;
+      border-left: 5px dotted #45a29e;
+      border-top: none;
+    }
+
+    #renaissance-to-modern {
+      top: 366px;
+      left: 6%;
+      width: 52%;
+    }
+
+    #modern-horiz {
+      top: 366px;
+      right: 6.5%;
+      width: 25.5%;
+    }
+
+    #modern-twentieth {
+      top: 366px;
+      right: 6%;
+      width: 2px;
+      height: 152px;
+      border-left: 5px dotted #45a29e;
+      border-top: none;
+    }
+
+    #future-twenty {
+      top: 520px;
+      right: 6.15%;
+      width: 71.5%;
+    }
+
+    #future-line {
+      top: 520px;
+      left: 9%;
+      width: 6%;
+    }
+
+    #future-dot {
+      position: absolute;
+      top: 516px;
+      left: 8.5%;
+      width: 10px;
+      height: 10px;
+      background-color: #66fcf1;
+      border-radius: 50%;
+    }
+
+    .floating {
+      animation: floatText 1s infinite alternate ease-in-out;
+    }
+
+    @keyframes floatText {
+      from {
+        transform: translateY(0);
       }
 
-      /* Header */
-      header {
-        margin: auto;
+      to {
+        transform: translateY(-10px);
       }
+    }
 
-      /* Enhanced Search Bar */
-      .search-bar {
-        margin: auto;
-        width: 70%;
-        display: flex;
-        border: none;
-        border-radius: 50px;
-        overflow: hidden;
-        box-shadow: 0 8px 20px rgba(102, 252, 241, 0.15);
-        transition: all 0.3s ease;
-      }
 
-      .search-bar:focus-within {
-        box-shadow: 0 8px 25px rgba(102, 252, 241, 0.25);
-        transform: translateY(-2px);
-      }
 
-      .search-bar input {
-        width: 85%;
-        padding: 18px 25px;
-        border: none;
-        outline: none;
-        background: #1f2833;
-        color: #c5c6c7;
-        font-size: 18px;
-        font-family: "Poppins", sans-serif;
-      }
+    /* Add style for active buttons */
+    .category-buttons button.active {
+      background-color: #45a29e;
+      color: #0b0c10;
+    }
 
-      .search-bar button {
-        width: 15%;
-        padding: 18px 25px;
-        border: none;
-        cursor: pointer;
-        background: #45a29e;
-        color: #0b0c10;
-        font-size: 18px;
-        font-weight: 600;
-        transition: 0.3s ease;
-      }
+    /* About Section Styles */
+    .about-section {
+      height: 88vh;
+      /* padding: 3rem 5%; */
+      text-align: center;
+      background-color: #1f2833;
+    }
 
-      .search-bar button:hover {
-        background: #66fcf1;
-      }
+    .about-section h2 {
+      margin-bottom: 1rem;
+      color: #66fcf1;
+    }
 
-      /* Category Buttons */
-      .category-buttons {
-        margin: auto 20px;
-      }
+    .about-section p {
+      max-width: 200px;
+      margin: 0 auto;
+      text-align: justify;
+      line-height: 1.6;
+      color: #c5c6c7;
+    }
 
-      .category-buttons button {
-        background: #1f2833;
-        color: #c5c6c7;
-        padding: 10px 20px;
-        margin: 5px;
-        border: 2px solid #45a29e;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
+    /* Search icon style */
+    #search-button svg {
+      fill: currentColor;
+    }
 
-      .category-buttons button:hover {
-        background: #45a29e;
-        color: #0b0c10;
-      }
+    /* Testimonials Section Styles */
+    .testimonials-section {
+      margin-top: 680px;
+      padding: 3rem 5%;
+      background-color: #0b0c10;
+      color: #c5c6c7;
+      text-align: center;
+    }
 
-      /* Enhanced Timeline */
-      .timeline-container {
-        top: 40px;
-        margin: 50px auto;
-        width: 100%;
-        max-width: 1200px;
-        position: relative;
-      }
+    .testimonials-section h2 {
+      margin-bottom: 2rem;
+      color: #66fcf1;
+    }
 
-      .era {
-        position: absolute;
-        color: #c5c6c7;
-        background-color: #1f2833;
-        border: 2px solid #45a29e;
-        border-radius: 30px;
-        padding: 12px 25px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: bold;
-        font-size: 18px;
-        font-family: "Montserrat", sans-serif;
-        white-space: nowrap;
-        transition: all 0.3s ease;
-        letter-spacing: 0.5px;
-      }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-      .era-label {
-        position: absolute;
-        background-color: transparent;
-        border: 2px transparent;
-        border-radius: 30px;
-        padding: 10px 20px transparent;
-        font-weight: bold;
-        font-size: 16px;
-        font-family: "Montserrat", sans-serif;
-        white-space: nowrap;
-        color: #66fcf1;
-        cursor: pointer;
-        transition: color 0.3s ease;
-        letter-spacing: 0.3px;
-      }
+    .testimonial-card {
+      background-color: #1f2833;
+      padding: 2rem;
+      border-radius: 8px;
+      text-align: left;
+      border: 1px solid #45a29e;
+    }
 
-      .era:hover {
-        background-color: #45a29e;
-        color: #0b0c10;
-        transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(102, 252, 241, 0.2);
-      }
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
 
-      .era-label:hover {
-        background-color: transparent;
-        color: #66fcf1;
-        transform: scale(1.05);
-      }
+    .testimonial-author {
+      font-weight: 600;
+      color: #66fcf1;
+    }
 
-      .connector {
-        position: absolute;
-        border-top: 5px dotted #45a29e;
-      }
 
-      /* Positioning each era and label */
-      #prehistory {
-        top: 60px;
-        left: 5%;
-      }
-      #classical {
-        top: 60px;
-        right: 5%;
-      }
-      #medieval {
-        top: 220px;
-        right: 20.5%;
-      }
-      #early-modern {
-        top: 220px;
-        left: 20%;
-      }
-      #modern {
-        top: 350px;
-        left: 58%;
-      }
-      #future {
-        top: 500px;
-        left: 15%;
-      }
+    /* Newsletter Section Styles */
+    .newsletter-section {
+      padding: 3rem 5%;
+      background-color: #0b0c10;
+      color: #c5c6c7;
+      text-align: center;
+    }
 
-      /* Era labels */
-      #stone-label {
-        top: 50px;
-        left: 30%;
-      }
-      #iron-label {
-        top: 50px;
-        right: 30%;
-      }
-      #bronze-label {
-        top: 111px;
-        left: 47%;
-      }
-      #renaissance-label {
-        top: 337px;
-        left: 10%;
-      }
-      #industrial-label {
-        top: 380px;
-        left: 34%;
-      }
-      #information-label {
-        top: 490px;
-        left: 40%;
-      }
-      #atomic-label {
-        top: 542px;
-        right: 35%;
-      }
-      #twentieth-label {
-        top: 490px;
-        right: 15%;
-      }
+    .newsletter-section h2 {
+      margin-bottom: 1rem;
+      color: #66fcf1;
+    }
 
-      /* Connectors */
-      #prehistory-classical {
-        top: 80px;
-        left: 14%;
-        width: 70.2%;
-      }
-      #classical-medieval {
-        top: 101px;
-        right: 10%;
-        width: 2px;
-        height: 138px;
-        border-left: 5px dotted #45a29e;
-        border-top: none;
-      }
-      #classical-medieval-horiz {
-        top: 238px;
-        right: 10.5%;
-        width: 10%;
-      }
-      #medieval-early {
-        top: 238px;
-        left: 33%;
-        width: 36%;
-      }
-      #early-horiz {
-        top: 238px;
-        left: 6%;
-        width: 14%;
-      }
-      #early-modern-renaissance {
-        top: 238px;
-        left: 6%;
-        width: 2px;
-        height: 130px;
-        border-left: 5px dotted #45a29e;
-        border-top: none;
-      }
-      #renaissance-to-modern {
-        top: 366px;
-        left: 6%;
-        width: 52%;
-      }
-      #modern-horiz {
-        top: 366px;
-        right: 6.5%;
-        width: 25.5%;
-      }
-      #modern-twentieth {
-        top: 366px;
-        right: 6%;
-        width: 2px;
-        height: 152px;
-        border-left: 5px dotted #45a29e;
-        border-top: none;
-      }
-      #future-twenty {
-        top: 520px;
-        right: 6.15%;
-        width: 71.5%;
-      }
-      #future-line {
-        top: 520px;
-        left: 9%;
-        width: 6%;
-      }
-      #future-dot {
-        position: absolute;
-        top: 516px;
-        left: 8.5%;
-        width: 10px;
-        height: 10px;
-        background-color: #66fcf1;
-        border-radius: 50%;
-      }
+    .newsletter-section p {
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
 
-      .floating {
-        animation: floatText 1s infinite alternate ease-in-out;
-      }
+    .newsletter-form {
+      display: flex;
+      max-width: 500px;
+      margin: 0 auto;
+    }
 
-      @keyframes floatText {
-        from {
-          transform: translateY(0);
-        }
-        to {
-          transform: translateY(-10px);
-        }
-      }
+    .newsletter-form input {
+      flex: 1;
+      padding: 0.8rem;
+      border: 1px solid #45a29e;
+      border-radius: 4px 0 0 4px;
+      font-size: 1rem;
+      background-color: #1f2833;
+      color: #c5c6c7;
+    }
 
-      /* Login Modal Styles */
-      .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(11, 12, 16, 0.8);
-        overflow: hidden; /* Prevent scrolling */
-      }
+    .newsletter-form button {
+      padding: 0.8rem 1.5rem;
+      background-color: #45a29e;
+      border: none;
+      border-radius: 0 4px 4px 0;
+      color: #0b0c10;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+    }
 
-      .modal-content {
-        background-color: #1f2833;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #45a29e;
-        width: 300px;
-        max-height: 80vh; /* Ensure it doesn't exceed viewport height */
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(11, 12, 16, 0.4);
-        color: #c5c6c7;
-      }
+    .newsletter-form button:hover {
+      background-color: #66fcf1;
+    }
 
-      /* When modal is open, prevent body scrolling */
-      body.modal-open {
-        overflow: hidden;
-      }
+    /* App Promotion Styles */
+    .app-section {
+      padding: 3rem 5%;
+      background-color: #1f2833;
+      text-align: center;
+      color: #c5c6c7;
+    }
 
-      .close {
-        color: #c5c6c7;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-      }
+    .app-section h2 {
+      margin-bottom: 1rem;
+      color: #66fcf1;
+    }
 
-      .close:hover {
-        color: #66fcf1;
-      }
+    .app-section p {
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
 
-      .login-form input {
-        width: 100%;
-        padding: 10px;
-        margin: 8px 0;
-        display: inline-block;
-        border: 1px solid #45a29e;
-        background-color: #0b0c10;
-        color: #c5c6c7;
-        border-radius: 4px;
-        box-sizing: border-box;
-      }
+    .app-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
 
-      .login-form button {
-        background-color: #45a29e;
-        color: #0b0c10;
-        padding: 10px 15px;
-        margin: 8px 0;
-        border: none;
-        cursor: pointer;
-        width: 100%;
-        border-radius: 4px;
-      }
+    .app-button {
+      padding: 0.8rem 1.5rem;
+      background-color: #0b0c10;
+      color: #66fcf1;
+      border: 1px solid #45a29e;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
 
-      .login-form button:hover {
-        background-color: #66fcf1;
-      }
+    .app-button:hover {
+      background-color: #45a29e;
+      color: #0b0c10;
+    }
 
-      /* Add style for active buttons */
-      .category-buttons button.active {
-        background-color: #45a29e;
-        color: #0b0c10;
-      }
+    /* Footer Styles */
+    footer {
+      background-color: #0b0c10;
+      color: #c5c6c7;
+      padding: 3rem 5%;
+    }
 
-      /* About Section Styles */
-      .about-section {
-        padding: 3rem 5%;
-        text-align: center;
-        background-color: #1f2833;
-      }
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-      .about-section h2 {
-        margin-bottom: 1rem;
-        color: #66fcf1;
-      }
+    .footer-column h3 {
+      margin-bottom: 1.5rem;
+      color: #66fcf1;
+    }
 
-      .about-section p {
-        max-width: 800px;
-        margin: 0 auto;
-        line-height: 1.6;
-        color: #c5c6c7;
-      }
+    .footer-column ul {
+      list-style: none;
+    }
 
-      /* Search icon style */
-      #search-button svg {
-        fill: currentColor;
-      }
+    .footer-column ul li {
+      margin-bottom: 0.8rem;
+    }
 
-      /* Testimonials Section Styles */
-      .testimonials-section {
-        margin-top: 680px;
-        padding: 3rem 5%;
-        background-color: #0b0c10;
-        color: #c5c6c7;
-        text-align: center;
-      }
+    .footer-column ul li a {
+      color: #c5c6c7;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
 
-      .testimonials-section h2 {
-        margin-bottom: 2rem;
-        color: #66fcf1;
-      }
+    .footer-column ul li a:hover {
+      color: #66fcf1;
+    }
 
-      .testimonials-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
 
-      .testimonial-card {
-        background-color: #1f2833;
-        padding: 2rem;
-        border-radius: 8px;
-        text-align: left;
-        border: 1px solid #45a29e;
-      }
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #1f2833;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c5c6c7;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
 
-      .testimonial-text {
-        font-style: italic;
-        margin-bottom: 1rem;
-        line-height: 1.6;
-      }
+    .social-icon:hover {
+      background-color: #45a29e;
+      color: #0b0c10;
+    }
 
-      .testimonial-author {
-        font-weight: 600;
-        color: #66fcf1;
-      }
+    .copyright {
+      text-align: center;
+      padding-top: 2rem;
+      margin-top: 2rem;
+      border-top: 1px solid #45a29e;
+      color: #c5c6c7;
+    }
 
-      /* Recent Activity Styles */
-      /* .activity-section {
-        padding: 3rem 5%;
-        background-color: #1f2833;
-      }
-
-      .activity-section h2 {
-        text-align: center;
-        margin-bottom: 2rem;
-        color: #66fcf1;
-      }
-
-      .activity-list {
-        max-width: 800px;
-        margin: 0 auto;
-      }
-
-      .activity-item {
-        display: flex;
-        align-items: center;
-        padding: 1rem;
-        border-bottom: 1px solid #45a29e;
-      }
-
-      .activity-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #0b0c10;
-        margin-right: 1rem;
-        border: 2px solid #45a29e;
-      }
-
-      .activity-content {
-        flex: 1;
-      }
-
-      .activity-user {
-        font-weight: 600;
-        color: #66fcf1;
-      }
-
-      .activity-action {
-        color: #c5c6c7;
-      }
-
-      .activity-time {
-        color: #c5c6c7;
-        font-size: 0.9rem;
-      } */
-
-      /* Newsletter Section Styles */
-      .newsletter-section {
-        padding: 3rem 5%;
-        background-color: #0b0c10;
-        color: #c5c6c7;
-        text-align: center;
-      }
-
-      .newsletter-section h2 {
-        margin-bottom: 1rem;
-        color: #66fcf1;
-      }
-
-      .newsletter-section p {
-        max-width: 600px;
-        margin: 0 auto 2rem;
-      }
-
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
       .newsletter-form {
-        display: flex;
-        max-width: 500px;
-        margin: 0 auto;
+        flex-direction: column;
       }
 
       .newsletter-form input {
-        flex: 1;
-        padding: 0.8rem;
-        border: 1px solid #45a29e;
-        border-radius: 4px 0 0 4px;
-        font-size: 1rem;
-        background-color: #1f2833;
-        color: #c5c6c7;
+        border-radius: 4px;
+        margin-bottom: 1rem;
       }
 
       .newsletter-form button {
-        padding: 0.8rem 1.5rem;
-        background-color: #45a29e;
-        border: none;
-        border-radius: 0 4px 4px 0;
-        color: #0b0c10;
-        cursor: pointer;
-        font-size: 1rem;
-        font-weight: 600;
-      }
-
-      .newsletter-form button:hover {
-        background-color: #66fcf1;
-      }
-
-      /* App Promotion Styles */
-      .app-section {
-        padding: 3rem 5%;
-        background-color: #1f2833;
-        text-align: center;
-        color: #c5c6c7;
-      }
-
-      .app-section h2 {
-        margin-bottom: 1rem;
-        color: #66fcf1;
-      }
-
-      .app-section p {
-        max-width: 600px;
-        margin: 0 auto 2rem;
+        border-radius: 4px;
       }
 
       .app-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-      }
-
-      .app-button {
-        padding: 0.8rem 1.5rem;
-        background-color: #0b0c10;
-        color: #66fcf1;
-        border: 1px solid #45a29e;
-        border-radius: 4px;
-        display: flex;
+        flex-direction: column;
         align-items: center;
-        cursor: pointer;
       }
+    }
 
-      .app-button:hover {
-        background-color: #45a29e;
-        color: #0b0c10;
-      }
-
-      /* Footer Styles */
-      footer {
-        background-color: #0b0c10;
-        color: #c5c6c7;
-        padding: 3rem 5%;
-      }
-
-      .footer-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      .footer-column h3 {
-        margin-bottom: 1.5rem;
-        color: #66fcf1;
-      }
-
-      .footer-column ul {
-        list-style: none;
-      }
-
-      .footer-column ul li {
-        margin-bottom: 0.8rem;
-      }
-
-      .footer-column ul li a {
-        color: #c5c6c7;
-        text-decoration: none;
-        transition: color 0.3s;
-      }
-
-      .footer-column ul li a:hover {
-        color: #66fcf1;
-      }
-
-      .social-icons {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1rem;
-      }
-
-      .social-icon {
-        width: 40px;
-        height: 40px;
-        background-color: #1f2833;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #c5c6c7;
-        text-decoration: none;
-        transition: background-color 0.3s;
-      }
-
-      .social-icon:hover {
-        background-color: #45a29e;
-        color: #0b0c10;
-      }
-
-      .copyright {
-        text-align: center;
-        padding-top: 2rem;
-        margin-top: 2rem;
-        border-top: 1px solid #45a29e;
-        color: #c5c6c7;
-      }
-
-      /* Responsive Adjustments */
-      @media (max-width: 768px) {
-        .newsletter-form {
-          flex-direction: column;
+    #typing-text {
+            font-size: 36px;
+            font-weight: 600;
+            text-align: center;
+            display: inline-block;
+            padding-right: 8px;
+            letter-spacing: 1px;
+            animation: blink 0.75s step-end infinite, fadeIn 2s ease-out forwards;
+            /* text-shadow: 0 0 20px #66fcf1, 0 0 40px #45a29e; Glowing text effect with your theme's colors */
         }
 
-        .newsletter-form input {
-          border-radius: 4px;
-          margin-bottom: 1rem;
+        /* Blinking cursor */
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
         }
 
-        .newsletter-form button {
-          border-radius: 4px;
+        /* Fade-in effect */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
         }
 
-        .app-buttons {
-          flex-direction: column;
-          align-items: center;
+        /* Adjust cursor size */
+        .cursor {
+            border-right: 3px solid #66fcf1; /* Cursor color matches your theme */
+            animation: blink 0.75s step-end infinite; /* Make it blink */
         }
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Navigation Bar -->
-    <nav id="main-nav">
-      <div class="logo" onclick="location.href='abysstrial6.html'">ABYSS</div>
-      <ul>
-        <li><a href="#" id="leaderboardLink">Leaderboard</a></li>
-        <li><a href="community.html">Community</a></li>
-        <li><a href="profile.html">Profile</a></li>
-      </ul>
-    </nav>
+  </style>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
 
-    <!-- Header -->
-    <div class="firstsection">
-      <header>
-        <h1>The Ultimate Timeline: See the World Evolve.</h1>
-        <div class="search-bar">
-          <input type="text" id="search-input" placeholder="Search..." />
-          <button id="search-button">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10.5 3a7.5 7.5 0 015.645 12.438l4.709 4.708a1 1 0 01-1.414 1.414l-4.708-4.709A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"
-              />
-              <path
-                d="M17 8h-4.5"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              />
-            </svg>
-          </button>
+<body>
+  <!-- Navigation Bar -->
+  <nav id="main-nav">
+    <div class="logo" onclick="goToHome()">ABYSS</div>
+    <ul>
+      <li><a href="#" id="leaderboardLink" onclick="goToLeaderboard()">Leaderboard</a></li>
+      <li><a href="#" onclick="goToCommunity()">Community</a></li>
+      <li class="profile-menu">
+        <a href="#" onclick="toggleProfileDropdown()">Profile</a>
+        <div id="profileDropdown" class="dropdown-content" style="display: none;">
+          <a href="#" onclick="goToProfile()">View Profile</a>
+          <a href="#" onclick="logout()">Logout</a>
         </div>
-      </header>
+      </li>
+    </ul>
+  </nav>
 
-      <!-- Category Buttons - Moved up before the About section -->
-      <div class="category-buttons">
-        <button data-category="movies" onclick="toggleCategory('movies', this)">
-          Movies
-        </button>
-        <button data-category="series" onclick="toggleCategory('series', this)">
-          Series
-        </button>
-        <button data-category="anime" onclick="toggleCategory('anime', this)">
-          Anime
-        </button>
-        <button
-          data-category="cartoons"
-          onclick="toggleCategory('cartoons', this)"
-        >
-          Cartoons
-        </button>
-        <button data-category="books" onclick="toggleCategory('books', this)">
-          Books
-        </button>
-        <button data-category="games" onclick="toggleCategory('games', this)">
-          Games
+
+  <!-- Header -->
+  <div class="firstsection">
+    <header>
+      <div id="typing-text" style="min-height: 1.5em;" class = cursor></div>
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search..." />
+        <button id="search-button">
+          <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M10.5 3a7.5 7.5 0 015.645 12.438l4.709 4.708a1 1 0 01-1.414 1.414l-4.708-4.709A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z" />
+            <path d="M17 8h-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
         </button>
       </div>
+    </header>
+
+    <!-- Category Buttons - Moved up before the About section -->
+    <div class="category-buttons">
+      <button data-category="movies" onclick="toggleCategory('movies', this)">
+        Movies
+      </button>
+      <button data-category="series" onclick="toggleCategory('series', this)">
+        Series
+      </button>
+      <button data-category="anime" onclick="toggleCategory('anime', this)">
+        Anime
+      </button>
+      <button data-category="cartoons" onclick="toggleCategory('cartoons', this)">
+        Cartoons
+      </button>
+      <button data-category="books" onclick="toggleCategory('books', this)">
+        Books
+      </button>
+      <button data-category="games" onclick="toggleCategory('games', this)">
+        Games
+      </button>
     </div>
-    <!-- About Section - Moved below the category buttons -->
-    <section class="about-section">
-      <h2>What is ABYSS?</h2>
-      <p>
-        ABYSS is your ultimate entertainment navigator across time. We organize
-        movies, series, books, games, and more by their historical setting,
-        giving you a unique way to discover content from any era. Whether you're
-        interested in prehistoric adventures, medieval epics, or futuristic
-        sci-fi, our interactive timeline makes exploration intuitive and
-        exciting.
-      </p>
-    </section>
+  </div>
+  <!-- About Section - Moved below the category buttons -->
+  <!-- <section class="about-section">
+    <h2>What is ABYSS?</h2>
+    <p>
+      ABYSS is your ultimate entertainment navigator across time. We organize
+      movies, series, books, games, and more by their historical setting,
+      giving you a unique way to discover content from any era. Whether you're
+      interested in prehistoric adventures, medieval epics, or futuristic
+      sci-fi, our interactive timeline makes exploration intuitive and
+      exciting.
+    </p>
+  </section> -->
 
-    <!-- Timeline Section - MOVED below the testimonials section -->
-    <div class="timeline-container">
-      <!-- Eras as Buttons -->
-      <button
-        id="prehistory"
-        class="era"
-        onclick="navigateToPage('prehistory.html')"
-      >
-        Prehistory
-      </button>
-      <button
-        id="classical"
-        class="era"
-        onclick="navigateToPage('classical.html')"
-      >
-        Classical Era
-      </button>
-      <button
-        id="medieval"
-        class="era"
-        onclick="navigateToPage('medieval.html')"
-      >
-        Medieval Era
-      </button>
-      <button
-        id="early-modern"
-        class="era"
-        onclick="navigateToPage('early-modern.html')"
-      >
-        Early Modern Era
-      </button>
-      <button id="modern" class="era" onclick="navigateToPage('modern.html')">
-        Modern Era
-      </button>
-      <button id="future" class="era" onclick="navigateToPage('future.html')">
-        Future
-      </button>
+  <!-- Timeline Section - MOVED below the testimonials section -->
+  <div class="timeline-container">
+    <!-- Eras as Buttons -->
+    <button id="prehistory" class="era" onclick="navigateToPage('/mainerapage/prehistory')">
+      Prehistory
+    </button>
+    <button id="classical" class="era" onclick="navigateToPage('classical.html')">
+      Classical Era
+    </button>
+    <button id="medieval" class="era" onclick="navigateToPage('medieval.html')">
+      Medieval Era
+    </button>
+    <button id="early-modern" class="era" onclick="navigateToPage('early-modern.html')">
+      Early Modern Era
+    </button>
+    <button id="modern" class="era" onclick="navigateToPage('modern.html')">
+      Modern Era
+    </button>
+    <button id="future" class="era" onclick="navigateToPage('future.html')">
+      Future
+    </button>
 
-      <!-- Era Labels as Buttons -->
-      <button
-        id="stone-label"
-        class="era-label"
-        onclick="navigateToPage('stonage.html')"
-      >
-        Stone Age
-      </button>
-      <button
-        id="iron-label"
-        class="era-label"
-        onclick="navigateToPage('ironage.html')"
-      >
-        Iron Age
-      </button>
-      <button
-        id="bronze-label"
-        class="era-label"
-        onclick="navigateToPage('bronzeage.html')"
-      >
-        Bronze Age
-      </button>
-      <button
-        id="renaissance-label"
-        class="era-label"
-        onclick="navigateToPage('renaissance.html')"
-      >
-        Renaissance Era
-      </button>
-      <button
-        id="industrial-label"
-        class="era-label"
-        onclick="navigateToPage('industrial.html')"
-      >
-        Industrial Era
-      </button>
-      <button
-        id="information-label"
-        class="era-label"
-        onclick="navigateToPage('information.html')"
-      >
-        Information Era
-      </button>
-      <button
-        id="atomic-label"
-        class="era-label"
-        onclick="navigateToPage('atomic.html')"
-      >
-        Atomic Era
-      </button>
-      <button
-        id="twentieth-label"
-        class="era-label"
-        onclick="navigateToPage('twentieth.html')"
-      >
-        20th Century
-      </button>
+    <!-- Era Labels as Buttons -->
+    <button id="stone-label" class="era-label" onclick="navigateToPage('stonage.html')">
+      Stone Age
+    </button>
+    <button id="iron-label" class="era-label" onclick="navigateToPage('ironage.html')">
+      Iron Age
+    </button>
+    <button id="bronze-label" class="era-label" onclick="navigateToPage('bronzeage.html')">
+      Bronze Age
+    </button>
+    <button id="renaissance-label" class="era-label" onclick="navigateToPage('renaissance.html')">
+      Renaissance Era
+    </button>
+    <button id="industrial-label" class="era-label" onclick="navigateToPage('industrial.html')">
+      Industrial Era
+    </button>
+    <button id="information-label" class="era-label" onclick="navigateToPage('information.html')">
+      Information Era
+    </button>
+    <button id="atomic-label" class="era-label" onclick="navigateToPage('atomic.html')">
+      Atomic Era
+    </button>
+    <button id="twentieth-label" class="era-label" onclick="navigateToPage('twentieth.html')">
+      20th Century
+    </button>
 
-      <!-- Connectors -->
-      <div id="prehistory-classical" class="connector"></div>
-      <div id="classical-medieval" class="connector"></div>
-      <div id="classical-medieval-horiz" class="connector"></div>
-      <div id="medieval-early" class="connector"></div>
-      <div id="early-horiz" class="connector"></div>
-      <div id="early-modern-renaissance" class="connector"></div>
-      <div id="renaissance-to-modern" class="connector"></div>
-      <div id="modern-horiz" class="connector"></div>
-      <div id="future-twenty" class="connector"></div>
-      <div id="future-line" class="connector"></div>
-      <div id="future-dot"></div>
-      <div id="modern-twentieth" class="connector"></div>
-    </div>
+    <!-- Connectors -->
+    <div id="prehistory-classical" class="connector"></div>
+    <div id="classical-medieval" class="connector"></div>
+    <div id="classical-medieval-horiz" class="connector"></div>
+    <div id="medieval-early" class="connector"></div>
+    <div id="early-horiz" class="connector"></div>
+    <div id="early-modern-renaissance" class="connector"></div>
+    <div id="renaissance-to-modern" class="connector"></div>
+    <div id="modern-horiz" class="connector"></div>
+    <div id="future-twenty" class="connector"></div>
+    <div id="future-line" class="connector"></div>
+    <div id="future-dot"></div>
+    <div id="modern-twentieth" class="connector"></div>
+  </div>
 
-    <!-- Testimonials Section -->
-    <section class="testimonials-section">
-      <h2>What Our Community Says</h2>
-      <div class="testimonials-grid">
-        <div class="testimonial-card">
-          <p class="testimonial-text">
-            "ABYSS completely changed how I discover new content. I've found
-            amazing historical fiction I never knew existed!"
-          </p>
-          <p class="testimonial-author">- Alex R., History Buff</p>
-        </div>
-        <div class="testimonial-card">
-          <p class="testimonial-text">
-            "As a teacher, this platform is invaluable for finding
-            period-appropriate media to supplement my lessons."
-          </p>
-          <p class="testimonial-author">- Maria T., Educator</p>
-        </div>
-        <div class="testimonial-card">
-          <p class="testimonial-text">
-            "The timeline approach makes browsing entertainment so much more
-            intuitive than traditional streaming platforms."
-          </p>
-          <p class="testimonial-author">- Jordan K., Film Enthusiast</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Recent Activity -->
-    <!-- <section class="activity-section">
-      <h2>Recent Activity</h2>
-      <div class="activity-list">
-        <div class="activity-item">
-          <div class="activity-avatar"></div>
-          <div class="activity-content">
-            <span class="activity-user">TimeExplorer42</span>
-            <span class="activity-action">
-              added "Gladiator" to the Roman Empire collection</span
-            >
-            <div class="activity-time">2 hours ago</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-avatar"></div>
-          <div class="activity-content">
-            <span class="activity-user">HistoryNerd</span>
-            <span class="activity-action">
-              reviewed "The Last Kingdom" in Medieval Series</span
-            >
-            <div class="activity-time">5 hours ago</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-avatar"></div>
-          <div class="activity-content">
-            <span class="activity-user">FutureVision</span>
-            <span class="activity-action">
-              created a new collection "Dystopian Futures in Literature"</span
-            >
-            <div class="activity-time">Yesterday</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="activity-avatar"></div>
-          <div class="activity-content">
-            <span class="activity-user">ClassicalFan</span>
-            <span class="activity-action">
-              rated "300" in the Ancient Greece collection</span
-            >
-            <div class="activity-time">2 days ago</div>
-          </div>
-        </div>
-      </div>
-    </section> -->
-
-    <!-- Newsletter Section -->
-    <section class="newsletter-section">
-      <h2>Stay Updated</h2>
-      <p>
-        Subscribe to our newsletter to receive weekly curated content
-        recommendations and updates on new timeline features.
-      </p>
-      <form class="newsletter-form">
-        <input type="email" placeholder="Your email address" />
-        <button type="submit">Subscribe</button>
-      </form>
-    </section>
-
-    <!-- App Promotion -->
-    <section class="app-section">
-      <h2>Take ABYSS With You</h2>
-      <p>
-        Download our mobile app to explore timelines on the go and get
-        personalized recommendations based on your interests.
-      </p>
-      <div class="app-buttons">
-        <button class="app-button">
-          <span>App Store</span>
-        </button>
-        <button class="app-button">
-          <span>Google Play</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-      <div class="footer-container">
-        <div class="footer-column">
-          <h3>ABYSS</h3>
-          <p>
-            Your ultimate timeline explorer for all forms of entertainment
-            across the ages.
-          </p>
-          <div class="social-icons">
-            <a href="#" class="social-icon">f</a>
-            <a href="#" class="social-icon">t</a>
-            <a href="#" class="social-icon">in</a>
-            <a href="#" class="social-icon">ig</a>
-          </div>
-        </div>
-        <div class="footer-column">
-          <h3>Navigation</h3>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Leaderboard</a></li>
-            <li><a href="#">Community</a></li>
-            <li><a href="#">Timeline</a></li>
-            <li><a href="#">Categories</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h3>Resources</h3>
-          <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Help Center</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h3>Legal</h3>
-          <ul>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Cookie Policy</a></li>
-            <li><a href="#">Content Guidelines</a></li>
-            <li><a href="#">Copyright</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="copyright">
-        <p>© 2025 ABYSS. All rights reserved.</p>
-      </div>
-    </footer>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Login Required</h2>
-        <p>Please login to view the leaderboard</p>
-        <form class="login-form">
-          <input type="text" placeholder="Username" required />
-          <input type="password" placeholder="Password" required />
-          <button type="submit">Login</button>
-        </form>
-        <p style="text-align: center; margin-top: 10px">
-          <a href="#" style="color: #4caf50; text-decoration: none"
-            >Create an account</a
-          >
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <h2>What Our Community Says</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <p class="testimonial-text">
+          "ABYSS completely changed how I discover new content. I've found
+          amazing historical fiction I never knew existed!"
         </p>
+        <p class="testimonial-author">- Alex R., History Buff</p>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">
+          "As a teacher, this platform is invaluable for finding
+          period-appropriate media to supplement my lessons."
+        </p>
+        <p class="testimonial-author">- Maria T., Educator</p>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">
+          "The timeline approach makes browsing entertainment so much more
+          intuitive than traditional streaming platforms."
+        </p>
+        <p class="testimonial-author">- Jordan K., Film Enthusiast</p>
       </div>
     </div>
+  </section>
 
-    <script>
-      function drawConnectors() {
-        const svg = document.getElementById("connector-lines");
-        svg.innerHTML = ""; // Clear old lines
-        const svgRect = svg.getBoundingClientRect();
+  <!-- Newsletter Section -->
+  <section class="newsletter-section">
+    <h2>Stay Updated</h2>
+    <p>
+      Subscribe to our newsletter to receive weekly curated content
+      recommendations and updates on new timeline features.
+    </p>
+    <form class="newsletter-form">
+      <input type="email" placeholder="Your email address" />
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
 
-        const connections = [
-          ["prehistory", "classical"],
-          ["classical", "medieval"],
-          ["medieval", "early-modern"],
-          ["early-modern", "modern"],
-          ["future", "modern"],
-          ["future", "twentieth-label"],
-          ["early-modern", "renaissance-label"],
-          ["renaissance-label", "modern"],
-          ["modern", "twentieth-label"],
-          ["prehistory", "stone-label"],
-          ["stone-label", "bronze-label"],
-          ["bronze-label", "iron-label"],
-          ["iron-label", "classical"],
-          ["modern", "information-label"],
-          ["information-label", "atomic-label"],
-          ["atomic-label", "twentieth-label"],
-        ];
+  <!-- App Promotion -->
+  <section class="app-section">
+    <h2>Take ABYSS With You</h2>
+    <p>
+      Download our mobile app to explore timelines on the go and get
+      personalized recommendations based on your interests.
+    </p>
+    <div class="app-buttons">
+      <button class="app-button">
+        <span>App Store</span>
+      </button>
+      <button class="app-button">
+        <span>Google Play</span>
+      </button>
+    </div>
+  </section>
 
-        connections.forEach(([fromId, toId]) => {
-          const from = document.getElementById(fromId);
-          const to = document.getElementById(toId);
-          if (!from || !to) return;
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>ABYSS</h3>
+        <p>
+          Your ultimate timeline explorer for all forms of entertainment
+          across the ages.
+        </p>
+        <div class="social-icons">
+          <a href="#" class="social-icon">f</a>
+          <a href="#" class="social-icon">t</a>
+          <a href="#" class="social-icon">in</a>
+          <a href="#" class="social-icon">ig</a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h3>Navigation</h3>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Leaderboard</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Timeline</a></li>
+          <li><a href="#">Categories</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Help Center</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">Content Guidelines</a></li>
+          <li><a href="#">Copyright</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>© 2025 ABYSS. All rights reserved.</p>
+    </div>
+  </footer>
 
-          const rect1 = from.getBoundingClientRect();
-          const rect2 = to.getBoundingClientRect();
 
-          const x1 = rect1.left + rect1.width / 2 - svgRect.left;
-          const y1 = rect1.top + rect1.height / 2 - svgRect.top;
-          const x2 = rect2.left + rect2.width / 2 - svgRect.left;
-          const y2 = rect2.top + rect2.height / 2 - svgRect.top;
 
-          const line = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "line"
-          );
-          line.setAttribute("x1", x1);
-          line.setAttribute("y1", y1);
-          line.setAttribute("x2", x2);
-          line.setAttribute("y2", y2);
-          line.setAttribute("stroke", "#00ffff");
-          line.setAttribute("stroke-width", "2");
-          line.setAttribute("stroke-dasharray", "5,5");
-          svg.appendChild(line);
-        });
+  <script>
+    function drawConnectors() {
+      const svg = document.getElementById("connector-lines");
+      svg.innerHTML = ""; // Clear old lines
+      const svgRect = svg.getBoundingClientRect();
+
+      const connections = [
+        ["prehistory", "classical"],
+        ["classical", "medieval"],
+        ["medieval", "early-modern"],
+        ["early-modern", "modern"],
+        ["future", "modern"],
+        ["future", "twentieth-label"],
+        ["early-modern", "renaissance-label"],
+        ["renaissance-label", "modern"],
+        ["modern", "twentieth-label"],
+        ["prehistory", "stone-label"],
+        ["stone-label", "bronze-label"],
+        ["bronze-label", "iron-label"],
+        ["iron-label", "classical"],
+        ["modern", "information-label"],
+        ["information-label", "atomic-label"],
+        ["atomic-label", "twentieth-label"],
+      ];
+
+      connections.forEach(([fromId, toId]) => {
+        const from = document.getElementById(fromId);
+        const to = document.getElementById(toId);
+        if (!from || !to) return;
+
+        const rect1 = from.getBoundingClientRect();
+        const rect2 = to.getBoundingClientRect();
+
+        const x1 = rect1.left + rect1.width / 2 - svgRect.left;
+        const y1 = rect1.top + rect1.height / 2 - svgRect.top;
+        const x2 = rect2.left + rect2.width / 2 - svgRect.left;
+        const y2 = rect2.top + rect2.height / 2 - svgRect.top;
+
+        const line = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "line"
+        );
+        line.setAttribute("x1", x1);
+        line.setAttribute("y1", y1);
+        line.setAttribute("x2", x2);
+        line.setAttribute("y2", y2);
+        line.setAttribute("stroke", "#00ffff");
+        line.setAttribute("stroke-width", "2");
+        line.setAttribute("stroke-dasharray", "5,5");
+        svg.appendChild(line);
+      });
+    }
+
+    // Run on load and resize
+    window.addEventListener("load", drawConnectors);
+    window.addEventListener("resize", drawConnectors);
+  </script>
+
+  <script>
+    // Global variable to store selected categories
+    let selectedCategories = [];
+
+    // Toggle category selection with visual feedback
+    function toggleCategory(category, buttonElement) {
+      const index = selectedCategories.indexOf(category);
+
+      if (index !== -1) {
+        // Remove from selected categories
+        selectedCategories.splice(index, 1);
+        // Remove active class for visual feedback
+        buttonElement.classList.remove("active");
+      } else {
+        // Add to selected categories
+        selectedCategories.push(category);
+        // Add active class for visual feedback
+        buttonElement.classList.add("active");
       }
 
-      // Run on load and resize
-      window.addEventListener("load", drawConnectors);
-      window.addEventListener("resize", drawConnectors);
-    </script>
+      // Update the search placeholder based on selection
+      updateSearchPlaceholder();
 
-    <script>
-      // Global variable to store selected categories
-      let selectedCategories = [];
+      // For debugging - show which categories are selected
+      console.log("Selected categories:", selectedCategories);
+    }
 
-      // Toggle category selection with visual feedback
-      function toggleCategory(category, buttonElement) {
-        const index = selectedCategories.indexOf(category);
+    // Update search placeholder to reflect current selection
+    function updateSearchPlaceholder() {
+      const searchInput = document.getElementById("search-input");
 
-        if (index !== -1) {
-          // Remove from selected categories
-          selectedCategories.splice(index, 1);
-          // Remove active class for visual feedback
-          buttonElement.classList.remove("active");
-        } else {
-          // Add to selected categories
-          selectedCategories.push(category);
-          // Add active class for visual feedback
-          buttonElement.classList.add("active");
+      if (selectedCategories.length === 0) {
+        searchInput.placeholder = "Search all media...";
+      } else {
+        searchInput.placeholder = `Search in ${selectedCategories.join(
+          ", "
+        )}...`;
+      }
+    }
+
+    // Handle search functionality
+    document
+      .getElementById("search-button")
+      .addEventListener("click", performSearch);
+    document
+      .getElementById("search-input")
+      .addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          performSearch();
         }
+      });
 
-        // Update the search placeholder based on selection
-        updateSearchPlaceholder();
-
-        // For debugging - show which categories are selected
-        console.log("Selected categories:", selectedCategories);
-      }
-
-      // Update search placeholder to reflect current selection
-      function updateSearchPlaceholder() {
-        const searchInput = document.getElementById("search-input");
-
-        if (selectedCategories.length === 0) {
-          searchInput.placeholder = "Search all media...";
-        } else {
-          searchInput.placeholder = `Search in ${selectedCategories.join(
-            ", "
-          )}...`;
-        }
-      }
-
-      // Handle search functionality
-      document
-        .getElementById("search-button")
-        .addEventListener("click", performSearch);
-      document
+    function performSearch() {
+      const searchQuery = document
         .getElementById("search-input")
-        .addEventListener("keypress", function (e) {
-          if (e.key === "Enter") {
-            performSearch();
-          }
+        .value.trim();
+
+      if (searchQuery === "") {
+        alert("Please enter a search term");
+        return;
+      }
+
+      if (selectedCategories.length === 0) {
+        // Search across all categories
+        console.log(`Searching for "${searchQuery}" across all media types`);
+        // In a real implementation, this would redirect to a search results page
+        alert(`Searching for "${searchQuery}" across all media types`);
+      } else {
+        // Search within selected categories only
+        console.log(
+          `Searching for "${searchQuery}" in categories: ${selectedCategories.join(
+            ", "
+          )}`
+        );
+        // In a real implementation, this would redirect to a filtered search results page
+        alert(
+          `Searching for "${searchQuery}" in categories: ${selectedCategories.join(
+            ", "
+          )}`
+        );
+      }
+
+      // Here you would normally redirect to a search results page with the appropriate parameters
+      // For example: window.location.href = `search-results.html?query=${encodeURIComponent(searchQuery)}&categories=${encodeURIComponent(selectedCategories.join(','))}`;
+    }
+
+
+    // Login Modal Functionality
+    document.addEventListener("DOMContentLoaded", function () {
+
+
+
+
+      // Initialize the search placeholder
+      updateSearchPlaceholder();
+
+
+
+      // Highlight timeline eras on hover
+      const eras = document.querySelectorAll(".era, .era-label");
+      eras.forEach((era) => {
+        era.addEventListener("mouseenter", function () {
+          this.style.transform = "scale(1.05)";
+          this.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.2)";
         });
+        era.addEventListener("mouseleave", function () {
+          this.style.transform = "scale(1)";
+          this.style.boxShadow = "none";
+        });
+      });
+    });
+  </script>
+  <script>
+    const sentences = [
+    "Welcome to ABYSS – your ultimate entertainment navigator.",
+    "Explore thousands of movies, series, and documentaries.",
+    "Stay updated with trends, reviews, and exclusive content.",
+    "Discover the world of media at your fingertips.",
+    "Travel through time with timeless stories on ABYSS.",
+    "Explore media by the eras that shaped them.",
+    "From ancient tales to modern legends — all in one place.",
+    "Dive into history through movies, series, and books.",
+    "Relive every era through curated entertainment.",
+    "Discover media set in every age of history on ABYSS.",
+    "Time-based browsing for the curious mind.",
+    "Uncover the past, one story at a time.",
+    "Watch how eras influence the stories we love.",
+    "Entertainment organized by the timeline of history."
+];
 
-      function performSearch() {
-        const searchQuery = document
-          .getElementById("search-input")
-          .value.trim();
 
-        if (searchQuery === "") {
-          alert("Please enter a search term");
-          return;
-        }
+    let currentSentenceIndex = 0;
+    let index = 0;
+    let isDeleting = false;
 
-        if (selectedCategories.length === 0) {
-          // Search across all categories
-          console.log(`Searching for "${searchQuery}" across all media types`);
-          // In a real implementation, this would redirect to a search results page
-          alert(`Searching for "${searchQuery}" across all media types`);
+    function typeWriter() {
+        const sentence = sentences[currentSentenceIndex];
+        const displayText = sentence.substring(0, index);
+
+        document.getElementById('typing-text').innerHTML = displayText || '&nbsp;'; // Keep height even when empty
+
+        if (!isDeleting) {
+            if (index < sentence.length) {
+                index++;
+                setTimeout(typeWriter, 75); // Typing speed
+            } else {
+                isDeleting = true;
+                setTimeout(typeWriter, 1000); // Pause before deleting
+            }
         } else {
-          // Search within selected categories only
-          console.log(
-            `Searching for "${searchQuery}" in categories: ${selectedCategories.join(
-              ", "
-            )}`
-          );
-          // In a real implementation, this would redirect to a filtered search results page
-          alert(
-            `Searching for "${searchQuery}" in categories: ${selectedCategories.join(
-              ", "
-            )}`
-          );
-        }
-
-        // Here you would normally redirect to a search results page with the appropriate parameters
-        // For example: window.location.href = `search-results.html?query=${encodeURIComponent(searchQuery)}&categories=${encodeURIComponent(selectedCategories.join(','))}`;
-      }
-
-      // Modified navigation function to include navigation bar template in each page
-      function navigateToPage(url) {
-        // Store the navigation bar template in localStorage
-        const navTemplate = document.getElementById("main-nav").outerHTML;
-        localStorage.setItem("navBarTemplate", navTemplate);
-
-        // Store the about section in localStorage
-        const aboutSection = document.querySelector(".about-section").outerHTML;
-        localStorage.setItem("aboutSectionTemplate", aboutSection);
-
-        // Navigate to the page
-        window.location.href = url;
-      }
-
-      // Login Modal Functionality
-      document.addEventListener("DOMContentLoaded", function () {
-        const modal = document.getElementById("loginModal");
-        const leaderboardLink = document.getElementById("leaderboardLink");
-        const closeBtn = document.querySelector(".close");
-        const loginForm = document.querySelector(".login-form");
-        const body = document.body;
-
-        // Show modal when leaderboard is clicked
-        leaderboardLink.addEventListener("click", function (e) {
-          e.preventDefault();
-          modal.style.display = "block";
-          body.classList.add("modal-open"); // Prevent body scrolling
-        });
-
-        // Close modal when X is clicked
-        closeBtn.addEventListener("click", function () {
-          modal.style.display = "none";
-          body.classList.remove("modal-open"); // Re-enable body scrolling
-        });
-
-        // Close modal when clicking outside
-        window.addEventListener("click", function (e) {
-          if (e.target === modal) {
-            modal.style.display = "none";
-            body.classList.remove("modal-open"); // Re-enable body scrolling
-          }
-        });
-
-        // Handle form submission
-        loginForm.addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          // Here you would typically handle authentication
-          // For now, we'll just redirect to the leaderboard page
-          window.location.href = "leaderboard.html";
-        });
-
-        // Initialize the search placeholder
-        updateSearchPlaceholder();
-
-        // Check if we need to insert the navigation bar (for pages other than the main page)
-        if (!document.getElementById("main-nav")) {
-          const savedNavBar = localStorage.getItem("navBarTemplate");
-          if (savedNavBar) {
-            document.body.insertAdjacentHTML("afterbegin", savedNavBar);
-          }
-        }
-
-        // Check if we need to insert the about section (for pages other than the main page)
-        if (!document.querySelector(".about-section")) {
-          const savedAboutSection = localStorage.getItem(
-            "aboutSectionTemplate"
-          );
-          // Insert after the header if it exists, otherwise after the nav
-          const header = document.querySelector("header");
-          if (savedAboutSection) {
-            if (header) {
-              header.insertAdjacentHTML("afterend", savedAboutSection);
+            if (index > 0) {
+                index--;
+                setTimeout(typeWriter, 50); // Deletion speed
             } else {
-              const nav = document.querySelector("nav");
-              if (nav) {
-                nav.insertAdjacentHTML("afterend", savedAboutSection);
-              }
+                isDeleting = false;
+                currentSentenceIndex = (currentSentenceIndex + 1) % sentences.length;
+                setTimeout(typeWriter, 500); // Delay before next sentence
             }
-          }
         }
+    }
 
-        // Highlight timeline eras on hover
-        const eras = document.querySelectorAll(".era, .era-label");
-        eras.forEach((era) => {
-          era.addEventListener("mouseenter", function () {
-            this.style.transform = "scale(1.05)";
-            this.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.2)";
-          });
-          era.addEventListener("mouseleave", function () {
-            this.style.transform = "scale(1)";
-            this.style.boxShadow = "none";
-          });
-        });
-      });
-    </script>
+    typeWriter(); // Start the effect
+</script>
+  <script src="/static/js/script.js"></script>
 
-    <script src="/static/abysstrial6.js"></script>
+</body>
 
-    <!-- Additional script to ensure navigation bar exists on all pages -->
-    <script>
-      // This script will run on every page load
-      document.addEventListener("DOMContentLoaded", function () {
-        // Check if we're on a page without the navigation bar
-        if (!document.getElementById("main-nav")) {
-          // Retrieve the navigation bar template from localStorage
-          const savedNavBar = localStorage.getItem("navBarTemplate");
-
-          // If we have a saved navigation bar, insert it at the top of the body
-          if (savedNavBar) {
-            document.body.insertAdjacentHTML("afterbegin", savedNavBar);
-
-            // Now attach event listeners to the newly inserted navigation bar
-            const leaderboardLink = document.getElementById("leaderboardLink");
-            if (leaderboardLink) {
-              leaderboardLink.addEventListener("click", function (e) {
-                e.preventDefault();
-                // Show login modal if it exists, otherwise redirect
-                const modal = document.getElementById("loginModal");
-                if (modal) {
-                  modal.style.display = "block";
-                  document.body.classList.add("modal-open");
-                } else {
-                  // If there's no modal on this page, we need to go back to the main page
-                  window.location.href = "abyss8.html#leaderboard";
-                }
-              });
-            }
-          }
-        }
-
-        // Check if we're on a page without the about section
-        if (!document.querySelector(".about-section")) {
-          // Retrieve the about section template from localStorage
-          const savedAboutSection = localStorage.getItem(
-            "aboutSectionTemplate"
-          );
-
-          // If we have a saved about section, insert it after the header or nav
-          if (savedAboutSection) {
-            const header = document.querySelector("header");
-            if (header) {
-              header.insertAdjacentHTML("afterend", savedAboutSection);
-            } else {
-              const nav = document.querySelector("nav");
-              if (nav) {
-                nav.insertAdjacentHTML("afterend", savedAboutSection);
-              } else {
-                // Last resort - add to the beginning of the body
-                document.body.insertAdjacentHTML(
-                  "afterbegin",
-                  savedAboutSection
-                );
-              }
-            }
-          }
-        }
-      });
-    </script>
-  </body>
 </html>

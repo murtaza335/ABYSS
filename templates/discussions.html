@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Discussions | ABYSS</title>
+    <link rel="stylesheet" href="/static/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Aptos:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="/static/images/favicon.png">
@@ -16,66 +18,83 @@
             flex-direction: column;
             min-height: 100vh;
         }
+
         main {
             flex: 1;
         }
+
         .abyss-teal {
             color: #66fcf1;
         }
+
         .abyss-teal-bg {
             background-color: #45a29e;
         }
+
         .abyss-teal-border {
             border-color: #66fcf1;
         }
+
         .top-ribbon {
-            background-color: #1f2833; /* Dark blue-gray */
+            background-color: #1f2833;
+            /* Dark blue-gray */
         }
+
         .content-box {
-            background-color: #1f2833; /* Same as top ribbon */
+            background-color: #1f2833;
+            /* Same as top ribbon */
         }
-        
+
         /* Discussion specific styles */
         .discussion-item {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+
         .discussion-item:hover {
             transform: translateY(-2px);
+            width: 30.1vw;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
         }
+
         .vote-btn.active {
-    color: #66fcf1;
-}
+            color: #66fcf1;
+        }
+
         .vote-btn {
             transition: color 0.2s ease, transform 0.1s ease;
         }
+
         .vote-btn:hover {
             transform: scale(1.1);
         }
+
         .filter-btn {
-    transition: all 0.3s ease;
-    background-color: #1f2833;
-    color: #c5c6c7;
-    border: 1px solid #45a29e;
-}
-#categoryFilter {
-    background-color: #1f2833;
-    color: #c5c6c7;
-    border: 1px solid #45a29e;
-}
+            transition: all 0.3s ease;
+            background-color: #1f2833;
+            color: #c5c6c7;
+            border: 1px solid #45a29e;
+        }
+
+        #categoryFilter {
+            background-color: #1f2833;
+            color: #c5c6c7;
+            border: 1px solid #45a29e;
+        }
+
         .filter-btn.active {
-    background-color: #45a29e;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
+            background-color: #45a29e;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
 
         /* Footer styles */
         footer {
-    background-color: #1f2833;
-    padding: 40px 0 20px;
-    margin-top: 60px;
-}
+            background-color: #1f2833;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+
         .footer-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -84,110 +103,145 @@
             gap: 40px;
             padding: 0 20px;
         }
+
         .footer-column h3 {
-    color: #66fcf1;
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
+            color: #66fcf1;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
         .footer-column p {
             color: #b0b0b0;
             margin-bottom: 1.5rem;
             font-size: 0.9rem;
             line-height: 1.5;
         }
+
         .footer-column ul {
             list-style: none;
             padding: 0;
         }
+
         .footer-column ul li {
             margin-bottom: 0.75rem;
         }
+
         .footer-column ul li a {
             color: #b0b0b0;
             text-decoration: none;
             transition: color 0.3s;
         }
+
         .footer-column ul li a:hover {
-    color: #66fcf1;
-}
+            color: #66fcf1;
+        }
+
         .social-icons {
             display: flex;
             gap: 12px;
         }
+
         .social-icon {
-    width: 36px;
-    height: 36px;
-    background-color: #1f2833;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #c5c6c7;
-    text-decoration: none;
-    transition: background-color 0.3s;
-}
+            width: 36px;
+            height: 36px;
+            background-color: #1f2833;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #c5c6c7;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
         .social-icon:hover {
-    background-color: #45a29e;
-}
-.copyright {
-    text-align: center;
-    padding-top: 20px;
-    margin-top: 30px;
-    border-top: 1px solid #0b0c10;
-    color: #777;
-    font-size: 0.85rem;
-}
+            background-color: #45a29e;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 30px;
+            border-top: 1px solid #0b0c10;
+            color: #777;
+            font-size: 0.85rem;
+        }
+
         .pagination-btn {
             transition: all 0.3s ease;
         }
+
         .pagination-btn:hover {
-    background-color: #45a29e;
-}
+            background-color: #45a29e;
+        }
+        .discussion-item {
+            width: 30vw;
+            margin: auto;
+            margin-top: 10px;
+            border-radius: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+        #discussionsList {
+            display: block;
+            justify-content: center;
+            align-items: center;
+        }
+        /* .mediatag_post {
+            background-color: #0e0c0c;
+            color: #0b0e0e;
+        } */
     </style>
 </head>
-<body>
-    <!-- Top Navigation Bar - Lighter gray -->
-    <nav class="top-ribbon py-5 px-8 flex justify-between items-center shadow-lg">
-        <div class="flex items-center">
-            <button id="backButton" class="mr-5 text-gray-300 hover:text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-            </button>
-            <a href="/" class="text-3xl font-bold" style="color: #66fcf1;">ABYSS</a>
-        </div>
-        <div class="flex items-center space-x-8">
-            <a href="/leaderboard" class="text-lg text-gray-300 hover:abyss-red transition duration-300">Leaderboard</a>
-            <a href="/discussions" class="text-lg font-medium" style="color: #66fcf1;">Community</a>
-            <a href="/profile" class="text-lg text-gray-300 hover:abyss-red transition duration-300">Profile</a>
-        </div>
-    </nav>
 
-<!-- Main Content -->
-<main class="container mx-auto px-4 py-8">
-    <!-- Page Title and Create Discussion Button -->
-    <div class="relative mb-12">
-        <div class="text-center">
-            <h1 class="text-6xl font-bold">Community Discussions</h1>
+<body>
+    <!-- Navigation Bar -->
+<nav id="main-nav">
+    <div class="logo" onclick="goToHome()">ABYSS</div>
+    <ul>
+      <li><a href="#" id="leaderboardLink" onclick="goToLeaderboard()">Leaderboard</a></li>
+      <li><a href="#" onclick="goToCommunity()">Community</a></li>
+      <li class="profile-menu">
+        <a href="#" onclick="toggleProfileDropdown()">Profile</a>
+        <div id="profileDropdown" class="dropdown-content" style="display: none;">
+          <a href="#" onclick="goToProfile()">View Profile</a>
+          <a href="#" onclick="logout()">Logout</a>
         </div>
-        <div class="absolute right-0 top-8">
-            <button id="createDiscussionBtn" style="background-color: #66fcf1; color: #0b0c10;" class="hover:bg-[#45a29e] font-medium py-1.5 px-4 rounded-md transition duration-300 text-sm">
-                Create Discussion
-            </button>
+      </li>
+    </ul>
+  </nav>
+  
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Page Title and Create Discussion Button -->
+        <div class="relative mb-12">
+            <div class="text-center">
+                <h1 class="text-6xl font-bold">Community Discussions</h1>
+            </div>
+            <div class="absolute right-0 top-8">
+                <button id="createDiscussionBtn" style="background-color: #66fcf1; color: #0b0c10;"
+                    class="hover:bg-[#45a29e] font-medium py-1.5 px-4 rounded-md transition duration-300 text-sm">
+                    Create Discussion
+                </button>
+            </div>
         </div>
-    </div>
-    
+
 
         <!-- Filter Options -->
         <div class="content-box rounded-lg p-4 mb-8 shadow-md">
             <div class="flex flex-wrap items-center justify-center">
                 <div class="flex space-x-3 mb-2 md:mb-0">
-                    <button class="filter-btn active px-4 py-1 rounded-full bg-[#1f2833] text-[#c5c6c7] text-sm font-medium transition duration-300 border border-[#45a29e]" data-filter="popular">Most Popular</button>
-                    <button class="filter-btn px-4 py-1 rounded-full bg-[#1f2833] text-[#c5c6c7] text-sm font-medium transition duration-300 border border-[#45a29e]" data-filter="recent">Most Recent</button>
+                    <button
+                        class="filter-btn active px-4 py-1 rounded-full bg-[#1f2833] text-[#c5c6c7] text-sm font-medium transition duration-300 border border-[#45a29e]"
+                        data-filter="popular">Most Popular</button>
+                    <button
+                        class="filter-btn px-4 py-1 rounded-full bg-[#1f2833] text-[#c5c6c7] text-sm font-medium transition duration-300 border border-[#45a29e]"
+                        data-filter="recent">Most Recent</button>
                 </div>
                 <div class="md:ml-8">
-                    <select class="bg-[#1f2833] text-[#c5c6c7] px-3 py-1 rounded-md text-sm border border-[#45a29e]" id="categoryFilter">
+                    <select class="bg-[#1f2833] text-[#c5c6c7] px-3 py-1 rounded-md text-sm border border-[#45a29e]"
+                        id="categoryFilter">
                         <option value="all">All</option>
                         <option value="movies">Movies</option>
                         <option value="series">Series</option>
@@ -209,7 +263,8 @@
                         <!-- User Info -->
                         <div class="flex-shrink-0 mr-4">
                             <div class="w-12 h-12 rounded-full overflow-hidden">
-                                <img src="/api/placeholder/100/100" alt="User Avatar" class="w-full h-full object-cover">
+                                <img src="/api/placeholder/100/100" alt="User Avatar"
+                                    class="w-full h-full object-cover">
                             </div>
                         </div>
                         <!-- Discussion Content -->
@@ -219,12 +274,18 @@
                                 <span class="text-xs text-gray-400">• 2 hours ago</span>
                                 <span class="ml-2 px-2 py-0.5 bg-gray-700 rounded-full text-xs">Movies</span>
                             </div>
-                            <h3 class="text-xl font-bold mb-2">Nolan's Oppenheimer: A technical masterpiece or overhyped?</h3>
-                            <p class="text-gray-300 mb-3 line-clamp-2">Just watched Oppenheimer last night and I'm conflicted. The cinematography was breathtaking and the acting superb, but did anyone else feel the pacing was off? I found myself checking my watch during the middle section...</p>
+                            <h3 class="text-xl font-bold mb-2">Nolan's Oppenheimer: A technical masterpiece or
+                                overhyped?</h3>
+                            <p class="text-gray-300 mb-3 line-clamp-2">Just watched Oppenheimer last night and I'm
+                                conflicted. The cinematography was breathtaking and the acting superb, but did anyone
+                                else feel the pacing was off? I found myself checking my watch during the middle
+                                section...</p>
                             <div class="flex items-center text-sm text-gray-400">
                                 <span class="mr-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline mr-1" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                     </svg>
                                     128 comments
                                 </span>
@@ -232,14 +293,18 @@
                             <!-- Vote Buttons (Positioned Absolute) -->
                             <div class="absolute right-0 top-0 flex flex-col items-center">
                                 <button class="vote-btn upvote p-1" data-discussion-id="1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 15l7-7 7 7" />
                                     </svg>
                                 </button>
                                 <span class="vote-count text-sm font-medium my-1">842</span>
                                 <button class="vote-btn downvote p-1" data-discussion-id="1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </button>
                             </div>
@@ -248,148 +313,168 @@
                 </div>
             </div>
 
-           
 
-        <!-- Load More Button -->
-        <div class="flex justify-center mt-8">
-            <button id="loadMoreBtn" class="bg-[#1f2833] hover:bg-[#45a29e] text-[#c5c6c7] font-medium py-2 px-6 rounded-md transition duration-300 pagination-btn border border-[#45a29e]">
-                Load More
-            </button>
-        </div>
-        
+
+            <!-- Load More Button -->
+            <div class="flex justify-center mt-8">
+                <button id="loadMoreBtn"
+                    class="bg-[#1f2833] hover:bg-[#45a29e] text-[#c5c6c7] font-medium py-2 px-6 rounded-md transition duration-300 pagination-btn border border-[#45a29e]">
+                    Load More
+                </button>
+            </div>
+
     </main>
 
- <!-- Footer -->
- <footer class="bg-abyss-dark-secondary py-8">
-    <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="footer-column">
-                <h3 class="text-abyss-accent font-semibold mb-4">About ABYSS</h3>
-                <p class="text-abyss-light mb-4">A community platform for discussing and rating movies, TV shows, anime, books, and more.</p>
-                <div class="social-icons flex space-x-4">
-                    <a href="#" class="text-abyss-light hover:text-abyss-accent transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                        </svg>
-                    </a>
-                    <a href="#" class="text-abyss-light hover:text-abyss-accent transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                        </svg>
-                    </a>
-                    <a href="#" class="text-abyss-light hover:text-abyss-accent transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                    </a>
+    <!-- Footer -->
+    <footer class="bg-abyss-dark-secondary py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="footer-column">
+                    <h3 class="text-abyss-accent font-semibold mb-4">About ABYSS</h3>
+                    <p class="text-abyss-light mb-4">A community platform for discussing and rating movies, TV shows,
+                        anime, books, and more.</p>
+                    <div class="social-icons flex space-x-4">
+                        <a href="#" class="text-abyss-light hover:text-abyss-accent transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                            </svg>
+                        </a>
+                        <a href="#" class="text-abyss-light hover:text-abyss-accent transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                            </svg>
+                        </a>
+                        <a href="#" class="text-abyss-light hover:text-abyss-accent transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3 class="text-abyss-accent font-semibold mb-4">Navigation</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="text-abyss-light hover:text-abyss-accent transition">Home</a></li>
+                        <li><a href="/leaderboard"
+                                class="text-abyss-light hover:text-abyss-accent transition">Leaderboard</a></li>
+                        <li><a href="/discussions"
+                                class="text-abyss-light hover:text-abyss-accent transition">Community</a></li>
+                        <li><a href="/profile" class="text-abyss-light hover:text-abyss-accent transition">Profile</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3 class="text-abyss-accent font-semibold mb-4">Categories</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/category/movies"
+                                class="text-abyss-light hover:text-abyss-accent transition">Movies</a></li>
+                        <li><a href="/category/series"
+                                class="text-abyss-light hover:text-abyss-accent transition">Series</a></li>
+                        <li><a href="/category/cartoons"
+                                class="text-abyss-light hover:text-abyss-accent transition">Cartoons</a></li>
+                        <li><a href="/category/anime"
+                                class="text-abyss-light hover:text-abyss-accent transition">Anime</a></li>
+                        <li><a href="/category/games"
+                                class="text-abyss-light hover:text-abyss-accent transition">Games</a></li>
+                        <li><a href="/category/books"
+                                class="text-abyss-light hover:text-abyss-accent transition">Books</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3 class="text-abyss-accent font-semibold mb-4">Help & Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/faq" class="text-abyss-light hover:text-abyss-accent transition">FAQ</a></li>
+                        <li><a href="/contact" class="text-abyss-light hover:text-abyss-accent transition">Contact
+                                Us</a></li>
+                        <li><a href="/terms" class="text-abyss-light hover:text-abyss-accent transition">Terms of
+                                Service</a></li>
+                        <li><a href="/privacy" class="text-abyss-light hover:text-abyss-accent transition">Privacy
+                                Policy</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="footer-column">
-                <h3 class="text-abyss-accent font-semibold mb-4">Navigation</h3>
-                <ul class="space-y-2">
-                    <li><a href="/" class="text-abyss-light hover:text-abyss-accent transition">Home</a></li>
-                    <li><a href="/leaderboard" class="text-abyss-light hover:text-abyss-accent transition">Leaderboard</a></li>
-                    <li><a href="/discussions" class="text-abyss-light hover:text-abyss-accent transition">Community</a></li>
-                    <li><a href="/profile" class="text-abyss-light hover:text-abyss-accent transition">Profile</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3 class="text-abyss-accent font-semibold mb-4">Categories</h3>
-                <ul class="space-y-2">
-                    <li><a href="/category/movies" class="text-abyss-light hover:text-abyss-accent transition">Movies</a></li>
-                    <li><a href="/category/series" class="text-abyss-light hover:text-abyss-accent transition">Series</a></li>
-                    <li><a href="/category/cartoons" class="text-abyss-light hover:text-abyss-accent transition">Cartoons</a></li>
-                    <li><a href="/category/anime" class="text-abyss-light hover:text-abyss-accent transition">Anime</a></li>
-                    <li><a href="/category/games" class="text-abyss-light hover:text-abyss-accent transition">Games</a></li>
-                    <li><a href="/category/books" class="text-abyss-light hover:text-abyss-accent transition">Books</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h3 class="text-abyss-accent font-semibold mb-4">Help & Support</h3>
-                <ul class="space-y-2">
-                    <li><a href="/faq" class="text-abyss-light hover:text-abyss-accent transition">FAQ</a></li>
-                    <li><a href="/contact" class="text-abyss-light hover:text-abyss-accent transition">Contact Us</a></li>
-                    <li><a href="/terms" class="text-abyss-light hover:text-abyss-accent transition">Terms of Service</a></li>
-                    <li><a href="/privacy" class="text-abyss-light hover:text-abyss-accent transition">Privacy Policy</a></li>
-                </ul>
+            <div class="copyright border-t border-abyss-dark mt-8 pt-6 text-center text-abyss-light text-sm">
+                &copy; 2025 ABYSS. All rights reserved.
             </div>
         </div>
-        <div class="copyright border-t border-abyss-dark mt-8 pt-6 text-center text-abyss-light text-sm">
-            &copy; 2025 ABYSS. All rights reserved.
-        </div>
-    </div>
-</footer>
+    </footer>
 
-<script src = "/static/js/script.js"></script>
+    <script src="/static/js/script.js"></script>
 
-<!-- JavaScript for interactivity -->
-<script>
+    <!-- JavaScript for interactivity -->
+    <script>
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadDiscussions(); // Load initial discussions
-    setupFilterButtons();
-    setupCategoryFilter();
-    setupLoadMoreButton();
-    
-});
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDiscussions(); // Load initial discussions
+            setupFilterButtons();
+            setupCategoryFilter();
+            setupLoadMoreButton();
 
-let currentFilter = 'popular';
-let currentCategory = 'all';
-let currentPage = 1;
-
-// Fetch discussions from the backend API
-async function loadDiscussions(reset = true) {
-    if (reset) {
-        currentPage = 1;
-        document.getElementById('discussionsList').innerHTML = ''; // Clear existing
-    }
-
-    try {
-        const response = await fetch(`/api/communityData?type=${currentFilter}&mediacategory=${currentCategory}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
         });
 
-        const data = await response.json();
+        let currentFilter = 'popular';
+        let currentCategory = 'all';
+        let currentPage = 1;
 
-        if (Array.isArray(data.discussions)) {
-            data.discussions.forEach(discussion => renderDiscussion(discussion));
-            currentPage++;
-        } else {
-            console.warn('Invalid data format:', data);
+        // Fetch discussions from the backend API
+        async function loadDiscussions(reset = true) {
+            if (reset) {
+                currentPage = 1;
+                document.getElementById('discussionsList').innerHTML = ''; // Clear existing
+            }
+
+            try {
+                const response = await fetch(`/api/communityData?type=${currentFilter}&mediacategory=${currentCategory}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (Array.isArray(data.discussions)) {
+                    data.discussions.forEach(discussion => renderDiscussion(discussion));
+                    currentPage++;
+                } else {
+                    console.warn('Invalid data format:', data);
+                }
+            } catch (error) {
+                console.error('Failed to fetch discussions:', error);
+            }
         }
-    } catch (error) {
-        console.error('Failed to fetch discussions:', error);
-    }
-}
 
 
-// Render a single discussion item into the DOM
-function renderDiscussion(discussion) {
-    const container = document.getElementById('discussionsList');
+        // Render a single discussion item into the DOM
+        function renderDiscussion(discussion) {
+            const container = document.getElementById('discussionsList');
 
-    const wrapper = document.createElement('div');
-    wrapper.className = "discussion-item mb-4 shadow-md overflow-hidden border transition-colors duration-200";
-    wrapper.style.backgroundColor = "#0b0c10"; // Matches parent container
-    wrapper.style.borderColor = "#1f2833"; // Slight contrast
-    wrapper.addEventListener("mouseenter", () => {
-        wrapper.style.backgroundColor = "#1f2833";
-    });
-    wrapper.addEventListener("mouseleave", () => {
-        wrapper.style.backgroundColor = "#0b0c10";
-    });
+            const wrapper = document.createElement('div');
+            wrapper.className = "discussion-item mb-4 shadow-md overflow-hidden border transition-colors duration-200";
+            wrapper.style.backgroundColor = "#0b0c10"; // Matches parent container
+            wrapper.style.borderColor = "#1f2833"; // Slight contrast
+            wrapper.addEventListener("mouseenter", () => {
+                wrapper.style.backgroundColor = "#1f2833";
+            });
+            wrapper.addEventListener("mouseleave", () => {
+                wrapper.style.backgroundColor = "#0b0c10";
+            });
 
-    const profileImageHTML = discussion.profile_image_url
-        ? `<img src="${discussion.img_link}" alt="${discussion.username}" class="w-12 h-12 rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
-        : '';
+            const profileImageHTML = discussion.profile_image_url
+                ? `<img src="${discussion.img_link}" alt="${discussion.username}" class="w-12 h-12 rounded-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+                : '';
 
-    const fallbackInitial = `<div class="w-12 h-12 rounded-full bg-gray-700 text-white font-bold flex items-center justify-center" style="display: ${discussion.profile_image_url ? 'none' : 'flex'};">
+            const fallbackInitial = `<div class="w-12 h-12 rounded-full bg-gray-700 text-white font-bold flex items-center justify-center" style="display: ${discussion.profile_image_url ? 'none' : 'flex'};">
         ${discussion.username.charAt(0).toUpperCase()}
     </div>`;
 
-    wrapper.innerHTML = `
+            wrapper.innerHTML = `
         <div class="p-5">
             <div class="flex items-start">
                 <div class="flex-shrink-0 mr-4 relative">
@@ -402,7 +487,7 @@ function renderDiscussion(discussion) {
                             ${discussion.username}
                         </a>
                         <span class="text-xs" style="color: #c5c6c7;">• ${discussion.time_added ?? "Just now"}</span>
-                        <span class="ml-2 px-2 py-0.5 rounded-full text-xs" style="background-color: #0b0c10; color: #66fcf1;">
+                        <span class="mediatag_post ml-2 px-2 py-0.5 rounded-full text-xs" style="background-color: #0b0c10; color: #66fcf1;">
                             ${discussion.mediatag}
                         </span>
                     </div>
@@ -429,8 +514,8 @@ function renderDiscussion(discussion) {
         </div>
     `;
 
-    container.appendChild(wrapper);
-}
+            container.appendChild(wrapper);
+        }
 
 
 
@@ -442,36 +527,37 @@ function renderDiscussion(discussion) {
 
 
 
-// Setup filter buttons
-function setupFilterButtons() {
-    const buttons = document.querySelectorAll('.filter-btn');
-    buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            buttons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentFilter = btn.dataset.filter;
-            loadDiscussions(true);
-        });
-    });
-}
+        // Setup filter buttons
+        function setupFilterButtons() {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    loadDiscussions(true);
+                });
+            });
+        }
 
-// Setup category dropdown
-function setupCategoryFilter() {
-    const categorySelect = document.getElementById('categoryFilter');
-    categorySelect.addEventListener('change', () => {
-        currentCategory = categorySelect.value;
-        loadDiscussions(true);
-    });
-}
+        // Setup category dropdown
+        function setupCategoryFilter() {
+            const categorySelect = document.getElementById('categoryFilter');
+            categorySelect.addEventListener('change', () => {
+                currentCategory = categorySelect.value;
+                loadDiscussions(true);
+            });
+        }
 
-// Setup Load More button
-function setupLoadMoreButton() {
-    const btn = document.getElementById('loadMoreBtn');
-    btn.addEventListener('click', () => {
-        loadDiscussions(false);
-    });
-}
+        // Setup Load More button
+        function setupLoadMoreButton() {
+            const btn = document.getElementById('loadMoreBtn');
+            btn.addEventListener('click', () => {
+                loadDiscussions(false);
+            });
+        }
 
-</script>
+    </script>
 </body>
+
 </html>

@@ -1,37 +1,87 @@
+    *{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      /* Navigation Bar */
-      nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #1f2833;
-        padding: 15px 30px;
-      }
+ /* Sticky, Aesthetic Navigation Bar */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 12vh;
+  padding: 0 40px;
+  background-color: #0b0c10;
+}
 
-      nav .logo {
-        font-size: 24px;
-        font-weight: bold;
-        cursor: pointer;
-        color: #66fcf1;
-      }
+/* Logo */
+nav .logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #66fcf1;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
 
-      nav ul {
-        list-style: none;
-        display: flex;
-        gap: 20px;
-      }
+/* Navigation Links */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+}
 
-      nav ul li {
-        display: inline;
-      }
+nav ul li {
+  display: inline;
+}
 
-      nav ul li a {
-        text-decoration: none;
-        color: #c5c6c7;
-        font-size: 18px;
-        transition: color 0.3s ease;
-      }
+nav ul li a {
+  text-decoration: none;
+  color: #c5c6c7;
+  font-size: 17px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
 
-      nav ul li a:hover {
-        color: #66fcf1;
-      }
+nav ul li a:hover {
+  background-color: #1f2833;
+  color: #66fcf1;
+}
+
+/* Profile Dropdown Container */
+.profile-menu {
+  position: relative;
+}
+
+/* Dropdown Content */
+.dropdown-content {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background-color: #1f2833;
+  border: 1px solid #45a29e;
+  border-radius: 6px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+  min-width: 140px;
+  display: none;
+}
+
+/* Dropdown Links */
+.dropdown-content a {
+  display: block;
+  padding: 10px 14px;
+  color: #c5c6c7;
+  text-decoration: none;
+  font-size: 15px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.dropdown-content a:hover {
+  background-color: #0b0c10;
+  color: #66fcf1;
+}
