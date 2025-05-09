@@ -15,7 +15,7 @@ def get_connection():
 def searchFromAllMedia(string):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT title FROM media WHERE title LIKE %s"
+    query = "SELECT media_id,title FROM media WHERE title LIKE %s"
     cursor.execute(query, (f"{string}%",))
     result = cursor.fetchall()
     cursor.close()
@@ -285,7 +285,7 @@ def fetchCommunityData(type, mediacategory):
     # Determine WHERE clause and order column
     where_clause = ""
     params = ()
-    print(mediacategory)
+    # print(mediacategory)
     if mediacategory != 'all':
         where_clause = "WHERE d.mediatag = %s"
         params = (mediacategory,)
@@ -301,9 +301,10 @@ def fetchCommunityData(type, mediacategory):
 
     cursor.close()
     conn.close()
-    # Example in Python/Flask
-    # result['created_at'] = result['created_at'].strftime('%b %d, %Y %I:%M %p')
-    print(result)
+    # formatting the date
+    for row in result:
+        row['created_at'] = row['created_at'].strftime('%b %d, %Y %I:%M %p')
+
     return result
 
 
@@ -646,3 +647,13 @@ def checkIfUserLikedComment(username, comment_id):
     else:
         return False
 
+# email subscribers table filling 
+def emailsubscribedb(email):
+    conn = get_connection()
+    cursor = conn.cursor()
+    query = "insert into email_subscribers (email) values (%s)"
+    cursor.execute(query,(email,))
+    conn.commit()
+    if cursor.rowcount:
+        return True
+    return False

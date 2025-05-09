@@ -297,19 +297,28 @@
   <body>
     <!-- Navigation Bar -->
 <nav id="main-nav">
-  <div class="logo" onclick="goToHome()">ABYSS</div>
-  <ul>
-    <li><a href="#" id="leaderboardLink" onclick="goToLeaderboard()">Leaderboard</a></li>
-    <li><a href="#" onclick="goToCommunity()">Community</a></li>
-    <li class="profile-menu">
-      <a href="#" onclick="toggleProfileDropdown()">Profile</a>
-      <div id="profileDropdown" class="dropdown-content" style="display: none;">
-        <a href="#" onclick="goToProfile()">View Profile</a>
-        <a href="#" onclick="logout()">Logout</a>
-      </div>
-    </li>
-  </ul>
-</nav>
+    <div class="logo" onclick="goToHome()">ABYSS</div>
+    
+    <div class="hamburger" onclick="toggleMobileMenu()">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+    
+    <ul id="nav-menu">
+      <li>
+        <a href="#" id="leaderboardLink" onclick="goToLeaderboard()">Leaderboard</a>
+      </li>
+      <li><a href="#" onclick="goToCommunity()">Community</a></li>
+      <li class="profile-menu">
+        <a href="#" onclick="toggleProfileDropdown()">Profile</a>
+        <div id="profileDropdown" class="dropdown-content">
+          <a href="#" onclick="goToProfile()">View Profile</a>
+          <a href="#" onclick="logout()">Logout</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
 
     <!-- Main Era Section -->
     <section class="category-section">
@@ -328,7 +337,57 @@
       <!-- Media sections will be dynamically populated -->
       <div class="loader"></div>
     </div>
-
+    <footer>
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>ABYSS</h3>
+        <p>
+          Your ultimate timeline explorer for all forms of entertainment
+          across the ages.
+        </p>
+        <div class="social-icons">
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h3>Navigation</h3>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Leaderboard</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Timeline</a></li>
+          <li><a href="#">Categories</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Help Center</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">Content Guidelines</a></li>
+          <li><a href="#">Copyright</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>© 2025 ABYSS. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="/static/js/script.js"></script>
     <script>
       // Get the era from the URL
       const pathParts = window.location.pathname.split("/");

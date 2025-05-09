@@ -47,7 +47,7 @@ def sendmail(username, email):
     # Compose the message
     msg = EmailMessage()
     msg['Subject'] = 'Welcome to Abyss – Explore Media Like Never Before!'
-    msg['From'] = 'murtazabaig335@gmail.com'
+    msg['From'] = 'murtazarasheedblogger@gmail.com'
     msg['To'] = email
     msg.set_content(f"""
 Hello {username}, and welcome to Abyss!
@@ -73,7 +73,7 @@ The Abyss Team
     server.starttls()
 
     # Login using your App Password
-    server.login("murtazabaig335@gmail.com", "fxxbfgfzfqaexvlo")  # No spaces
+    server.login("murtazarasheedblogger@gmail.com", "gvla ctxo incv ahuc")  # No spaces
 
     # Send email
     server.send_message(msg)
@@ -97,12 +97,12 @@ def abyssHome():
 def mainEraPage(era):
     return render_template('prehistory.html')
 # -------------main media page -------------
-@app.route('/mainmediapage/<era>/<media>', methods=['GET'])
-def mainMediaPage(media,era):
+@app.route('/mainmediapage/<media>', methods=['GET'])
+def mainMediaPage(media):
     return render_template('movies.html')
-# ---------singleDiscussionPage----------
-@app.route('/mediapage/<era>/<category>/<media_id>', methods = ['GET'])
-def singleMediaPage(era, category, media_id):
+# ---------single Media page----------
+@app.route('/mediapage/<media_id>', methods = ['GET'])
+def singleMediaPage(media_id):
     return render_template('singlemedia.html')
 # ----------leaderboard page---------------
 @app.route('/leaderboard', methods=['GET'])
@@ -323,8 +323,12 @@ def communityData():
 
     type = request.args.get('type', 'popular')
     mediacategory = request.args.get("mediacategory", 'all')
-
+    
     community = fetchCommunityData(type, mediacategory)
+    # Format the datetime object into a readable string
+    # if isinstance(community['created_at'], datetime):
+    #     community['created_at'] = community['created_at'].strftime('%d %b %Y')
+    
     return jsonify({ "discussions": community })
 
 # api routes for the main search bar 
@@ -337,10 +341,10 @@ def mainSearchBarAllMedia(query):
 
 # if any of the toggle button is selected
 # tested </
-@app.route('/api/search/<category>/<query>', methods = ['GET'])
-def mainSearchBarOneMedia(query,category):
-    result = searchFromOneCategory(query, category)
-    return jsonify(result)
+# @app.route('/api/search/<category>/<query>', methods = ['GET'])
+# def mainSearchBarOneMedia(query,category):
+#     result = searchFromOneCategory(query, category)
+#     return jsonify(result)
 
 # api route for displaying the timeline range on the homepage 
 # tested </
@@ -543,7 +547,7 @@ def signupUser():
         session['username'] = username
         logstateDatabase(username, True)
 
-        # sendmail(username, email)
+        sendmail(username, email)
         return jsonify({"success": "user added"}), 201
     else:
         return jsonify({"error": "user not added"}), 400
@@ -597,6 +601,16 @@ def loggedinuser():
     else:
         return jsonify({"error": "The user is not logged in"})
 
+
+# api for the email subsribers
+@app.route('/api/emailsubscribe/<email>',methods = ['GET'])
+def emailsubscribe(email):
+    # Only allow AJAX (fetch) calls
+    if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+        abort(403)  # Forbidden if not AJAX
+    
+    success = emailsubscribedb(email)
+    return jsonify({"success" : success})
 if __name__ == '__main__':
 
     app.run(host='0.0.0.0', port=5000, debug = True, threaded = True) 

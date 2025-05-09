@@ -1,678 +1,657 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Ultimate Timeline</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Ultimate Timeline</title>
-  
-  <!-- <link rel="stylesheet" href="/static/abysstrial6.css"> -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
-    rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="/static/abysstrial6.css"> -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
-  <style>
-    /* Dark Mode Theme with New Color Palette */
-    body {
-      background-color: #0b0c10;
-      color: #c5c6c7;
-      font-family: "Poppins", "Montserrat", Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
-
-    /* section that contains the search bar and the buttons of movies... */
-    .firstsection {
-  height: 88vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
-  background: #0b0c10; /* Deep black background */
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  color: #c5c6c7; /* Text color for contrast */
-}
-
-/* Subtle glowing accents using your color palette */
-.firstsection::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: radial-gradient(circle at 50% 50%, #45a29e20 0%, transparent 70%),
-              radial-gradient(circle at 30% 30%, #66fcf120 0%, transparent 70%),
-              radial-gradient(circle at 70% 70%, #c5c6c720 0%, transparent 70%);
-  animation: glowAnimation 25s ease-in-out infinite;
-  z-index: 0;
-  pointer-events: none;
-}
-
-@keyframes glowAnimation {
-  0% {
-    transform: scale(1);
-    opacity: 0.2;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 0.7;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.2;
-  }
-}
-
-
-    /* Header */
-    header {
-      margin: 30px;
-    }
-
-    /* Enhanced Search Bar */
-    .search-bar {
-      margin: auto;
-      margin-top: 30px;
-      width: 50vw;
-      display: flex;
-      border: none;
-      border-radius: 50px;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(102, 252, 241, 0.15);
-      transition: all 0.3s ease;
-    }
-
-    .search-bar:focus-within {
-      box-shadow: 0 8px 25px rgba(102, 252, 241, 0.25);
-      transform: translateY(-2px);
-    }
-
-    .search-bar input {
-      width: 85%;
-      padding: 18px 25px;
-      border: none;
-      outline: none;
-      background: #1f2833;
-      color: #c5c6c7;
-      font-size: 18px;
-      font-family: "Poppins", sans-serif;
-    }
-
-    .search-bar button {
-      width: 15%;
-      padding: 18px 25px;
-      border: none;
-      cursor: pointer;
-      background: #45a29e;
-      color: #0b0c10;
-      font-size: 18px;
-      font-weight: 600;
-      transition: 0.3s ease;
-    }
-
-    .search-bar button:hover {
-      background: #66fcf1;
-    }
-
-    /* Category Buttons */
-
-    .category-buttons button {
-      background: #1f2833;
-      color: #c5c6c7;
-      padding: 10px 20px;
-      margin: 5px;
-      border: 2px solid #45a29e;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .category-buttons button:hover {
-      background: #45a29e;
-      color: #0b0c10;
-    }
-
-    /* Enhanced Timeline */
-    .timeline-container {
-      top: 40px;
-      margin: 50px auto;
-      width: 100%;
-      max-width: 1200px;
-      position: relative;
-    }
-
-    .era {
-      position: absolute;
-      color: #c5c6c7;
-      background-color: #1f2833;
-      border: 2px solid #45a29e;
-      border-radius: 30px;
-      padding: 12px 25px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-      font-size: 18px;
-      font-family: "Montserrat", sans-serif;
-      white-space: nowrap;
-      transition: all 0.3s ease;
-      letter-spacing: 0.5px;
-    }
-
-    .era-label {
-      position: absolute;
-      background-color: transparent;
-      border: 2px transparent;
-      border-radius: 30px;
-      padding: 10px 20px transparent;
-      font-weight: bold;
-      font-size: 16px;
-      font-family: "Montserrat", sans-serif;
-      white-space: nowrap;
-      color: #66fcf1;
-      cursor: pointer;
-      transition: color 0.3s ease;
-      letter-spacing: 0.3px;
-    }
-
-    .era:hover {
-      background-color: #45a29e;
-      color: #0b0c10;
-      transform: scale(1.05);
-      box-shadow: 0 5px 15px rgba(102, 252, 241, 0.2);
-    }
-
-    .era-label:hover {
-      background-color: transparent;
-      color: #66fcf1;
-      transform: scale(1.05);
-    }
-
-    .connector {
-      position: absolute;
-      border-top: 5px dotted #45a29e;
-    }
-
-    /* Positioning each era and label */
-    #prehistory {
-      top: 60px;
-      left: 5%;
-    }
-
-    #classical {
-      top: 60px;
-      right: 5%;
-    }
-
-    #medieval {
-      top: 220px;
-      right: 20.5%;
-    }
-
-    #early-modern {
-      top: 220px;
-      left: 20%;
-    }
-
-    #modern {
-      top: 350px;
-      left: 58%;
-    }
-
-    #future {
-      top: 500px;
-      left: 15%;
-    }
-
-    /* Era labels */
-    #stone-label {
-      top: 50px;
-      left: 30%;
-    }
-
-    #iron-label {
-      top: 50px;
-      right: 30%;
-    }
-
-    #bronze-label {
-      top: 111px;
-      left: 47%;
-    }
-
-    #renaissance-label {
-      top: 337px;
-      left: 10%;
-    }
-
-    #industrial-label {
-      top: 380px;
-      left: 34%;
-    }
-
-    #information-label {
-      top: 490px;
-      left: 40%;
-    }
-
-    #atomic-label {
-      top: 542px;
-      right: 35%;
-    }
-
-    #twentieth-label {
-      top: 490px;
-      right: 15%;
-    }
-
-    /* Connectors */
-    #prehistory-classical {
-      top: 80px;
-      left: 14%;
-      width: 70.2%;
-    }
-
-    #classical-medieval {
-      top: 101px;
-      right: 10%;
-      width: 2px;
-      height: 138px;
-      border-left: 5px dotted #45a29e;
-      border-top: none;
-    }
-
-    #classical-medieval-horiz {
-      top: 238px;
-      right: 10.5%;
-      width: 10%;
-    }
-
-    #medieval-early {
-      top: 238px;
-      left: 33%;
-      width: 36%;
-    }
-
-    #early-horiz {
-      top: 238px;
-      left: 6%;
-      width: 14%;
-    }
-
-    #early-modern-renaissance {
-      top: 238px;
-      left: 6%;
-      width: 2px;
-      height: 130px;
-      border-left: 5px dotted #45a29e;
-      border-top: none;
-    }
-
-    #renaissance-to-modern {
-      top: 366px;
-      left: 6%;
-      width: 52%;
-    }
-
-    #modern-horiz {
-      top: 366px;
-      right: 6.5%;
-      width: 25.5%;
-    }
-
-    #modern-twentieth {
-      top: 366px;
-      right: 6%;
-      width: 2px;
-      height: 152px;
-      border-left: 5px dotted #45a29e;
-      border-top: none;
-    }
-
-    #future-twenty {
-      top: 520px;
-      right: 6.15%;
-      width: 71.5%;
-    }
-
-    #future-line {
-      top: 520px;
-      left: 9%;
-      width: 6%;
-    }
-
-    #future-dot {
-      position: absolute;
-      top: 516px;
-      left: 8.5%;
-      width: 10px;
-      height: 10px;
-      background-color: #66fcf1;
-      border-radius: 50%;
-    }
-
-    .floating {
-      animation: floatText 1s infinite alternate ease-in-out;
-    }
-
-    @keyframes floatText {
-      from {
-        transform: translateY(0);
+    <style>
+      /* Dark Mode Theme with New Color Palette */
+      body {
+        background-color: #0b0c10;
+        color: #c5c6c7;
+        font-family: "Poppins", "Montserrat", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        overflow-x: hidden;
       }
 
-      to {
-        transform: translateY(-10px);
-      }
-    }
-
-
-
-    /* Add style for active buttons */
-    .category-buttons button.active {
-      background-color: #45a29e;
-      color: #0b0c10;
-    }
-
-    /* About Section Styles */
-    .about-section {
-      height: 88vh;
-      /* padding: 3rem 5%; */
-      text-align: center;
-      background-color: #1f2833;
-    }
-
-    .about-section h2 {
-      margin-bottom: 1rem;
-      color: #66fcf1;
-    }
-
-    .about-section p {
-      max-width: 200px;
-      margin: 0 auto;
-      text-align: justify;
-      line-height: 1.6;
-      color: #c5c6c7;
-    }
-
-    /* Search icon style */
-    #search-button svg {
-      fill: currentColor;
-    }
-
-    /* Testimonials Section Styles */
-    .testimonials-section {
-      margin-top: 680px;
-      padding: 3rem 5%;
-      background-color: #0b0c10;
-      color: #c5c6c7;
-      text-align: center;
-    }
-
-    .testimonials-section h2 {
-      margin-bottom: 2rem;
-      color: #66fcf1;
-    }
-
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .testimonial-card {
-      background-color: #1f2833;
-      padding: 2rem;
-      border-radius: 8px;
-      text-align: left;
-      border: 1px solid #45a29e;
-    }
-
-    .testimonial-text {
-      font-style: italic;
-      margin-bottom: 1rem;
-      line-height: 1.6;
-    }
-
-    .testimonial-author {
-      font-weight: 600;
-      color: #66fcf1;
-    }
-
-
-    /* Newsletter Section Styles */
-    .newsletter-section {
-      padding: 3rem 5%;
-      background-color: #0b0c10;
-      color: #c5c6c7;
-      text-align: center;
-    }
-
-    .newsletter-section h2 {
-      margin-bottom: 1rem;
-      color: #66fcf1;
-    }
-
-    .newsletter-section p {
-      max-width: 600px;
-      margin: 0 auto 2rem;
-    }
-
-    .newsletter-form {
-      display: flex;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    .newsletter-form input {
-      flex: 1;
-      padding: 0.8rem;
-      border: 1px solid #45a29e;
-      border-radius: 4px 0 0 4px;
-      font-size: 1rem;
-      background-color: #1f2833;
-      color: #c5c6c7;
-    }
-
-    .newsletter-form button {
-      padding: 0.8rem 1.5rem;
-      background-color: #45a29e;
-      border: none;
-      border-radius: 0 4px 4px 0;
-      color: #0b0c10;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    .newsletter-form button:hover {
-      background-color: #66fcf1;
-    }
-
-    /* App Promotion Styles */
-    .app-section {
-      padding: 3rem 5%;
-      background-color: #1f2833;
-      text-align: center;
-      color: #c5c6c7;
-    }
-
-    .app-section h2 {
-      margin-bottom: 1rem;
-      color: #66fcf1;
-    }
-
-    .app-section p {
-      max-width: 600px;
-      margin: 0 auto 2rem;
-    }
-
-    .app-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    .app-button {
-      padding: 0.8rem 1.5rem;
-      background-color: #0b0c10;
-      color: #66fcf1;
-      border: 1px solid #45a29e;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .app-button:hover {
-      background-color: #45a29e;
-      color: #0b0c10;
-    }
-
-    /* Footer Styles */
-    footer {
-      background-color: #0b0c10;
-      color: #c5c6c7;
-      padding: 3rem 5%;
-    }
-
-    .footer-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .footer-column h3 {
-      margin-bottom: 1.5rem;
-      color: #66fcf1;
-    }
-
-    .footer-column ul {
-      list-style: none;
-    }
-
-    .footer-column ul li {
-      margin-bottom: 0.8rem;
-    }
-
-    .footer-column ul li a {
-      color: #c5c6c7;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-
-    .footer-column ul li a:hover {
-      color: #66fcf1;
-    }
-
-    .social-icons {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .social-icon {
-      width: 40px;
-      height: 40px;
-      background-color: #1f2833;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #c5c6c7;
-      text-decoration: none;
-      transition: background-color 0.3s;
-    }
-
-    .social-icon:hover {
-      background-color: #45a29e;
-      color: #0b0c10;
-    }
-
-    .copyright {
-      text-align: center;
-      padding-top: 2rem;
-      margin-top: 2rem;
-      border-top: 1px solid #45a29e;
-      color: #c5c6c7;
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      .newsletter-form {
+      /* section that contains the search bar and the buttons of movies... */
+      .firstsection {
+        height: 88vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         flex-direction: column;
+        overflow: hidden;
+        background: #0b0c10;
+        /* Deep black background */
+        position: relative;
+        z-index: 1;
+        color: #c5c6c7;
+        /* Text color for contrast */
+      }
+
+      /* Subtle glowing accents using your color palette */
+      .firstsection::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: radial-gradient(
+            circle at 50% 50%,
+            #45a29e20 0%,
+            transparent 70%
+          ),
+          radial-gradient(circle at 30% 30%, #66fcf120 0%, transparent 70%),
+          radial-gradient(circle at 70% 70%, #c5c6c720 0%, transparent 70%);
+        animation: glowAnimation 25s ease-in-out infinite;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      @keyframes glowAnimation {
+        0% {
+          transform: scale(1);
+          opacity: 0.2;
+        }
+
+        50% {
+          transform: scale(1.05);
+          opacity: 0.7;
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 0.2;
+        }
+      }
+
+      /* Header */
+      header {
+        margin: 30px;
+        position: relative;
+      }
+
+      /* Enhanced Search Bar */
+      .search-bar {
+        margin: auto;
+        margin-top: 30px;
+        width: 70vw;
+        display: flex;
+        border: none;
+        border-radius: 50px;
+        box-shadow: 0 8px 20px rgba(102, 252, 241, 0.15);
+        transition: all 0.3s ease;
+      }
+
+      .search-bar:focus-within {
+        box-shadow: 0 8px 25px rgba(102, 252, 241, 0.25);
+        transform: translateY(-2px);
+      }
+
+      .search-bar input {
+        width: 85%;
+        padding: 18px 25px;
+        border: none;
+        outline: none;
+        background: #1f2833;
+        color: #c5c6c7;
+        font-size: 18px;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .search-bar button {
+        width: 15%;
+        padding: 18px 25px;
+        border: none;
+        cursor: pointer;
+        background: #45a29e;
+        color: #0b0c10;
+        font-size: 18px;
+        font-weight: 600;
+        transition: 0.3s ease;
+      }
+
+      .search-bar button:hover {
+        background: #66fcf1;
+      }
+
+      /* Category Buttons */
+
+      .category-buttons button {
+        background: #1f2833;
+        color: #c5c6c7;
+        padding: 10px 20px;
+        margin: 5px;
+        border: 2px solid #45a29e;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .category-buttons button:hover {
+        background: #45a29e;
+        color: #0b0c10;
+      }
+
+      /* Enhanced Timeline */
+      .timeline-container {
+        top: 40px;
+        margin: 50px auto;
+        width: 100%;
+        max-width: 1200px;
+        position: relative;
+      }
+
+      .era {
+        position: absolute;
+        color: #c5c6c7;
+        background-color: #1f2833;
+        border: 2px solid #45a29e;
+        border-radius: 30px;
+        padding: 12px 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: 18px;
+        font-family: "Montserrat", sans-serif;
+        white-space: nowrap;
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+      }
+
+      .era-label {
+        position: absolute;
+        background-color: transparent;
+        border: 2px transparent;
+        border-radius: 30px;
+        padding: 10px 20px transparent;
+        font-weight: bold;
+        font-size: 16px;
+        font-family: "Montserrat", sans-serif;
+        white-space: nowrap;
+        color: #66fcf1;
+        cursor: pointer;
+        transition: color 0.3s ease;
+        letter-spacing: 0.3px;
+      }
+
+      .era:hover {
+        background-color: #45a29e;
+        color: #0b0c10;
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(102, 252, 241, 0.2);
+      }
+
+      .era-label:hover {
+        background-color: transparent;
+        color: #66fcf1;
+        transform: scale(1.05);
+      }
+
+      .connector {
+        position: absolute;
+        border-top: 5px dotted #45a29e;
+      }
+
+      /* Positioning each era and label */
+      #prehistory {
+        top: 60px;
+        left: 5%;
+      }
+
+      #classical {
+        top: 60px;
+        right: 5%;
+      }
+
+      #medieval {
+        top: 220px;
+        right: 20.5%;
+      }
+
+      #early-modern {
+        top: 220px;
+        left: 20%;
+      }
+
+      #modern {
+        top: 350px;
+        left: 58%;
+      }
+
+      #future {
+        top: 500px;
+        left: 15%;
+      }
+
+      /* Era labels */
+      #stone-label {
+        top: 50px;
+        left: 30%;
+      }
+
+      #iron-label {
+        top: 50px;
+        right: 30%;
+      }
+
+      #bronze-label {
+        top: 111px;
+        left: 47%;
+      }
+
+      #renaissance-label {
+        top: 337px;
+        left: 10%;
+      }
+
+      #industrial-label {
+        top: 380px;
+        left: 34%;
+      }
+
+      #information-label {
+        top: 490px;
+        left: 40%;
+      }
+
+      #atomic-label {
+        top: 542px;
+        right: 35%;
+      }
+
+      #twentieth-label {
+        top: 490px;
+        right: 15%;
+      }
+
+      /* Connectors */
+      #prehistory-classical {
+        top: 80px;
+        left: 14%;
+        width: 70.2%;
+      }
+
+      #classical-medieval {
+        top: 101px;
+        right: 10%;
+        width: 2px;
+        height: 138px;
+        border-left: 5px dotted #45a29e;
+        border-top: none;
+      }
+
+      #classical-medieval-horiz {
+        top: 238px;
+        right: 10.5%;
+        width: 10%;
+      }
+
+      #medieval-early {
+        top: 238px;
+        left: 33%;
+        width: 36%;
+      }
+
+      #early-horiz {
+        top: 238px;
+        left: 6%;
+        width: 14%;
+      }
+
+      #early-modern-renaissance {
+        top: 238px;
+        left: 6%;
+        width: 2px;
+        height: 130px;
+        border-left: 5px dotted #45a29e;
+        border-top: none;
+      }
+
+      #renaissance-to-modern {
+        top: 366px;
+        left: 6%;
+        width: 52%;
+      }
+
+      #modern-horiz {
+        top: 366px;
+        right: 6.5%;
+        width: 25.5%;
+      }
+
+      #modern-twentieth {
+        top: 366px;
+        right: 6%;
+        width: 2px;
+        height: 152px;
+        border-left: 5px dotted #45a29e;
+        border-top: none;
+      }
+
+      #future-twenty {
+        top: 520px;
+        right: 6.15%;
+        width: 71.5%;
+      }
+
+      #future-line {
+        top: 520px;
+        left: 9%;
+        width: 6%;
+      }
+
+      #future-dot {
+        position: absolute;
+        top: 516px;
+        left: 8.5%;
+        width: 10px;
+        height: 10px;
+        background-color: #66fcf1;
+        border-radius: 50%;
+      }
+
+      .floating {
+        animation: floatText 1s infinite alternate ease-in-out;
+      }
+
+      @keyframes floatText {
+        from {
+          transform: translateY(0);
+        }
+
+        to {
+          transform: translateY(-10px);
+        }
+      }
+
+      /* Add style for active buttons */
+      .category-buttons button.active {
+        background-color: #45a29e;
+        color: #0b0c10;
+      }
+
+      /* About Section Styles */
+      .about-section {
+        height: 88vh;
+        /* padding: 3rem 5%; */
+        text-align: center;
+        background-color: #1f2833;
+      }
+
+      .about-section h2 {
+        margin-bottom: 1rem;
+        color: #66fcf1;
+      }
+
+      .about-section p {
+        max-width: 200px;
+        margin: 0 auto;
+        text-align: justify;
+        line-height: 1.6;
+        color: #c5c6c7;
+      }
+
+      /* Search icon style */
+      #search-button svg {
+        fill: currentColor;
+      }
+
+      /* Testimonials Section Styles */
+      .testimonials-section {
+        margin-top: 680px;
+        padding: 3rem 5%;
+        background-color: #0b0c10;
+        color: #c5c6c7;
+        text-align: center;
+      }
+
+      .testimonials-section h2 {
+        margin-bottom: 2rem;
+        color: #66fcf1;
+      }
+
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .testimonial-card {
+        background-color: #1f2833;
+        padding: 2rem;
+        border-radius: 8px;
+        text-align: left;
+        border: 1px solid #45a29e;
+      }
+
+      .testimonial-text {
+        font-style: italic;
+        margin-bottom: 1rem;
+        line-height: 1.6;
+      }
+
+      .testimonial-author {
+        font-weight: 600;
+        color: #66fcf1;
+      }
+
+      /* Newsletter Section Styles */
+      .newsletter-section {
+        padding: 3rem 5%;
+        background-color: #0b0c10;
+        color: #c5c6c7;
+        text-align: center;
+      }
+
+      .newsletter-section h2 {
+        margin-bottom: 1rem;
+        color: #66fcf1;
+      }
+
+      .newsletter-section p {
+        max-width: 600px;
+        margin: 0 auto 2rem;
+      }
+
+      .newsletter-form {
+        display: flex;
+        max-width: 500px;
+        margin: 0 auto;
       }
 
       .newsletter-form input {
-        border-radius: 4px;
-        margin-bottom: 1rem;
+        flex: 1;
+        padding: 0.8rem;
+        border: 1px solid #45a29e;
+        border-radius: 4px 0 0 4px;
+        font-size: 1rem;
+        background-color: #1f2833;
+        color: #c5c6c7;
       }
 
       .newsletter-form button {
-        border-radius: 4px;
+        padding: 0.8rem 1.5rem;
+        background-color: #45a29e;
+        border: none;
+        border-radius: 0 4px 4px 0;
+        color: #0b0c10;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .newsletter-form button:hover {
+        background-color: #66fcf1;
+      }
+
+      /* App Promotion Styles */
+      .app-section {
+        padding: 3rem 5%;
+        background-color: #1f2833;
+        text-align: center;
+        color: #c5c6c7;
+      }
+
+      .app-section h2 {
+        margin-bottom: 1rem;
+        color: #66fcf1;
+      }
+
+      .app-section p {
+        max-width: 600px;
+        margin: 0 auto 2rem;
       }
 
       .app-buttons {
-        flex-direction: column;
-        align-items: center;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
       }
-    }
 
-    #typing-text {
-            font-size: 36px;
-            font-weight: 600;
-            text-align: center;
-            display: inline-block;
-            padding-right: 8px;
-            letter-spacing: 1px;
-            animation: blink 0.75s step-end infinite, fadeIn 2s ease-out forwards;
-            /* text-shadow: 0 0 20px #66fcf1, 0 0 40px #45a29e; Glowing text effect with your theme's colors */
+      .app-button {
+        padding: 0.8rem 1.5rem;
+        background-color: #0b0c10;
+        color: #66fcf1;
+        border: 1px solid #45a29e;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .app-button:hover {
+        background-color: #45a29e;
+        color: #0b0c10;
+      }
+
+      
+      /* Responsive Adjustments */
+      @media (max-width: 768px) {
+        .newsletter-form {
+          flex-direction: column;
         }
 
-        /* Blinking cursor */
-        @keyframes blink {
-            50% {
-                border-color: transparent;
-            }
+        .newsletter-form input {
+          border-radius: 4px;
+          margin-bottom: 1rem;
         }
 
-        /* Fade-in effect */
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
+        .newsletter-form button {
+          border-radius: 4px;
         }
 
-        /* Adjust cursor size */
-        .cursor {
-            border-right: 3px solid #66fcf1; /* Cursor color matches your theme */
-            animation: blink 0.75s step-end infinite; /* Make it blink */
+        .app-buttons {
+          flex-direction: column;
+          align-items: center;
         }
-  </style>
-  <link rel="stylesheet" href="/static/styles.css" />
-</head>
+      }
 
-<body>
-  <!-- Navigation Bar -->
+      #typing-text {
+        font-size: 36px;
+        font-weight: 600;
+        text-align: center;
+        display: inline-block;
+        padding-right: 8px;
+        letter-spacing: 1px;
+        animation: blink 0.75s step-end infinite, fadeIn 2s ease-out forwards;
+        /* text-shadow: 0 0 20px #66fcf1, 0 0 40px #45a29e; Glowing text effect with your theme's colors */
+      }
+
+      /* Blinking cursor */
+      @keyframes blink {
+        50% {
+          border-color: transparent;
+        }
+      }
+
+      /* Fade-in effect */
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+
+        100% {
+          opacity: 1;
+        }
+      }
+
+      /* Adjust cursor size */
+      .cursor {
+        border-right: 3px solid #66fcf1;
+        /* Cursor color matches your theme */
+        animation: blink 0.75s step-end infinite;
+        /* Make it blink */
+      }
+
+      /* popup for the search results  */
+      .search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #1f2833;
+        border: 1px solid #45a29e;
+        z-index: 999;
+        max-height: 250px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        color: #c5c6c7;
+      }
+
+      .search-result-item {
+        padding: 10px;
+        cursor: pointer;
+        text-align: left;
+        overflow-x: hidden;
+      }
+
+      .search-result-item:hover {
+        background-color: #66fcf1;
+        color: #0b0c10;
+      }
+    </style>
+    <!-- timeline responsiveness -->
+     
+    <style>
+      
+    </style>
+     <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+
+  <body>
+      <!-- Navigation Bar -->
   <nav id="main-nav">
     <div class="logo" onclick="goToHome()">ABYSS</div>
-    <ul>
-      <li><a href="#" id="leaderboardLink" onclick="goToLeaderboard()">Leaderboard</a></li>
+    
+    <div class="hamburger" onclick="toggleMobileMenu()">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+    
+    <ul id="nav-menu">
+      <li>
+        <a href="#" id="leaderboardLink" onclick="goToLeaderboard()">Leaderboard</a>
+      </li>
       <li><a href="#" onclick="goToCommunity()">Community</a></li>
       <li class="profile-menu">
         <a href="#" onclick="toggleProfileDropdown()">Profile</a>
-        <div id="profileDropdown" class="dropdown-content" style="display: none;">
+        <div id="profileDropdown" class="dropdown-content">
           <a href="#" onclick="goToProfile()">View Profile</a>
           <a href="#" onclick="logout()">Logout</a>
         </div>
@@ -680,181 +659,254 @@
     </ul>
   </nav>
 
+    <!-- Header -->
+    <div class="firstsection">
+      <header>
+        <div id="typing-text" style="min-height: 1.5em" class="cursor"></div>
+        <div class="search-bar" style="position: relative">
+          <input type="text" id="search-input" placeholder="Search..." />
+          <button id="search-button">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.5 3a7.5 7.5 0 015.645 12.438l4.709 4.708a1 1 0 01-1.414 1.414l-4.708-4.709A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z"
+              />
+              <path
+                d="M17 8h-4.5"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
 
-  <!-- Header -->
-  <div class="firstsection">
-    <header>
-      <div id="typing-text" style="min-height: 1.5em;" class = cursor></div>
-      <div class="search-bar">
-        <input type="text" id="search-input" placeholder="Search..." />
-        <button id="search-button">
-          <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M10.5 3a7.5 7.5 0 015.645 12.438l4.709 4.708a1 1 0 01-1.414 1.414l-4.708-4.709A7.5 7.5 0 1110.5 3zm0 2a5.5 5.5 0 100 11 5.5 5.5 0 000-11z" />
-            <path d="M17 8h-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
+          <!-- 🟦 Popup container for search results -->
+          <div id="search-results" class="search-results"></div>
+        </div>
+      </header>
+
+      <!-- Category Buttons - Moved up before the About section -->
+      <div class="category-buttons">
+        <button
+          data-category="movies"
+          onclick="navigateToPage('mainmediapage/Movies')"
+        >
+          Movies
+        </button>
+        <button
+          data-category="series"
+          onclick="navigateToPage('mainmediapage/Series')"
+        >
+          Series
+        </button>
+        <button
+          data-category="anime"
+          onclick="navigateToPage('mainmediapage/Anime')"
+        >
+          Anime
+        </button>
+        <button
+          data-category="cartoons"
+          onclick="navigateToPage('mainmediapage/Cartoons')"
+        >
+          Cartoons
+        </button>
+        <button
+          data-category="books"
+          onclick="navigateToPage('mainmediapage/Books')"
+        >
+          Books
+        </button>
+        <button
+          data-category="games"
+          onclick="navigateToPage('mainmediapage/ames')"
+        >
+          Games
         </button>
       </div>
-    </header>
-
-    <!-- Category Buttons - Moved up before the About section -->
-    <div class="category-buttons">
-      <button data-category="movies" onclick="toggleCategory('movies', this)">
-        Movies
-      </button>
-      <button data-category="series" onclick="toggleCategory('series', this)">
-        Series
-      </button>
-      <button data-category="anime" onclick="toggleCategory('anime', this)">
-        Anime
-      </button>
-      <button data-category="cartoons" onclick="toggleCategory('cartoons', this)">
-        Cartoons
-      </button>
-      <button data-category="books" onclick="toggleCategory('books', this)">
-        Books
-      </button>
-      <button data-category="games" onclick="toggleCategory('games', this)">
-        Games
-      </button>
     </div>
-  </div>
-  <!-- About Section - Moved below the category buttons -->
-  <!-- <section class="about-section">
-    <h2>What is ABYSS?</h2>
-    <p>
-      ABYSS is your ultimate entertainment navigator across time. We organize
-      movies, series, books, games, and more by their historical setting,
-      giving you a unique way to discover content from any era. Whether you're
-      interested in prehistoric adventures, medieval epics, or futuristic
-      sci-fi, our interactive timeline makes exploration intuitive and
-      exciting.
-    </p>
-  </section> -->
-
-  <!-- Timeline Section - MOVED below the testimonials section -->
-  <div class="timeline-container">
-    <!-- Eras as Buttons -->
-    <button id="prehistory" class="era" onclick="navigateToPage('/mainerapage/prehistory')">
-      Prehistory
-    </button>
-    <button id="classical" class="era" onclick="navigateToPage('classical.html')">
-      Classical Era
-    </button>
-    <button id="medieval" class="era" onclick="navigateToPage('medieval.html')">
-      Medieval Era
-    </button>
-    <button id="early-modern" class="era" onclick="navigateToPage('early-modern.html')">
-      Early Modern Era
-    </button>
-    <button id="modern" class="era" onclick="navigateToPage('modern.html')">
-      Modern Era
-    </button>
-    <button id="future" class="era" onclick="navigateToPage('future.html')">
-      Future
-    </button>
-
-    <!-- Era Labels as Buttons -->
-    <button id="stone-label" class="era-label" onclick="navigateToPage('stonage.html')">
-      Stone Age
-    </button>
-    <button id="iron-label" class="era-label" onclick="navigateToPage('ironage.html')">
-      Iron Age
-    </button>
-    <button id="bronze-label" class="era-label" onclick="navigateToPage('bronzeage.html')">
-      Bronze Age
-    </button>
-    <button id="renaissance-label" class="era-label" onclick="navigateToPage('renaissance.html')">
-      Renaissance Era
-    </button>
-    <button id="industrial-label" class="era-label" onclick="navigateToPage('industrial.html')">
-      Industrial Era
-    </button>
-    <button id="information-label" class="era-label" onclick="navigateToPage('information.html')">
-      Information Era
-    </button>
-    <button id="atomic-label" class="era-label" onclick="navigateToPage('atomic.html')">
-      Atomic Era
-    </button>
-    <button id="twentieth-label" class="era-label" onclick="navigateToPage('twentieth.html')">
-      20th Century
-    </button>
-
-    <!-- Connectors -->
-    <div id="prehistory-classical" class="connector"></div>
-    <div id="classical-medieval" class="connector"></div>
-    <div id="classical-medieval-horiz" class="connector"></div>
-    <div id="medieval-early" class="connector"></div>
-    <div id="early-horiz" class="connector"></div>
-    <div id="early-modern-renaissance" class="connector"></div>
-    <div id="renaissance-to-modern" class="connector"></div>
-    <div id="modern-horiz" class="connector"></div>
-    <div id="future-twenty" class="connector"></div>
-    <div id="future-line" class="connector"></div>
-    <div id="future-dot"></div>
-    <div id="modern-twentieth" class="connector"></div>
-  </div>
-
-  <!-- Testimonials Section -->
-  <section class="testimonials-section">
-    <h2>What Our Community Says</h2>
-    <div class="testimonials-grid">
-      <div class="testimonial-card">
-        <p class="testimonial-text">
-          "ABYSS completely changed how I discover new content. I've found
-          amazing historical fiction I never knew existed!"
-        </p>
-        <p class="testimonial-author">- Alex R., History Buff</p>
-      </div>
-      <div class="testimonial-card">
-        <p class="testimonial-text">
-          "As a teacher, this platform is invaluable for finding
-          period-appropriate media to supplement my lessons."
-        </p>
-        <p class="testimonial-author">- Maria T., Educator</p>
-      </div>
-      <div class="testimonial-card">
-        <p class="testimonial-text">
-          "The timeline approach makes browsing entertainment so much more
-          intuitive than traditional streaming platforms."
-        </p>
-        <p class="testimonial-author">- Jordan K., Film Enthusiast</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Newsletter Section -->
-  <section class="newsletter-section">
-    <h2>Stay Updated</h2>
-    <p>
-      Subscribe to our newsletter to receive weekly curated content
-      recommendations and updates on new timeline features.
-    </p>
-    <form class="newsletter-form">
-      <input type="email" placeholder="Your email address" />
-      <button type="submit">Subscribe</button>
-    </form>
-  </section>
-
-  <!-- App Promotion -->
-  <section class="app-section">
-    <h2>Take ABYSS With You</h2>
-    <p>
-      Download our mobile app to explore timelines on the go and get
-      personalized recommendations based on your interests.
-    </p>
-    <div class="app-buttons">
-      <button class="app-button">
-        <span>App Store</span>
+    <div class="timeline-container">
+      <!-- Eras as Buttons -->
+      <button
+        id="prehistory"
+        class="era"
+        onclick="navigateToPage('/mainerapage/Prehistoric')"
+      >
+        Prehistory
       </button>
-      <button class="app-button">
-        <span>Google Play</span>
+      <button
+        id="classical"
+        class="era"
+        onclick="navigateToPage('/mainerapage/classical')"
+      >
+        Classical Era
       </button>
-    </div>
-  </section>
+      <button
+        id="medieval"
+        class="era"
+        onclick="navigateToPage('/mainerapage/medieval')"
+      >
+        Medieval Era
+      </button>
+      <button
+        id="early-modern"
+        class="era"
+        onclick="navigateToPage('/mainerapage/Early Modern')"
+      >
+        Early Modern Era
+      </button>
+      <button
+        id="modern"
+        class="era"
+        onclick="navigateToPage('/mainerapage/Modern')"
+      >
+        Modern Era
+      </button>
+      <button
+        id="future"
+        class="era"
+        onclick="navigateToPage('/mainerapage/future')"
+      >
+        Future
+      </button>
 
-  <!-- Footer -->
-  <footer>
+      <!-- Era Labels as Buttons -->
+      <button
+        id="stone-label"
+        class="era-label"
+        onclick="navigateToPage('/mainerapage/Stone Age')"
+      >
+        Stone Age
+      </button>
+      <button
+        id="iron-label"
+        class="era-label"
+        onclick="navigateToPage('/mainerapage/Iron Age')"
+      >
+        Iron Age
+      </button>
+      <button
+        id="bronze-label"
+        class="era-label"
+        onclick="navigateToPage('/mainerapage/Bronze Age')"
+      >
+        Bronze Age
+      </button>
+      <button
+        id="renaissance-label"
+        class="era-label"
+        onclick="navigateToPage('/mainerapage/Renaissance')"
+      >
+        Renaissance Era
+      </button>
+      <button
+        id="industrial-label"
+        class="era-label"
+        onclick="navigateToPage('/mainerapage/Industrial')"
+      >
+        Industrial Era
+      </button>
+      <button
+        id="information-label"
+        class="era-label"
+        onclick="navigateToPage('/mainerapage/Information')"
+      >
+        Information Era
+      </button>
+      <button
+        id="atomic-label"
+        class="era-label"
+        onclick="navigateToPage('/mainerapage/Atomic')"
+      >
+        Atomic Era
+      </button>
+      <button
+        id="twentieth-label"
+        class="era-label"
+        onclick="navigateToPage('/mainerapage/Twentieth Century')"
+      >
+        20th Century
+      </button>
+
+      <!-- Connectors -->
+      <div id="prehistory-classical" class="connector"></div>
+      <div id="classical-medieval" class="connector"></div>
+      <div id="classical-medieval-horiz" class="connector"></div>
+      <div id="medieval-early" class="connector"></div>
+      <div id="early-horiz" class="connector"></div>
+      <div id="early-modern-renaissance" class="connector"></div>
+      <div id="renaissance-to-modern" class="connector"></div>
+      <div id="modern-horiz" class="connector"></div>
+      <div id="future-twenty" class="connector"></div>
+      <div id="future-line" class="connector"></div>
+      <div id="future-dot"></div>
+      <div id="modern-twentieth" class="connector"></div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+      <h2>What Our Community Says</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <p class="testimonial-text">
+            "ABYSS completely changed how I discover new content. I've found
+            amazing historical fiction I never knew existed!"
+          </p>
+          <p class="testimonial-author">- Alex R., History Buff</p>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-text">
+            "As a teacher, this platform is invaluable for finding
+            period-appropriate media to supplement my lessons."
+          </p>
+          <p class="testimonial-author">- Maria T., Educator</p>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-text">
+            "The timeline approach makes browsing entertainment so much more
+            intuitive than traditional streaming platforms."
+          </p>
+          <p class="testimonial-author">- Jordan K., Film Enthusiast</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+      <h2>Stay Updated</h2>
+      <p>
+        Subscribe to our newsletter to receive weekly curated content
+        recommendations and updates on new timeline features.
+      </p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Your email address" />
+        <button type="submit">Subscribe</button>
+      </form>
+    </section>
+
+    <!-- App Promotion -->
+    <section class="app-section">
+      <h2>Take ABYSS With You</h2>
+      <p>
+        Download our mobile app to explore timelines on the go and get
+        personalized recommendations based on your interests.
+      </p>
+      <div class="app-buttons">
+        <button class="app-button">
+          <span>App Store</span>
+        </button>
+        <button class="app-button">
+          <span>Google Play</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
     <div class="footer-container">
       <div class="footer-column">
         <h3>ABYSS</h3>
@@ -863,10 +915,10 @@
           across the ages.
         </p>
         <div class="social-icons">
-          <a href="#" class="social-icon">f</a>
-          <a href="#" class="social-icon">t</a>
-          <a href="#" class="social-icon">in</a>
-          <a href="#" class="social-icon">ig</a>
+          <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
         </div>
       </div>
       <div class="footer-column">
@@ -905,231 +957,228 @@
     </div>
   </footer>
 
+    <script>
+      function drawConnectors() {
+        const svg = document.getElementById("connector-lines");
+        svg.innerHTML = ""; // Clear old lines
+        const svgRect = svg.getBoundingClientRect();
 
+        const connections = [
+          ["prehistory", "classical"],
+          ["classical", "medieval"],
+          ["medieval", "early-modern"],
+          ["early-modern", "modern"],
+          ["future", "modern"],
+          ["future", "twentieth-label"],
+          ["early-modern", "renaissance-label"],
+          ["renaissance-label", "modern"],
+          ["modern", "twentieth-label"],
+          ["prehistory", "stone-label"],
+          ["stone-label", "bronze-label"],
+          ["bronze-label", "iron-label"],
+          ["iron-label", "classical"],
+          ["modern", "information-label"],
+          ["information-label", "atomic-label"],
+          ["atomic-label", "twentieth-label"],
+        ];
 
-  <script>
-    function drawConnectors() {
-      const svg = document.getElementById("connector-lines");
-      svg.innerHTML = ""; // Clear old lines
-      const svgRect = svg.getBoundingClientRect();
+        connections.forEach(([fromId, toId]) => {
+          const from = document.getElementById(fromId);
+          const to = document.getElementById(toId);
+          if (!from || !to) return;
 
-      const connections = [
-        ["prehistory", "classical"],
-        ["classical", "medieval"],
-        ["medieval", "early-modern"],
-        ["early-modern", "modern"],
-        ["future", "modern"],
-        ["future", "twentieth-label"],
-        ["early-modern", "renaissance-label"],
-        ["renaissance-label", "modern"],
-        ["modern", "twentieth-label"],
-        ["prehistory", "stone-label"],
-        ["stone-label", "bronze-label"],
-        ["bronze-label", "iron-label"],
-        ["iron-label", "classical"],
-        ["modern", "information-label"],
-        ["information-label", "atomic-label"],
-        ["atomic-label", "twentieth-label"],
+          const rect1 = from.getBoundingClientRect();
+          const rect2 = to.getBoundingClientRect();
+
+          const x1 = rect1.left + rect1.width / 2 - svgRect.left;
+          const y1 = rect1.top + rect1.height / 2 - svgRect.top;
+          const x2 = rect2.left + rect2.width / 2 - svgRect.left;
+          const y2 = rect2.top + rect2.height / 2 - svgRect.top;
+
+          const line = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "line"
+          );
+          line.setAttribute("x1", x1);
+          line.setAttribute("y1", y1);
+          line.setAttribute("x2", x2);
+          line.setAttribute("y2", y2);
+          line.setAttribute("stroke", "#00ffff");
+          line.setAttribute("stroke-width", "2");
+          line.setAttribute("stroke-dasharray", "5,5");
+          svg.appendChild(line);
+        });
+      }
+
+      // Run on load and resize
+      window.addEventListener("load", drawConnectors);
+      window.addEventListener("resize", drawConnectors);
+    </script>
+
+    <script>
+    
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize the search placeholder
+        updateSearchPlaceholder();
+
+        // Highlight timeline eras on hover
+        const eras = document.querySelectorAll(".era, .era-label");
+        eras.forEach((era) => {
+          era.addEventListener("mouseenter", function () {
+            this.style.transform = "scale(1.05)";
+            this.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.2)";
+          });
+          era.addEventListener("mouseleave", function () {
+            this.style.transform = "scale(1)";
+            this.style.boxShadow = "none";
+          });
+        });
+      });
+    </script>
+    <script>
+      const sentences = [
+        "Welcome to ABYSS – your ultimate entertainment navigator.",
+        "Explore thousands of movies, series, and documentaries.",
+        "Stay updated with trends, reviews, and exclusive content.",
+        "Discover the world of media at your fingertips.",
+        "Travel through time with timeless stories on ABYSS.",
+        "Explore media by the eras that shaped them.",
+        "From ancient tales to modern legends — all in one place.",
+        "Dive into history through movies, series, and books.",
+        "Relive every era through curated entertainment.",
+        "Discover media set in every age of history on ABYSS.",
+        "Time-based browsing for the curious mind.",
+        "Uncover the past, one story at a time.",
+        "Watch how eras influence the stories we love.",
+        "Entertainment organized by the timeline of history.",
       ];
 
-      connections.forEach(([fromId, toId]) => {
-        const from = document.getElementById(fromId);
-        const to = document.getElementById(toId);
-        if (!from || !to) return;
+      let currentSentenceIndex = 0;
+      let index = 0;
+      let isDeleting = false;
 
-        const rect1 = from.getBoundingClientRect();
-        const rect2 = to.getBoundingClientRect();
-
-        const x1 = rect1.left + rect1.width / 2 - svgRect.left;
-        const y1 = rect1.top + rect1.height / 2 - svgRect.top;
-        const x2 = rect2.left + rect2.width / 2 - svgRect.left;
-        const y2 = rect2.top + rect2.height / 2 - svgRect.top;
-
-        const line = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "line"
-        );
-        line.setAttribute("x1", x1);
-        line.setAttribute("y1", y1);
-        line.setAttribute("x2", x2);
-        line.setAttribute("y2", y2);
-        line.setAttribute("stroke", "#00ffff");
-        line.setAttribute("stroke-width", "2");
-        line.setAttribute("stroke-dasharray", "5,5");
-        svg.appendChild(line);
-      });
-    }
-
-    // Run on load and resize
-    window.addEventListener("load", drawConnectors);
-    window.addEventListener("resize", drawConnectors);
-  </script>
-
-  <script>
-    // Global variable to store selected categories
-    let selectedCategories = [];
-
-    // Toggle category selection with visual feedback
-    function toggleCategory(category, buttonElement) {
-      const index = selectedCategories.indexOf(category);
-
-      if (index !== -1) {
-        // Remove from selected categories
-        selectedCategories.splice(index, 1);
-        // Remove active class for visual feedback
-        buttonElement.classList.remove("active");
-      } else {
-        // Add to selected categories
-        selectedCategories.push(category);
-        // Add active class for visual feedback
-        buttonElement.classList.add("active");
-      }
-
-      // Update the search placeholder based on selection
-      updateSearchPlaceholder();
-
-      // For debugging - show which categories are selected
-      console.log("Selected categories:", selectedCategories);
-    }
-
-    // Update search placeholder to reflect current selection
-    function updateSearchPlaceholder() {
-      const searchInput = document.getElementById("search-input");
-
-      if (selectedCategories.length === 0) {
-        searchInput.placeholder = "Search all media...";
-      } else {
-        searchInput.placeholder = `Search in ${selectedCategories.join(
-          ", "
-        )}...`;
-      }
-    }
-
-    // Handle search functionality
-    document
-      .getElementById("search-button")
-      .addEventListener("click", performSearch);
-    document
-      .getElementById("search-input")
-      .addEventListener("keypress", function (e) {
-        if (e.key === "Enter") {
-          performSearch();
-        }
-      });
-
-    function performSearch() {
-      const searchQuery = document
-        .getElementById("search-input")
-        .value.trim();
-
-      if (searchQuery === "") {
-        alert("Please enter a search term");
-        return;
-      }
-
-      if (selectedCategories.length === 0) {
-        // Search across all categories
-        console.log(`Searching for "${searchQuery}" across all media types`);
-        // In a real implementation, this would redirect to a search results page
-        alert(`Searching for "${searchQuery}" across all media types`);
-      } else {
-        // Search within selected categories only
-        console.log(
-          `Searching for "${searchQuery}" in categories: ${selectedCategories.join(
-            ", "
-          )}`
-        );
-        // In a real implementation, this would redirect to a filtered search results page
-        alert(
-          `Searching for "${searchQuery}" in categories: ${selectedCategories.join(
-            ", "
-          )}`
-        );
-      }
-
-      // Here you would normally redirect to a search results page with the appropriate parameters
-      // For example: window.location.href = `search-results.html?query=${encodeURIComponent(searchQuery)}&categories=${encodeURIComponent(selectedCategories.join(','))}`;
-    }
-
-
-    // Login Modal Functionality
-    document.addEventListener("DOMContentLoaded", function () {
-
-
-
-
-      // Initialize the search placeholder
-      updateSearchPlaceholder();
-
-
-
-      // Highlight timeline eras on hover
-      const eras = document.querySelectorAll(".era, .era-label");
-      eras.forEach((era) => {
-        era.addEventListener("mouseenter", function () {
-          this.style.transform = "scale(1.05)";
-          this.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.2)";
-        });
-        era.addEventListener("mouseleave", function () {
-          this.style.transform = "scale(1)";
-          this.style.boxShadow = "none";
-        });
-      });
-    });
-  </script>
-  <script>
-    const sentences = [
-    "Welcome to ABYSS – your ultimate entertainment navigator.",
-    "Explore thousands of movies, series, and documentaries.",
-    "Stay updated with trends, reviews, and exclusive content.",
-    "Discover the world of media at your fingertips.",
-    "Travel through time with timeless stories on ABYSS.",
-    "Explore media by the eras that shaped them.",
-    "From ancient tales to modern legends — all in one place.",
-    "Dive into history through movies, series, and books.",
-    "Relive every era through curated entertainment.",
-    "Discover media set in every age of history on ABYSS.",
-    "Time-based browsing for the curious mind.",
-    "Uncover the past, one story at a time.",
-    "Watch how eras influence the stories we love.",
-    "Entertainment organized by the timeline of history."
-];
-
-
-    let currentSentenceIndex = 0;
-    let index = 0;
-    let isDeleting = false;
-
-    function typeWriter() {
+      function typeWriter() {
         const sentence = sentences[currentSentenceIndex];
         const displayText = sentence.substring(0, index);
 
-        document.getElementById('typing-text').innerHTML = displayText || '&nbsp;'; // Keep height even when empty
+        document.getElementById("typing-text").innerHTML =
+          displayText || "&nbsp;"; // Keep height even when empty
 
         if (!isDeleting) {
-            if (index < sentence.length) {
-                index++;
-                setTimeout(typeWriter, 75); // Typing speed
-            } else {
-                isDeleting = true;
-                setTimeout(typeWriter, 1000); // Pause before deleting
-            }
+          if (index < sentence.length) {
+            index++;
+            setTimeout(typeWriter, 75); // Typing speed
+          } else {
+            isDeleting = true;
+            setTimeout(typeWriter, 1000); // Pause before deleting
+          }
         } else {
-            if (index > 0) {
-                index--;
-                setTimeout(typeWriter, 50); // Deletion speed
-            } else {
-                isDeleting = false;
-                currentSentenceIndex = (currentSentenceIndex + 1) % sentences.length;
-                setTimeout(typeWriter, 500); // Delay before next sentence
-            }
+          if (index > 0) {
+            index--;
+            setTimeout(typeWriter, 50); // Deletion speed
+          } else {
+            isDeleting = false;
+            currentSentenceIndex =
+              (currentSentenceIndex + 1) % sentences.length;
+            setTimeout(typeWriter, 500); // Delay before next sentence
+          }
         }
-    }
+      }
 
-    typeWriter(); // Start the effect
+      typeWriter(); // Start the effect
+    </script>
+    <script src="/static/js/script.js"></script>
+
+    <!-- search results  -->
+    <script>
+      const searchInput = document.getElementById("search-input");
+      const searchBar = document.querySelector(".search-bar");
+      const resultsContainer = document.getElementById("search-results"); // ✅ Use existing
+
+      searchInput.addEventListener("input", async (e) => {
+        const query = e.target.value.trim();
+
+        if (!query) {
+          resultsContainer.innerHTML = "";
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            `/api/search/${encodeURIComponent(query)}`
+          );
+          const results = await response.json();
+
+          resultsContainer.innerHTML = "";
+
+          if (results.length === 0) {
+            resultsContainer.innerHTML =
+              "<div class='search-result-item'>No results found.</div>";
+            return;
+          }
+
+          results.forEach((media) => {
+            const item = document.createElement("div");
+            item.classList.add("search-result-item");
+            item.textContent = media.title;
+            item.onclick = () => {
+              window.location.href = `/mediapage/${media.media_id}`;
+            };
+            resultsContainer.appendChild(item); // ✅ Fixed from innerHTML.appendChild
+          });
+        } catch (error) {
+          console.error("Search error:", error);
+        }
+      });
+
+      // Hide results on outside click
+      document.addEventListener("click", (e) => {
+        if (!searchBar.contains(e.target)) {
+          resultsContainer.innerHTML = "";
+        }
+      });
+    </script>
+
+    <!-- news letter -->
+     <script>
+document.querySelector('.newsletter-form').addEventListener('submit', function (e) {
+  e.preventDefault(); // prevent default form submission behavior
+
+  const emailInput = document.querySelector('.newsletter-form input[type="email"]');
+  const email = emailInput.value.trim();
+
+  if (!email) {
+    alert("Please enter a valid email address.");
+    return;
+  }
+
+  fetch(`/api/emailsubscribe/${encodeURIComponent(email)}`, {
+    method: 'GET',
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest' // required for Flask route
+    }
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Request failed with status " + response.status);
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.success) {
+        alert("Successfully subscribed!");
+        emailInput.value = ''; // Clear the input
+      } else {
+        alert("Subscription failed. Please try again.");
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("An error occurred. Please try again later.");
+    });
+});
 </script>
-  <script src="/static/js/script.js"></script>
 
 </body>
-
 </html>
