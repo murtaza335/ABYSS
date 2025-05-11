@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Explorer</title>
+    <link rel="stylesheet" href="movies_static.css">
+</head>
+<body>
+    <header>
+        <h1>Movies</h1>
+    </header>
+    
+    <div class="container">
+        <section class="search-container">
+            <div class="search-bar-wrapper">
+                <input type="text" id="main-search" placeholder="Search for movies by title, actor, director, producer...">
+                <button id="search-button" class="primary-btn">Search</button>
+            </div>
+            <button id="toggle-filters" class="secondary-btn">Advanced Filters <span id="filter-arrow">▼</span></button>
+        </section>
+        
+        <section class="filters" id="filters-section">
+            <h2>Filters</h2>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="genre">Genre</label>
+                    <select id="genre">
+                        <option value="">All Genres</option>
+                        <option value="action">Action</option>
+                        <option value="adventure">Adventure</option>
+                        <option value="comedy">Comedy</option>
+                        <option value="drama">Drama</option>
+                        <option value="horror">Horror</option>
+                        <option value="sci-fi">Sci-Fi</option>
+                        <option value="thriller">Thriller</option>
+                        <option value="animation">Animation</option>
+                        <option value="biography">Biography</option>
+                        <option value="crime">Crime</option>
+                        <option value="history">History</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="year">Release Year</label>
+                    <select id="year">
+                        <option value="">All Years</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="older">2018 & Older</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="rating">Minimum Rating</label>
+                    <select id="rating">
+                        <option value="">Any Rating</option>
+                        <option value="9">9+ Stars</option>
+                        <option value="8">8+ Stars</option>
+                        <option value="7">7+ Stars</option>
+                        <option value="6">6+ Stars</option>
+                        <option value="5">5+ Stars</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="age-rating">Age Rating</label>
+                    <select id="age-rating">
+                        <option value="">Any Rating</option>
+                        <option value="G">G</option>
+                        <option value="PG">PG</option>
+                        <option value="PG-13">PG-13</option>
+                        <option value="R">R</option>
+                        <option value="NC-17">NC-17</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="primary-btn" id="apply-filters">Apply Filters</button>
+                <button class="secondary-btn" id="reset-filters">Reset Filters</button>
+            </div>
+        </section>
+        
+        <section class="movie-grid" id="movie-grid">
+            <!-- Movie cards will be generated here -->
+        </section>
+    </div>
+    
+    <!-- Modal for Movie Details -->
+    <div id="movie-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close-modal">&times;</span>
+                <h2 id="modal-title">Movie Title</h2>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info">
+                    <div class="modal-poster">
+                        <img id="modal-img" src="/api/placeholder/250/350" alt="Movie poster">
+                    </div>
+                    <div class="modal-details">
+                        <div class="modal-meta" id="modal-meta">Year • Director • Rating</div>
+                        <div class="modal-meta" id="modal-age-rating">Age Rating</div>
+                        <div class="modal-genres" id="modal-genres">Genres</div>
+                        <div class="modal-description" id="modal-description">
+                            Movie description will appear here.
+                        </div>
+                        <div class="modal-cast">
+                            <h3>Cast</h3>
+                            <div id="modal-cast">Cast members</div>
+                        </div>
+                        <div class="modal-production">
+                            <h3>Production</h3>
+                            <div id="modal-production">Director and Producers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="movies_static.js"></script>
+</body>
+</html>
