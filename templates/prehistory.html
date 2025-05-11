@@ -238,6 +238,7 @@
         height: 100%;
         position: absolute;
         z-index: 5;
+        margin: 5px;
       }
 
       .back-info {
@@ -322,13 +323,12 @@
 
     <!-- Main Era Section -->
     <section class="category-section">
-      <h2 id="era-title" class="prehistoric-title">Loading...</h2>
+      <h2 id="era-title" class="prehistoric-title"></h2>
       <div id="subtypes-container">
         <!-- Subtypes will be dynamically populated -->
       </div>
 
       <div id="era-description" class="prehistoric-description">
-        Loading era description...
       </div>
     </section>
 
@@ -394,6 +394,8 @@
       const eraName =
         pathParts[pathParts.length - 1].split(".")[0] ||
         pathParts[pathParts.length - 2];
+      
+
 
       // Function to fetch era data
       async function fetchEraData() {
@@ -475,13 +477,13 @@
       function createMediaItems(items, mediaType) {
         return items
           .map((item) => {
-            const imageUrl = item.image_url || "";
+            const imageUrl = item.img_link || "";
             const imageStyle = imageUrl
               ? `background-image: url('${imageUrl}'); color: transparent;`
               : `background-color: #333; color: #aaa;`;
 
             const ageRatingClass = getAgeRatingClass(item.age_rating);
-
+            
             return `
                         <div class="item-link" data-url="/media/${mediaType}/${
               item.media_id
@@ -502,15 +504,15 @@
                                         <div class="item-title">${
                                           item.title || "Untitled"
                                         }</div>
-                                        <div class="item-year">${
-                                          item.release_year || "Unknown"
+                                        <div class="item-date">${
+                                          item.release_date || "Unknown"
                                         }</div>
                                     </div>
                                 </div>
                                 <div class="item-back">
                                     <h3>${item.title || "Untitled"}</h3>
                                     <div class="back-year">${
-                                      item.release_year || "Unknown"
+                                      item.release_date || "Unknown"
                                     }</div>
                                     <p class="item-description">${
                                       item.description ||
@@ -572,9 +574,8 @@
 
               if (scrollPosition > 0) {
                 scrollPosition--;
-                container.style.transform = translateX(
-                  `${-scrollPosition * itemWidth}px`
-                );
+                container.style.transform = `translateX(${-scrollPosition * itemWidth}px)`;
+
 
                 // Update button visibility
                 scrollRightBtns.forEach(
@@ -594,9 +595,8 @@
 
               if (scrollPosition < totalItems - visibleItems) {
                 scrollPosition++;
-                container.style.transform = translateX(
-                  `${-scrollPosition * itemWidth}px`
-                );
+                container.style.transform = `translateX(${-scrollPosition * itemWidth}px)`;
+
 
                 // Update button visibility
                 scrollLeftBtns.forEach(
@@ -628,15 +628,13 @@
 
         // Set era title
         const eraTitle = document.getElementById("era-title");
-        const eraRange = data.eraRange || { start_year: "", end_year: "" };
+        const eraRange = data.eraRange.era_range;
         const rangeText =
           eraRange.start_year || eraRange.end_year
-            ? `<span style="font-size: 1.2rem; color: #aaa;">${
-                eraRange.start_year || ""
-              } - ${eraRange.end_year || ""}</span>`
+            ? `<span style="font-size: 1.2rem; color: #aaa;">${eraRange}</span>`
             : "";
 
-        const eraName = data.eraName || "Unknown"; // Make sure eraName exists
+        const eraName = data.eraDescription.name || "Unknown"; // Make sure eraName exists
         eraTitle.innerHTML = `${
           eraName.charAt(0).toUpperCase() + eraName.slice(1)
         } Era ${rangeText}`;
@@ -644,16 +642,16 @@
         // Set era description
         const eraDescription = document.getElementById("era-description");
         eraDescription.textContent =
-          data.eraDescription || "No description available for this era.";
+          data.eraDescription.era_description || "No description available for this era.";
 
         // Set subtypes
         const subtypesContainer = document.getElementById("subtypes-container");
-        if (data.subtypes && data.subtypes.length > 0) {
+        if (data.subtypes.length > 0) {
           data.subtypes.forEach((subtype) => {
             const link = document.createElement("a");
-            link.href = `/${subtype.toLowerCase()}.html`;
+            link.href = `/mainerapage/${subtype.name}`;
             link.className = "sub-category";
-            link.textContent = subtype;
+            link.textContent = subtype.name;
             subtypesContainer.appendChild(link);
           });
         }
@@ -681,15 +679,13 @@
         // Setup scrolling after sections are created
         setupScrolling();
 
-        // Event delegation for item links
-        document
-          .querySelector(".items-container")
-          .addEventListener("click", (event) => {
-            const link = event.target.closest(".item-link");
-            if (link) {
-              console.log("Item clicked:", link.dataset.url);
-            }
-          });
+        // item links for the card
+        document.addEventListener("click", function (e) {
+  const link = e.target.closest(".item-link");
+  if (link && link.dataset.url) {
+    window.location.href = link.dataset.url;
+  }
+});
       });
     </script>
   </body>

@@ -75,7 +75,7 @@ def fetchDataByCategory(era, category):
 def fetchDescriptionOfEra(era):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT era_description FROM eras WHERE name = %s"
+    query = "SELECT name, era_description FROM eras WHERE name = %s"
     cursor.execute(query, (era,))
     result = cursor.fetchone()
     cursor.close()
@@ -86,7 +86,7 @@ def fetchDescriptionOfEra(era):
 def fetchAllMediaByEra(era, media_type):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    query = f"select media_id, title, description, img_link, age_rating, rating from media m join eras e on m.era_id = e.era_id where e.name = %s and m.mediatype = %s"
+    query = f"select year(release_date) as release_date, media_id, title, description, img_link, age_rating, rating from media m join eras e on m.era_id = e.era_id where e.name = %s and m.mediatype = %s"
     cursor.execute(query, (era,media_type))
     result = cursor.fetchall()
     cursor.close()
@@ -187,17 +187,6 @@ def fetchAllUserData(username):
     conn.close()
     return result
 
-# this is fetching the board count for the user
-# def fetchBoardCount(username):
-#     conn = get_connection()
-#     cursor = conn.cursor()
-#     query = f"select count(*) from boards where username = %s"
-
-#     cursor.execute(query, (username,))
-#     result = cursor.fetchone()
-#     cursor.close()
-#     conn.close()
-#     return result[0]
 
 # fetching all the boards for the user and its count
 def fetchAllBoardsByUsername(username):
@@ -307,8 +296,6 @@ def fetchCommunityData(type, mediacategory):
 
     return result
 
-
-
 # editing the user data in the database
 
 def editUserProfile(username, firstname, lastname, bio,img_link=None):
@@ -415,7 +402,9 @@ def fetchDataForSingleMediaPage(category, media_id):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     # removing the last s from the category just because of the table name in the database
+    print(category)
     table = category[:-1]
+    print(table)
     # query for fetching the data for the single media 
     query = f"select * from media m join {category} s on m.media_id = s.{table}_id where m.media_id = %s"
     cursor.execute(query, (media_id,))
@@ -496,19 +485,6 @@ def addComment(discussion_id, content, username):
     else:
         return False
 
-# def checkIfUserIsLoggedIn(username):
-#     conn = get_connection()
-#     cursor = conn.cursor()
-#     query = f"select login from users where username = %s"
-#     cursor.execute(query,(username,))
-#     result = cursor.fetchall()
-#     if result:
-#         print(result[0][0])
-#     else:
-#         return 0
-#     cursor.close()
-#     conn.close()
-#     return result[0][0]
 
 def createBoard(username):
     conn = get_connection()
@@ -657,3 +633,31 @@ def emailsubscribedb(email):
     if cursor.rowcount:
         return True
     return False
+
+
+def addToBoarddb(media_id, board_id, username):
+    conn = get_connection()
+    cursor = conn.cursor()
+    query = "select board_id from boards where username = %s and def = 1"
+    cursor.execute(query,(username,))
+    board = cursor.fetchone()
+    board_id = board[0]
+    # board_id = board.board_id
+    # print(board_id)
+    conn.close()
+    cursor.close()
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    query = "insert into board_content (media_id, board_id) values (%s, %s)"
+    cursor.execute(query,(media_id, board_id))
+    conn.commit()
+    
+    if cursor.rowcount:
+        cursor.close()
+        conn.close()
+        return True
+    cursor.close()
+    conn.close()
+    return False
+        

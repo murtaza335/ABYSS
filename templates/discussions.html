@@ -49,9 +49,10 @@
         .discussion-item {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        #createDiscussionBtn{
+
+        #createDiscussionBtn {
             padding: 5px;
-            margin:  0 20px;
+            margin: 0 20px;
         }
 
         .discussion-item:hover {
@@ -179,6 +180,7 @@
         .pagination-btn:hover {
             background-color: #45a29e;
         }
+
         .discussion-item {
             /* width: 30vw; */
             margin: auto;
@@ -186,44 +188,136 @@
             border-radius: 20px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
         }
+
         #discussionsList {
             display: block;
             justify-content: center;
             align-items: center;
         }
+
         /* .mediatag_post {
             background-color: #0e0c0c;
             color: #0b0e0e;
         } */
     </style>
+
+    <!-- create discussion btn styles -->
+    <style>
+        body {
+  background-color: #0b0c10;
+  font-family: 'Segoe UI', sans-serif;
+  color: #c5c6c7;
+}
+
+button#openModalBtn {
+  background-color: #66fcf1;
+  color: #0b0c10;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(11, 12, 16, 0.9);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #1f2833;
+  padding: 25px;
+  border-radius: 12px;
+  width: 400px;
+  position: relative;
+  box-shadow: 0 0 15px #45a29e;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #66fcf1;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border: 2px solid #45a29e;
+  border-radius: 6px;
+  background-color: #0b0c10;
+  color: #c5c6c7;
+  font-size: 14px;
+}
+
+.modal-content textarea {
+  height: 100px;
+  resize: none;
+}
+
+.modal-content button[type="submit"] {
+  background-color: #66fcf1;
+  color: #0b0c10;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.closeBtn {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  color: #c5c6c7;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.error-msg {
+  color: #ff4d4d;
+  margin-top: 5px;
+  font-size: 13px;
+}
+
+    </style>
 </head>
 
 <body>
     <!-- Navigation Bar -->
- <nav id="main-nav">
-    <div class="logo" onclick="goToHome()">ABYSS</div>
-    
-    <div class="hamburger" onclick="toggleMobileMenu()">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </div>
-    
-    <ul id="nav-menu">
-      <li>
-        <a href="#" id="leaderboardLink" onclick="goToLeaderboard()">Leaderboard</a>
-      </li>
-      <li><a href="#" onclick="goToCommunity()">Community</a></li>
-      <li class="profile-menu">
-        <a href="#" onclick="toggleProfileDropdown()">Profile</a>
-        <div id="profileDropdown" class="dropdown-content">
-          <a href="#" onclick="goToProfile()">View Profile</a>
-          <a href="#" onclick="logout()">Logout</a>
+    <nav id="main-nav">
+        <div class="logo" onclick="goToHome()">ABYSS</div>
+
+        <div class="hamburger" onclick="toggleMobileMenu()">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
         </div>
-      </li>
-    </ul>
-  </nav>
-  
+
+        <ul id="nav-menu">
+            <li>
+                <a href="#" id="leaderboardLink" onclick="goToLeaderboard()">Leaderboard</a>
+            </li>
+            <li><a href="#" onclick="goToCommunity()">Community</a></li>
+            <li class="profile-menu">
+                <a href="#" onclick="toggleProfileDropdown()">Profile</a>
+                <div id="profileDropdown" class="dropdown-content">
+                    <a href="#" onclick="goToProfile()">View Profile</a>
+                    <a href="#" onclick="logout()">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
@@ -233,7 +327,7 @@
                 <h1 class="text-6xl font-bold">Community Discussions</h1>
             </div>
             <div class="absolute right-0 top-8">
-                
+
             </div>
         </div>
 
@@ -266,9 +360,30 @@
                     Create Discussion
                 </button>
             </div>
-            
+
         </div>
 
+        <!-- Modal Popup -->
+        <div id="discussionModal" class="modal">
+            <div class="modal-content">
+                <span class="closeBtn">&times;</span>
+                <h2>Create New Discussion</h2>
+                <form id="discussionForm">
+                    <input type="text" id="title" placeholder="Discussion Title" required />
+                    <textarea id="description" placeholder="Describe your topic..." required></textarea>
+                    <select id="category">
+                        <option value="Movies">Movies</option>
+                        <option value="Cartoons">Cartoons</option>
+                        <option value="Anime">Anime</option>
+                        <option value="Series">Series</option>
+                        <option value="Books">Books</option>
+                        <option value="Games">Games</option>
+                    </select>
+                    <button type="submit">Post Discussion</button>
+                    <p id="errorMsg" class="error-msg"></p>
+                </form>
+            </div>
+        </div>
         <!-- Discussions List -->
         <div id="discussionsList">
             <!-- Discussion 1 -->
@@ -342,58 +457,98 @@
 
     <!-- Footer -->
     <footer>
-    <div class="footer-container">
-      <div class="footer-column">
-        <h3>ABYSS</h3>
-        <p>
-          Your ultimate timeline explorer for all forms of entertainment
-          across the ages.
-        </p>
-        <div class="social-icons">
-          <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>ABYSS</h3>
+                <p>
+                    Your ultimate timeline explorer for all forms of entertainment
+                    across the ages.
+                </p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Navigation</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Leaderboard</a></li>
+                    <li><a href="#">Community</a></li>
+                    <li><a href="#">Timeline</a></li>
+                    <li><a href="#">Categories</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Help Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Content Guidelines</a></li>
+                    <li><a href="#">Copyright</a></li>
+                </ul>
+            </div>
         </div>
-      </div>
-      <div class="footer-column">
-        <h3>Navigation</h3>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Leaderboard</a></li>
-          <li><a href="#">Community</a></li>
-          <li><a href="#">Timeline</a></li>
-          <li><a href="#">Categories</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h3>Resources</h3>
-        <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Help Center</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h3>Legal</h3>
-        <ul>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Cookie Policy</a></li>
-          <li><a href="#">Content Guidelines</a></li>
-          <li><a href="#">Copyright</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="copyright">
-      <p>© 2025 ABYSS. All rights reserved.</p>
-    </div>
-  </footer>
+        <div class="copyright">
+            <p>© 2025 ABYSS. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script src="/static/js/script.js"></script>
 
+    <!-- script of the modal -->
+    <script>
+        const modal = document.getElementById("discussionModal");
+const btn = document.getElementById("createDiscussionBtn");
+const span = document.getElementsByClassName("closeBtn")[0];
+const form = document.getElementById("discussionForm");
+const errorMsg = document.getElementById("errorMsg");
+
+btn.onclick = () => {
+  modal.style.display = "flex";
+  errorMsg.textContent = "";
+};
+
+span.onclick = () => {
+  modal.style.display = "none";
+};
+
+window.onclick = (event) => {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const title = document.getElementById("title").value.trim();
+  const description = document.getElementById("description").value.trim();
+
+  if (!title || !description) {
+    errorMsg.textContent = "Both title and description are required.";
+    return;
+  }
+
+  // Optional: submit the form via fetch/ajax here
+  alert("Discussion created successfully!");
+  form.reset();
+  modal.style.display = "none";
+});
+
+    </script>
     <!-- JavaScript for interactivity -->
     <script>
 
@@ -460,7 +615,7 @@
             const fallbackInitial = `<div class="w-12 h-12 rounded-full bg-gray-700 text-white font-bold flex items-center justify-center" style="display: ${discussion.profile_image_url ? 'none' : 'flex'};">
         ${discussion.username.charAt(0).toUpperCase()}
     </div>`;
-        const relativetime = getRelativeTime(discussion.created_at)
+            const relativetime = getRelativeTime(discussion.created_at)
             wrapper.innerHTML = `
         <div class="p-5">
             <div class="flex items-start">

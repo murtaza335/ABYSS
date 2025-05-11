@@ -22,9 +22,34 @@
       };
     </script>
     <style>
+      /* Base Theme and Reset */
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: #0b0c10;
+        color: #c5c6c7;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      /* Upvote Button */
+      .upvote-btn {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: #c5c6c7;
+        transition: color 0.3s ease;
+        font-size: 0.95rem;
+      }
+
       .upvote-btn svg {
-        width: 1rem;
-        height: 1rem;
+        width: 1.1rem;
+        height: 1.1rem;
         stroke-width: 2;
         stroke: currentColor;
         fill: none;
@@ -42,6 +67,7 @@
         color: #c5c6c7;
       }
 
+      /* Login Popup */
       #login-popup {
         display: none;
         position: fixed;
@@ -49,7 +75,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(11, 12, 16, 0.85);
         justify-content: center;
         align-items: center;
         z-index: 1000;
@@ -58,29 +84,37 @@
       #login-popup-content {
         background-color: #1f2833;
         padding: 2rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+        border-radius: 0.75rem;
+        box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.4);
         text-align: center;
         max-width: 90%;
+        position: relative;
+        border: 1px solid #45a29e;
       }
 
       #login-popup-content h2 {
-        margin-bottom: 1rem;
-        color: #c5c6c7;
+        margin-bottom: 1.25rem;
+        color: #66fcf1;
+        font-size: 1.75rem;
+        font-weight: 600;
       }
 
       #login-popup-content input {
-        margin-bottom: 1rem;
+        margin: 0.75rem auto;
         padding: 0.75rem;
         border-radius: 0.375rem;
         border: 1px solid #45a29e;
         width: 100%;
         max-width: 300px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
         background-color: #0b0c10;
         color: #c5c6c7;
+        font-size: 1rem;
+        transition: border 0.3s ease;
+      }
+
+      #login-popup-content input:focus {
+        outline: none;
+        border-color: #66fcf1;
       }
 
       #login-popup-content button {
@@ -88,10 +122,12 @@
         border-radius: 0.375rem;
         background-color: #66fcf1;
         color: #0b0c10;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
         border: none;
+        font-weight: 600;
         font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 0.5rem;
       }
 
       #login-popup-content button:hover {
@@ -101,7 +137,7 @@
       #login-popup-close {
         position: absolute;
         top: 0.5rem;
-        right: 0.5rem;
+        right: 0.75rem;
         color: #c5c6c7;
         cursor: pointer;
         font-size: 1.5rem;
@@ -110,6 +146,9 @@
       /* Rating Stars */
       .rating {
         display: inline-block;
+        direction: rtl;
+        position: relative;
+        font-size: 1.25rem;
       }
 
       .rating input {
@@ -120,18 +159,12 @@
         float: right;
         cursor: pointer;
         color: #abadaf;
+        font-size: 1.5rem;
+        transition: color 0.2s ease;
       }
 
       .rating label:before {
         content: "\2605";
-        /* Star character */
-        font-size: 1.25rem;
-      }
-
-      .rating .half:before {
-        content: "\2605";
-        position: absolute;
-        padding-right: 0;
       }
 
       .rating input:checked ~ label,
@@ -150,29 +183,31 @@
 
   <body class="font-sans">
     <!-- Navigation Bar -->
-<nav id="main-nav">
-    <div class="logo" onclick="goToHome()">ABYSS</div>
-    
-    <div class="hamburger" onclick="toggleMobileMenu()">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </div>
-    
-    <ul id="nav-menu">
-      <li>
-        <a href="#" id="leaderboardLink" onclick="goToLeaderboard()">Leaderboard</a>
-      </li>
-      <li><a href="#" onclick="goToCommunity()">Community</a></li>
-      <li class="profile-menu">
-        <a href="#" onclick="toggleProfileDropdown()">Profile</a>
-        <div id="profileDropdown" class="dropdown-content">
-          <a href="#" onclick="goToProfile()">View Profile</a>
-          <a href="#" onclick="logout()">Logout</a>
-        </div>
-      </li>
-    </ul>
-  </nav>
+    <nav id="main-nav">
+      <div class="logo" onclick="goToHome()">ABYSS</div>
+
+      <div class="hamburger" onclick="toggleMobileMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+
+      <ul id="nav-menu">
+        <li>
+          <a href="#" id="leaderboardLink" onclick="goToLeaderboard()"
+            >Leaderboard</a
+          >
+        </li>
+        <li><a href="#" onclick="goToCommunity()">Community</a></li>
+        <li class="profile-menu">
+          <a href="#" onclick="toggleProfileDropdown()">Profile</a>
+          <div id="profileDropdown" class="dropdown-content">
+            <a href="#" onclick="goToProfile()">View Profile</a>
+            <a href="#" onclick="logout()">Logout</a>
+          </div>
+        </li>
+      </ul>
+    </nav>
 
     <div
       class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-4 gap-6 mt-4"
@@ -181,7 +216,7 @@
         class="md:col-span-3 bg-abyss-dark-secondary p-6 rounded-lg shadow-md"
       >
         <img
-          src="https://th.bing.com/th/id/OIP.sVh8VQN_A0JLiqKUUoyXcwHaEK?rs=1&pid=ImgDetMain"
+          src=""
           alt="Interstellar Poster"
           class="w-full h-auto rounded-lg mb-6 shadow-lg border border-abyss-accent-dark"
         />
@@ -385,55 +420,63 @@
       </div>
     </div>
     <footer>
-    <div class="footer-container">
-      <div class="footer-column">
-        <h3>ABYSS</h3>
-        <p>
-          Your ultimate timeline explorer for all forms of entertainment
-          across the ages.
-        </p>
-        <div class="social-icons">
-          <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>ABYSS</h3>
+          <p>
+            Your ultimate timeline explorer for all forms of entertainment
+            across the ages.
+          </p>
+          <div class="social-icons">
+            <a href="#" class="social-icon" aria-label="Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a href="#" class="social-icon" aria-label="Twitter"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="#" class="social-icon" aria-label="LinkedIn"
+              ><i class="fab fa-linkedin-in"></i
+            ></a>
+            <a href="#" class="social-icon" aria-label="Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h3>Navigation</h3>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Leaderboard</a></li>
+            <li><a href="#">Community</a></li>
+            <li><a href="#">Timeline</a></li>
+            <li><a href="#">Categories</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Help Center</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+            <li><a href="#">Content Guidelines</a></li>
+            <li><a href="#">Copyright</a></li>
+          </ul>
         </div>
       </div>
-      <div class="footer-column">
-        <h3>Navigation</h3>
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Leaderboard</a></li>
-          <li><a href="#">Community</a></li>
-          <li><a href="#">Timeline</a></li>
-          <li><a href="#">Categories</a></li>
-        </ul>
+      <div class="copyright">
+        <p>© 2025 ABYSS. All rights reserved.</p>
       </div>
-      <div class="footer-column">
-        <h3>Resources</h3>
-        <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Help Center</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h3>Legal</h3>
-        <ul>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Cookie Policy</a></li>
-          <li><a href="#">Content Guidelines</a></li>
-          <li><a href="#">Copyright</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="copyright">
-      <p>© 2025 ABYSS. All rights reserved.</p>
-    </div>
-  </footer>
+    </footer>
     <script src="/static/js/script.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -457,7 +500,7 @@
 
         const addButton = document.getElementById("add-to-board-btn");
         if (addButton) {
-          addButton.addEventListener("click", addToDefaultBoard);
+          addButton.addEventListener("click", addToBoardHandler);
         }
         loadMediaData();
 
@@ -607,16 +650,15 @@
 
       function getMediaParamsFromUrl() {
         const url = window.location.href;
-        console.log(url); // For debugging purposes
+        console.log("url", url); // For debugging purposes
 
-        const match = url.match(/\/mediapage\/([^/]+)\/([^/]+)\/(\d+)/);
+        const match = url.match(/\/media\/([^/]+)\/(\d+)/);
 
         if (match) {
-          console.log(match[1], match[2], match[3]);
+          console.log(match[1], match[2]);
           return {
-            category: match[1], // 'classical'
-            mediaType: match[2], // 'movies'
-            mediaId: match[3], // '1'
+            category: match[1], // 'movies'
+            mediaId: match[2], // '7'
           };
         }
 
@@ -747,9 +789,12 @@
         const params = getMediaParamsFromUrl();
         const { mediaId } = params;
         const username = await getLoggedInUserLocal();
+        console.log(username)
         if (!username) {
+          console.log("inside if")
           // show the popup of login
           showLoginPopup();
+          return;
         }
 
         try {
@@ -761,19 +806,17 @@
             },
             body: JSON.stringify({
               media_id: mediaId,
-              board_id: defaultBoardId,
+              board_id: 1,
+              username: username
             }),
           });
 
           const result = await response.json();
 
           if (response.ok) {
-            showBoardPopup(); // show confirmation popup
+            alert("board added!")
           } else {
-            alert(
-              "❌ Failed to add to board: " +
-                (result.message || "Unknown error")
-            );
+            alert("failed to add to board")
           }
         } catch (err) {
           console.error("Add to board failed:", err);

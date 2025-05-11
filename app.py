@@ -101,9 +101,9 @@ def mainEraPage(era):
 def mainMediaPage(media):
     return render_template('movies.html')
 # ---------single Media page----------
-@app.route('/mediapage/<media_id>', methods = ['GET'])
-def singleMediaPage(media_id):
-    return render_template('singlemedia.html')
+# @app.route('/mediapage/<media_id>', methods = ['GET'])
+# def singleMediaPage(media_id):
+#     return render_template('singlemedia.html')
 # ----------leaderboard page---------------
 @app.route('/leaderboard', methods=['GET'])
 def leaderboard():
@@ -211,6 +211,10 @@ def addToBoard():
     data = request.get_json()
     media_id = data.get('media_id')
     board_id = data.get('board_id')
+    username = data.get('username')
+    success = addToBoarddb(media_id, board_id, username)
+    return jsonify({"success " : success})
+
 
 
 # creating a new board 
@@ -325,9 +329,6 @@ def communityData():
     mediacategory = request.args.get("mediacategory", 'all')
     
     community = fetchCommunityData(type, mediacategory)
-    # Format the datetime object into a readable string
-    # if isinstance(community['created_at'], datetime):
-    #     community['created_at'] = community['created_at'].strftime('%d %b %Y')
     
     return jsonify({ "discussions": community })
 
@@ -575,18 +576,6 @@ def logout():
 
 
 
-# creating a decorator for the login_required
-# now we will just use the decorator before the function name that is to be checked whether the user is logged in or not
-# def login_required(f):
-#     @wraps(f)
-#     def decorated_function(*args, **kwargs):
-#         if 'username' not in session:
-#             return jsonify({'error': 'Unauthorized'}), 401
-#         return f(*args, **kwargs)
-#     return decorated_function
-
-
-
 
 # uploading the profile picture
 # Check if the file extension is allowed
@@ -602,7 +591,7 @@ def loggedinuser():
         return jsonify({"error": "The user is not logged in"})
 
 
-# api for the email subsribers
+# route to rate the media on the single media page 
 @app.route('/api/emailsubscribe/<email>',methods = ['GET'])
 def emailsubscribe(email):
     # Only allow AJAX (fetch) calls
