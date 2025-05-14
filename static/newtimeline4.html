@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Historical Timeline</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0b0c10;
+      color: #c5c6c7;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    h1 {
+      text-align: center;
+      color: #66fcf1;
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      background-color: #45a29e;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      padding: 20px 30px;
+      position: relative;
+      background-color: inherit;
+      width: 50%;
+      transition: transform 0.3s ease;
+    }
+
+    .timeline-item:hover {
+      transform: scale(1.02);
+    }
+
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      right: -13px;
+      background-color: #66fcf1;
+      border: 4px solid #0b0c10;
+      top: 30px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .left {
+      left: 0;
+    }
+
+    .right {
+      left: 50%;
+    }
+
+    .right::after {
+      left: -13px;
+    }
+
+    /* Main era styling */
+    .timeline-content {
+      padding: 20px;
+      background: #1f2833;
+      position: relative;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    /* Add overlay for better text visibility */
+    .timeline-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(31, 40, 51, 0.85);
+      z-index: -1;
+      transition: background 0.3s ease;
+    }
+
+    /* Subtype/category styling with glow effect */
+    .timeline-content.subtype {
+      box-shadow: 0 0 15px rgba(102, 252, 241, 0.4);
+      border: 1px solid #66fcf1;
+    }
+
+    .timeline-content.subtype::before {
+      background: rgba(26, 39, 48, 0.85);
+    }
+
+    .timeline-content:hover::before {
+      background: rgba(69, 162, 158, 0.85);
+    }
+
+    .timeline-content.subtype:hover {
+      box-shadow: 0 0 25px rgba(102, 252, 241, 0.7);
+    }
+
+    .timeline-content h3 {
+      margin-top: 0;
+      color: #66fcf1;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Special glow for subtype text */
+    .timeline-content.subtype h3 {
+      text-shadow: 0 0 10px rgba(102, 252, 241, 0.5);
+    }
+
+    .timeline-content:hover h3 {
+      color: #0b0c10;
+    }
+
+    .timeline-content p {
+      font-size: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .timeline-content .date {
+      display: inline-block;
+      background: #66fcf1;
+      color: #0b0c10;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Background images for each era - using relative paths that will work with the HTML file */
+    .prehistoric {
+      background-image: url('./images/prehistoric.png');
+    }
+    
+    .stone-age {
+      background-image: url('./images/stone-age.png');
+    }
+    
+    .bronze-age {
+      background-image: url('./images/bronze-age.png');
+    }
+    
+    .iron-age {
+      background-image: url('./images/iron-age.png');
+    }
+    
+    .classical {
+      background-image: url('./images/classical.png');
+    }
+    
+    .medieval {
+      background-image: url('./images/medieval.png');
+    }
+    
+    .renaissance {
+      background-image: url('./images/renaissance.png');
+    }
+    
+    .early-modern {
+      background-image: url('./images/early-modern.png');
+    }
+    
+    .industrial {
+      background-image: url('./images/industrial.png');
+    }
+    
+    .modern {
+      background-image: url('./images/modern.png');
+    }
+    
+    .twentieth-century {
+      background-image: url('./images/twentieth-century.png');
+    }
+    
+    .atomic {
+      background-image: url('./images/atomic.png');
+    }
+    
+    .information {
+      background-image: url('./images/information.png');
+    }
+    
+    .future {
+      background-image: url('./images/future.png');
+    }
+
+    /* For base64 implementation - uncomment and use these instead if you prefer 
+    .prehistoric {
+      background-image: url('data:image/jpeg;base64,INSERT_BASE64_CODE_HERE');
+    }
+    */
+
+    @media screen and (max-width: 768px) {
+      .timeline::after {
+        left: 31px;
+      }
+
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+
+      .timeline-item::after {
+        left: 18px;
+      }
+
+      .left::after, .right::after {
+        left: 18px;
+      }
+
+      .right {
+        left: 0%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Journey Through Time: Historical Eras</h1>
+
+  <div class="timeline">
+    <div class="timeline-item left">
+      <div class="timeline-content prehistoric">
+        <span class="date">3.3 Million BCE - 10,000 BCE</span>
+        <h3>Prehistoric Era</h3>
+        <p>The earliest period of human history before the development of writing systems. Marked by the use of stone tools, the discovery of fire, and the development of language. This period encompasses the Paleolithic, Mesolithic, and Neolithic eras.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item right">
+      <div class="timeline-content subtype stone-age">
+        <span class="date">10,000 BCE - 3,000 BCE</span>
+        <h3>Stone Age</h3>
+        <p>A broad prehistoric period during which stone was widely used to make tools and weapons. This period ended with the advent of metalworking and the beginning of the Bronze Age. The Stone Age saw the rise of agriculture, animal domestication, and permanent human settlements.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item left">
+      <div class="timeline-content subtype bronze-age">
+        <span class="date">3,000 BCE - 1,200 BCE</span>
+        <h3>Bronze Age</h3>
+        <p>Characterized by the use of bronze, the Bronze Age saw the development of writing systems, the wheel, and the rise of urban civilization in Mesopotamia, Egypt, India, and China. It was a period of significant technological and social advancement.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item right">
+      <div class="timeline-content subtype iron-age">
+        <span class="date">1,200 BCE - 600 BCE</span>
+        <h3>Iron Age</h3>
+        <p>Defined by the spread of iron metallurgy, this period saw the collapse of ancient empires and the emergence of new powers. Iron tools and weapons revolutionized warfare, agriculture, and crafts, enabling significant societal changes.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item left">
+      <div class="timeline-content classical">
+        <span class="date">800 BCE - 500 CE</span>
+        <h3>Classical Era</h3>
+        <p>Witnessed the rise and fall of the Greek and Roman civilizations, the spread of Buddhism, Confucianism, and Christianity, and significant developments in philosophy, science, art, and politics that continue to influence the modern world.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item right">
+      <div class="timeline-content medieval">
+        <span class="date">500 CE - 1500 CE</span>
+        <h3>Medieval Era</h3>
+        <p>The Middle Ages saw the rise of Islam, the development of feudalism in Europe, the flourishing of the Byzantine Empire, and unprecedented cross-cultural exchange along the Silk Road. It was a period of religious dominance, castle building, and the Crusades.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item left">
+      <div class="timeline-content subtype renaissance">
+        <span class="date">1300 CE - 1600 CE</span>
+        <h3>Renaissance Era</h3>
+        <p>A cultural movement that profoundly affected intellectual life in Europe. Beginning in Italy and spreading to the rest of Europe, the Renaissance saw a renewed interest in the classical learning of ancient Greece and Rome, and advances in art, architecture, politics, science, and literature.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item right">
+      <div class="timeline-content early-modern">
+        <span class="date">1500 CE - 1800 CE</span>
+        <h3>Early Modern Era</h3>
+        <p>A period marked by the European Age of Discovery, the Protestant Reformation, the Scientific Revolution, and the Enlightenment. It saw the beginning of globalization with European exploration and colonization of the Americas and parts of Asia and Africa.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item left">
+      <div class="timeline-content subtype industrial">
+        <span class="date">1760 CE - 1840 CE</span>
+        <h3>Industrial Era</h3>
+        <p>Characterized by the transition from hand production methods to machine manufacturing, the development of factory systems, steam power, and iron production. It radically transformed economic and social conditions, beginning in Great Britain and spreading throughout the world.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item right">
+      <div class="timeline-content modern">
+        <span class="date">1800 CE - Present</span>
+        <h3>Modern Era</h3>
+        <p>Encompassing the late 18th to the early 21st centuries, this period is characterized by industrialization, urbanization, increased global communication, nationalism, and significant developments in science, medicine, technology, and politics.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item left">
+      <div class="timeline-content subtype twentieth-century">
+        <span class="date">1901 CE - 2000 CE</span>
+        <h3>20th Century</h3>
+        <p>A period marked by world wars, the Great Depression, the Cold War, decolonization, rapid technological development, and the rise of digital technology. This century saw unprecedented changes in communication, transportation, medicine, and everyday life.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item right">
+      <div class="timeline-content subtype atomic">
+        <span class="date">1945 CE - Present</span>
+        <h3>Atomic Era</h3>
+        <p>Beginning with the development and use of nuclear weapons, this era is characterized by nuclear power, the threat of nuclear war, and the peaceful applications of nuclear technology in medicine, energy production, and scientific research.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item left">
+      <div class="timeline-content subtype information">
+        <span class="date">1970 CE - Present</span>
+        <h3>Information Era</h3>
+        <p>Defined by the shift from traditional industry to an economy based on information technology. The Digital Revolution, the rise of the internet and personal computing, and the increasing importance of information as a commodity characterize this period.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item right">
+      <div class="timeline-content future">
+        <span class="date">Present - Beyond</span>
+        <h3>Future</h3>
+        <p>While we cannot predict the future with certainty, ongoing trends suggest continued technological advancement, efforts to address climate change, space exploration, and potential societal transformations driven by artificial intelligence, biotechnology, and quantum computing.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Add smooth scrolling functionality
+    document.querySelectorAll('.timeline-item').forEach(item => {
+      item.addEventListener('click', () => {
+        // Enhance the glow effect on click for subtypes
+        const content = item.querySelector('.timeline-content');
+        if (content.classList.contains('subtype')) {
+          content.style.boxShadow = '0 0 35px rgba(102, 252, 241, 0.9)';
+          setTimeout(() => {
+            content.style.boxShadow = '';
+          }, 1000);
+        }
+      });
+    });
+    
+    // Add legend to explain the difference
+    const legend = document.createElement('div');
+    legend.style.textAlign = 'center';
+    legend.style.margin = '40px auto 20px';
+    legend.style.maxWidth = '600px';
+    legend.style.padding = '15px';
+    legend.style.background = '#1f2833';
+    legend.style.borderRadius = '8px';
+    legend.style.boxShadow = '0 4px 8px rgba(0,0,0,0.3)';
+    
+    legend.innerHTML = `
+      <h3 style="color: #66fcf1; margin-bottom: 15px;">Timeline Legend</h3>
+      <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+        <div style="margin: 10px; text-align: center;">
+          <div style="width: 100px; height: 40px; background: #1f2833; margin: 0 auto; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);"></div>
+          <p style="margin-top: 10px;">Main Historical Eras</p>
+        </div>
+        <div style="margin: 10px; text-align: center;">
+          <div style="width: 100px; height: 40px; background: #1a2730; margin: 0 auto; border-radius: 5px; box-shadow: 0 0 15px rgba(102, 252, 241, 0.4); border: 1px solid #66fcf1;"></div>
+          <p style="margin-top: 10px;">Subtype Categories</p>
+        </div>
+      </div>
+    `;
+    
+    document.body.insertBefore(legend, document.querySelector('.timeline'));
+  </script>
+</body>
+</html>
+
+    
